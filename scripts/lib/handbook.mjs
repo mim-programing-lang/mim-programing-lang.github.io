@@ -57,8 +57,14 @@ export function hbExamples() {
   const problems = [];
   const prefix = 'docs/handbook/';
   for (const file of hbFiles()) {
-    const ex = parseExamples(readFileSync(path.join(hbDir, file), 'utf8'));
-    for (const e of ex) byId.set(`${file}#${e.n}`, { ...e, file });
+    const text = readFileSync(path.join(hbDir, file), 'utf8');
+    const lines = text.split('\n');
+    for (const e of parseExamples(text)) {
+      // أقرب عنوان فوق المثال: تتحقق به الصفحات التي تستعير مثالاً برقمه (HBExample section).
+      let h = e.start;
+      while (h >= 0 && !/^#{1,6}\s/.test(lines[h])) h--;
+      byId.set(`${file}#${e.n}`, { ...e, file, section: h >= 0 ? lines[h].replace(/^#+\s*/, '').trim() : '' });
+    }
   }
   const out = {};
   for (const m of manifest.examples) {
@@ -77,7 +83,7 @@ export function hbExamples() {
     // ما يعرضه الكتاب تحت المثال يجب أن يطابق البيان.
     const shownOk = e.kind === 'الناتج' ? e.shown === m.stdout.replace(/\n$/, '') : e.shown === formatError(m).replace(/\n$/, '');
     if (!shownOk) problems.push(`${id}: كتلة «${e.kind}» في الكتاب لا تطابق مخرج البيان`);
-    out[id] = { id, file: e.file, code: e.code, ...pick(m) };
+    out[id] = { id, file: e.file, section: e.section, code: e.code, ...pick(m) };
   }
   for (const id of byId.keys()) problems.push(`${id}: كتلة مثال في الكتاب لا يذكرها البيان`);
   return { examples: out, problems, generatedBy: manifest.generated_by, release: manifest.release, development: manifest.development };

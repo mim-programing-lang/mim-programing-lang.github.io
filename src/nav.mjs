@@ -31,7 +31,7 @@ export const sections = [
   },
   {
     id: 'docs',
-    label: 'التوثيق',
+    label: 'المرجع',
     href: '/docs/',
     items: [
       { label: 'نظرة عامة', slug: 'docs' },
@@ -70,15 +70,15 @@ export const sections = [
 // روابط الشريط العلوي: الأقسام ثم الصفحات المفردة.
 export const topNav = [
   ...sections.map(({ label, href }) => ({ label, href })),
-  { label: 'جرّب', href: '/try/' },
+  { label: 'أمثلة', href: '/try/' },
   { label: 'الملعب', href: '/playground/' },
-  { label: 'حمّل', href: '/download/' },
+  { label: 'التنزيل', href: '/download/' },
 ];
 
 // روابط التذييل.
 export const footerNav = [
   { label: 'حول المشروع', href: '/about/' },
-  { label: 'التحميل', href: '/download/' },
+  { label: 'التنزيل', href: '/download/' },
 ];
 
 export const sidebar = sections.map(({ label, items }) => ({ label, items }));

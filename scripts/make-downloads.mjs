@@ -56,7 +56,7 @@ if (slot.id === 'compiler-linux-x86_64') {
   slot.build = info.build ?? info.version;
   if (opt('dir')) {
     const glibc = measureGlibc(opt('dir'));
-    if (glibc) requires.push(`مكتبة glibc بإصدار ${glibc} أو أحدث (قياس على ملفات الحزمة)`);
+    if (glibc) requires.push(`مكتبة glibc بإصدار ${glibc} أو أحدث (مقيس على ملفات الحزمة)`);
     else console.warn('[make-downloads] تعذّر قياس glibc (هل objdump مثبَّت؟): لم يُكتب في المتطلبات.');
   }
 } else {

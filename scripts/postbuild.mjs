@@ -11,6 +11,8 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { root } from './lib/meem.mjs';
 import { hbExamples } from './lib/handbook.mjs';
+import { proseOf } from './lib/prose.mjs';
+import { checkWording } from './lib/wording.mjs';
 
 const dist = path.join(root, 'dist');
 const walk = (d) =>
@@ -140,6 +142,13 @@ if (reallyMissing.length) {
   );
 }
 
+// 9) الصياغة: صيغ محظورة في نثر الصفحات (scripts/lib/wording.json)، بلا شيفرة ولا مخرجات.
+let wordingChecked = 0;
+for (const [file, { html }] of pages) {
+  for (const { use, text } of checkWording(proseOf(html))) errors.push(`${rel(file)}: صياغة محظورة (استعمل: ${use}): «${text}»`);
+  wordingChecked++;
+}
+console.log(`[postbuild] الصياغة: ${wordingChecked} صفحة فُحص نثرها بـ wording.json.`);
 console.log(`[postbuild] أمثلة الكتاب المرجعي المعروضة: ${seenHb.size} من ${Object.values(hb).filter((e) => e.code != null).length}`);
 if (errors.length) {
   console.error(`\n[فشل البناء] فحوص الموقع المبني (${errors.length}):\n\n${errors.map((e) => `  ✗ ${e}`).join('\n')}\n`);

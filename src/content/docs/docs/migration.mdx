@@ -1,6 +1,6 @@
 ---
 title: "الترحيل من 0.6 إلى 0.7"
-description: "المصدر: ../../../CHANGELOG.md (وثيقة في مستودع المجمّع) (قسم 0.7.0) و../../migration-log.md (وثيقة في مستودع المجمّع). برنامج 0.6 صحيح يبقى صحيحاً…"
+description: "المصدر: CHANGELOG.md (وثيقة في مستودع المجمّع) (قسم 0.7.0) وmigration-log.md (وثيقة في مستودع المجمّع). برنامج 0.6 صحيح يبقى صحيحاً وبالناتج نفسه في 0.7.0…"
 ---
 
 import HBExample from '../../../components/HBExample.astro';
@@ -11,7 +11,7 @@ import HBSource from '../../../components/HBSource.astro';
 
 <HBSource file="migration/0.6-to-0.7.md" />
 
-المصدر: ../../../CHANGELOG.md <small>(وثيقة في مستودع المجمّع)</small> (قسم 0.7.0) و../../migration-log.md <small>(وثيقة في مستودع المجمّع)</small>. **برنامج
+المصدر: `CHANGELOG.md` <small>(وثيقة في مستودع المجمّع)</small> (قسم 0.7.0) و`migration-log.md` <small>(وثيقة في مستودع المجمّع)</small>. **برنامج
 0.6 صحيح يبقى صحيحاً وبالناتج نفسه** في 0.7.0 إلا ما في «ما قد يتغير» أدناه؛ الاختبارات تشغّل كل البرامج المرجعية
 القديمة وتقارن ناتجها.
 
@@ -32,7 +32,7 @@ import HBSource from '../../../components/HBSource.astro';
 ## حلقة طويلة تبني نصوصاً
 
 في 0.6 كان النص المؤقت يعود في كل دورة. في 0.7 يبقى حتى الخروج: ذروة الذاكرة تكبر (برنامج نصوص قيس 12 ← 135 م.ب،
-../../v1-readiness.md <small>(وثيقة في مستودع المجمّع)</small>). الإصلاح سطر واحد:
+`v1-readiness.md` <small>(وثيقة في مستودع المجمّع)</small>). الإصلاح سطر واحد:
 
 <HBExample id="migration/0.6-to-0.7.md#2" />
 

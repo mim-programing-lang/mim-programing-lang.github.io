@@ -9,10 +9,13 @@ interface Props {
   id: string;
   /** عنوان يظهر فوق الشيفرة بدل «مثال» */
   label?: string;
+  /** عنوان قسم المثال في الكتاب. إن ذُكر ولم يطابق فشل البناء: أرقام الأمثلة تتغير حين يُضاف مثال قبلها. */
+  section?: string;
 }
-const { id, label } = Astro.props;
+const { id, label, section } = Astro.props;
 const ex = (hb.examples as Record<string, any>)[id];
 if (!ex || ex.code == null) throw new Error(`مثال غير موجود في الكتاب المرجعي: «${id}»`);
+if (section && ex.section !== section) throw new Error(`المثال «${id}» صار تحت «${ex.section}» لا «${section}»: صحّح رقمه.`);
 const dev = ex.version !== hb.release;
 const lines = (s: string) => s.replace(/\n$/, '').split('\n');
 const command = ['meem', ...ex.flags, 'برنامج.م'].join(' ');

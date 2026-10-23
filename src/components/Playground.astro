@@ -11,7 +11,7 @@ const label = (e: { id: string; title: string }) => `${e.title} — ${e.id.repla
 
 <div class="pg" data-api={enabled ? api : ''} data-timeout-ms="15000" data-min-interval-ms="3000" data-max-share-bytes="16384" data-max-code-bytes="65536" data-max-body-bytes="98304">
   <p class="pg-state" id="pg-state" role="status" aria-live="polite">
-    {enabled ? 'جاهز.' : 'الملعب قيد التجهيز: التشغيل غير متاح الآن. الأمثلة ومخرجاتها المتوقعة متاحة للقراءة.'}
+    {enabled ? 'جاهز.' : 'الملعب قيد التجهيز: لا يمكن التشغيل الآن، لكن تستطيع قراءة الأمثلة ومخرجاتها المتوقعة.'}
   </p>
   <p class="pg-from-link" id="pg-from-link" hidden>هذه الشيفرة جاءت من رابط. اقرأها قبل أن تضغط «شغّل».</p>
 
@@ -43,7 +43,7 @@ const label = (e: { id: string; title: string }) => `${e.title} — ${e.id.repla
 
   <details class="pg-expected" id="pg-expected" hidden>
     <summary>المخرج المتوقع لهذا المثال (من الكتاب المرجعي)</summary>
-    <p class="pg-note">سُجّل في اختبارات المجمّع بلا خيارات الملعب؛ مع <code dir="ltr">--debug-mem</code> قد يزيد تقرير ذاكرة على الأخطاء.</p>
+    <p class="pg-note">سُجّل في اختبارات المجمّع بلا خيارات الملعب؛ مع <code dir="ltr">--debug-mem</code> قد يُضاف تقرير الذاكرة إلى الأخطاء.</p>
     <h3>المخرج</h3>
     <pre id="pg-exp-stdout" class="pg-box" dir="auto"></pre>
     <h3>الأخطاء</h3>
@@ -56,10 +56,10 @@ const label = (e: { id: string; title: string }) => `${e.title} — ${e.id.repla
     <ul>
       <li>زمن التشغيل: 8 ثوانٍ.</li>
       <li>حجم الشيفرة: 64 ك.ب.</li>
-      <li>الخرج: 64 ك.ب، وما زاد يُقطع.</li>
-      <li>لا ملفات، ولا شبكة، ولا وسائط، ولا متغيرات بيئة، ولا إدخال. الوحدات المتاحة: <code>رياضيات</code> و<code>عشوائي</code>.</li>
+      <li>المخرج: 64 ك.ب، وما زاد عليها يُقطع.</li>
+      <li>لا ملفات، ولا شبكة، ولا وسائط سطر أوامر، ولا متغيرات بيئة، ولا إدخال. الوحدات المتاحة: <code>رياضيات</code> و<code>عشوائي</code>.</li>
       <li>خيارات المجمّع: <code dir="ltr">--no-unsafe --no-ffi --no-system --debug-mem</code>.</li>
-      <li>الشيفرة تُرسل إلى خادم التشغيل وحده، ولا تُحفظ في أي خدمة أخرى. لا تحليلات تتبع في هذه الصفحة.</li>
+      <li>تُرسل الشيفرة إلى خادم التشغيل وحده، ولا تُحفظ في أي خدمة أخرى. ولا أدوات تحليل أو تتبّع في هذه الصفحة.</li>
     </ul>
   </section>
 </div>

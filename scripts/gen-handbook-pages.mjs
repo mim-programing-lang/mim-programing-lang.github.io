@@ -6,6 +6,11 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { root } from './lib/meem.mjs';
 import { hbDir, hbSource, parseExamples, assertHandbook } from './lib/handbook.mjs';
+import { applyWording } from './lib/wording.mjs';
+
+// عدد ما غيّرته طبقة الصياغة (scripts/lib/wording.json) لكل صياغة.
+const wordingStats = {};
+const word = (s) => applyWording(s, wordingStats)[0];
 
 const { commit } = hbSource();
 
@@ -75,7 +80,9 @@ function rewriteLink(label, target, from) {
   if (!url && DIRS[resolved]) url = DIRS[resolved];
   if (url) return `[${/\.(md|json)$|^\.\.?\/|\/$/.test(label) ? titleOf(resolved) ?? label : label}](${url})`;
   // خارج الكتاب: وثيقة في مستودع المجمّع لا صفحة في الموقع.
-  return `${label} <small>(وثيقة في مستودع المجمّع)</small>`;
+  // الاسم وحده إن كان نص الرابط مساراً (../../enums.md)، لا المسار النسبي.
+  const shown = /^[./]*[^\s]*\.(md|json|py)$/.test(label) ? `\`${path.basename(p)}\`` : label;
+  return `${shown} <small>(وثيقة في مستودع المجمّع)</small>`;
 }
 
 function escapeProse(line) {
@@ -125,7 +132,7 @@ function convert(file, meta) {
     }
     const h1 = /^#\s+(.*)$/.exec(line);
     if (h1 && !title) {
-      title = h1[1].replace(/`/g, '');
+      title = word(h1[1]).replace(/`/g, '');
       continue;
     }
     if (h1) continue;
@@ -133,11 +140,11 @@ function convert(file, meta) {
     if (h) {
       dropping = (meta.drop ?? []).some((d) => h[2].includes(d));
       if (dropping) continue;
-      out.push(`${'#'.repeat(h[1].length - shift)} ${escapeProse(h[2])}`);
+      out.push(`${'#'.repeat(h[1].length - shift)} ${escapeProse(word(h[2]))}`);
       continue;
     }
     if (dropping) continue;
-    out.push(escapeProse(line).replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, target) => rewriteLink(label, target, file)));
+    out.push(escapeProse(word(line)).replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, target) => rewriteLink(label, target, file)));
   }
   return { title, body: out.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n' };
 }
@@ -175,3 +182,5 @@ ${body}${schema}`;
   writeFileSync(dest, page);
 }
 console.log(`[gen-handbook] ${Object.keys(PAGES).length} صفحة من الكتاب المرجعي (${short}).`);
+const changed = Object.entries(wordingStats).map(([f, n]) => `«${f}» ×${n}`);
+if (changed.length) console.log(`[gen-handbook] طبقة الصياغة: ${changed.join('، ')}`);

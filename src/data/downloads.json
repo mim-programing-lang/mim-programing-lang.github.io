@@ -14,7 +14,7 @@
       "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.7.0/meem-0.7.0-linux-x86_64.tar.xz",
       "requires": [
         "لينكس x86_64",
-        "مكتبة glibc بإصدار 2.35 أو أحدث (قياس على ملفات الحزمة)"
+        "مكتبة glibc بإصدار 2.35 أو أحدث (مقيس على ملفات الحزمة)"
       ]
     },
     {
@@ -30,7 +30,7 @@
       "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.7.0/meem-editor_0.1.0_amd64.deb",
       "requires": [
         "لينكس x86_64",
-        "مكتبة glibc بإصدار 2.35 أو أحدث (وثيقة الإصدار)",
+        "مكتبة glibc بإصدار 2.35 أو أحدث (بحسب وثيقة الإصدار)",
         "من مستودعات التوزيعة: libwebkit2gtk-4.1-0 وlibgtk-3-0 (يثبّتهما apt)"
       ]
     },
@@ -47,7 +47,7 @@
       "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.7.0/meem-editor_0.1.0_amd64.AppImage",
       "requires": [
         "لينكس x86_64",
-        "مكتبة glibc بإصدار 2.35 أو أحدث (وثيقة الإصدار)",
+        "مكتبة glibc بإصدار 2.35 أو أحدث (بحسب وثيقة الإصدار)",
         "libfuse2 (أو التشغيل بـ --appimage-extract-and-run)"
       ]
     }

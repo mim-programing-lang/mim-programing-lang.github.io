@@ -8,5 +8,13 @@
   "pagefind.one_result": "نتيجة واحدة لـ [SEARCH_TERM]",
   "pagefind.alt_search": "لا نتائج لـ [SEARCH_TERM]. هذه نتائج [DIFFERENT_TERM]",
   "pagefind.search_suggestion": "لا نتائج لـ [SEARCH_TERM]. جرّب أحد هذه:",
-  "pagefind.searching": "يبحث عن [SEARCH_TERM]..."
+  "pagefind.searching": "يبحث عن [SEARCH_TERM]...",
+  "heading.anchorLabel": "رابط إلى قسم «{{title}}»",
+  "sidebarNav.accessibleLabel": "قائمة الصفحات",
+  "expressiveCode.copyButtonTooltip": "انسخ",
+  "expressiveCode.copyButtonCopied": "نُسخ",
+  "expressiveCode.terminalWindowFallbackTitle": "نافذة الطرفية",
+  "fileTree.directory": "مجلد",
+  "page.editLink": "عدّل الصفحة",
+  "themeSelect.accessibleLabel": "اختر المظهر"
 }

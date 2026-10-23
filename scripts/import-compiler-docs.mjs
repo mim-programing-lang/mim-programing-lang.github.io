@@ -10,6 +10,7 @@ import { writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { root, meemJson } from './lib/meem.mjs';
+import { applyWordingMarkdown } from './lib/wording.mjs';
 
 const repo = path.resolve(process.env.COMPILER_REPO ?? path.join(root, '../my_compiler'));
 const v = meemJson(['--version']);
@@ -136,7 +137,8 @@ ${d.lead ?? ''}
 `;
   const file = path.join(root, 'src/content/docs', `${d.page}.mdx`);
   mkdirSync(path.dirname(file), { recursive: true });
-  writeFileSync(file, head + out.join('\n').replace(/^\n+/, ''));
+  // طبقة الصياغة (scripts/lib/wording.json) على النثر وحده.
+  writeFileSync(file, head + applyWordingMarkdown(out.join('\n').replace(/^\n+/, '')));
   console.log(`[import-docs] ${d.doc} (${commit}) ← ${d.page}، ${count} مثالاً.`);
 }
 

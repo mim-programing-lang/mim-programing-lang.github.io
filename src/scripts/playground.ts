@@ -131,9 +131,9 @@ function init(root: HTMLElement) {
       show(err, typeof r.stderr === 'string' ? r.stderr : typeof r.reason === 'string' ? r.reason : '');
       exitEl.textContent = typeof r.exit_code === 'number' ? String(r.exit_code) : '—';
       if (typeof r.duration_ms === 'number') duration.textContent = `· ${Math.round(r.duration_ms)} م.ث`;
-      if (r.status === 'timeout') setState('تجاوز الزمن: أُوقف البرنامج عند حد الزمن (8 ثوانٍ).');
+      if (r.status === 'timeout') setState('تجاوز الزمن: أُوقف البرنامج عند الحد (8 ثوانٍ).');
       else if (r.status === 'rejected') setState('رُفض البرنامج قبل التشغيل.');
-      else if (r.truncated === true || r.status === 'output_limit') setState('انتهى، والخرج مقطوع عند 64 ك.ب.');
+      else if (r.truncated === true || r.status === 'output_limit') setState('انتهى، والمخرج مقطوع عند 64 ك.ب.');
       else setState('انتهى.');
     } catch (e) {
       const aborted = (e as Error).name === 'AbortError';

@@ -1,0 +1,35 @@
+---
+// مكان أيقونات الشبكات في الترويسة (سطح المكتب) يحمل روابط الأقسام.
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+import { topNav } from '../nav.mjs';
+const here = Astro.url.pathname;
+---
+
+<nav class="top-nav" aria-label="أقسام الموقع">
+  {topNav.map((l) => <a href={l.href} aria-current={here.startsWith(l.href) ? 'page' : undefined}>{l.label}</a>)}
+</nav>
+<Default />
+
+<style>
+  .top-nav {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+    white-space: nowrap;
+  }
+  .top-nav a {
+    color: var(--sl-color-gray-2);
+    text-decoration: none;
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    padding-block: 0.25rem;
+    border-block-end: 2px solid transparent;
+  }
+  .top-nav a:hover {
+    color: var(--sl-color-white);
+  }
+  .top-nav a[aria-current='page'] {
+    color: var(--sl-color-white);
+    border-block-end-color: var(--meem-red);
+  }
+</style>

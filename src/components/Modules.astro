@@ -1,0 +1,46 @@
+---
+// المكتبة القياسية كما يصفها المجمّع: كل وحدة بدوالها وثوابتها وهياكلها، بتواقيعها وأسطر توثيقها (##).
+import modules from '../generated/modules.json';
+---
+
+{modules.map((m) => (
+  <>
+    <h2 id={`module-${m.name}`}>الوحدة <code class="meem-inline-code">{m.name}</code></h2>
+    <p><code class="meem-inline-code">استورد {m.name}</code> — {m.functions.length} دالة، {m.constants.length} ثابتاً، {m.structs.length} هيكلاً.</p>
+
+    {m.constants.length > 0 && <h3 id={`module-${m.name}-constants`}>الثوابت</h3>}
+    {m.constants.map((c) => (
+      <section class="api-item">
+        <h4 id={`${m.name}-${c.name}`}><code class="meem-inline-code">{c.name}</code></h4>
+        <dl>
+          <dt>النوع</dt><dd><code class="meem-inline-code">{c.type}</code></dd>
+          <dt>الوصف</dt><dd>{c.doc.map((l) => <span class="doc-line">{l}</span>)}</dd>
+        </dl>
+      </section>
+    ))}
+
+    {m.structs.length > 0 && <h3 id={`module-${m.name}-structs`}>الهياكل</h3>}
+    {m.structs.map((s) => (
+      <section class="api-item">
+        <h4 id={`${m.name}-${s.name}`}><code class="meem-inline-code">{s.name}</code></h4>
+        <dl>
+          <dt>الحقول</dt><dd>{s.fields.map((f) => <span class="doc-line"><code class="meem-inline-code">{f.name} {f.type}</code>{f.has_default ? ' (له قيمة افتراضية)' : ''}</span>)}</dd>
+          <dt>الوصف</dt><dd>{s.doc.map((l) => <span class="doc-line">{l}</span>)}</dd>
+        </dl>
+      </section>
+    ))}
+
+    <h3 id={`module-${m.name}-functions`}>الدوال</h3>
+    {m.functions.map((f) => (
+      <section class="api-item">
+        <h4 id={`${m.name}-${f.name}`}><code class="meem-inline-code">{f.name}</code></h4>
+        <dl>
+          <dt>التوقيع</dt><dd><code class="meem-inline-code">{f.usage} {f.returns}</code></dd>
+          <dt>المعاملات</dt><dd>{f.params.length ? f.params.map((p) => <span class="doc-line"><code class="meem-inline-code">{p.name}</code>: <code class="meem-inline-code">{p.type}</code></span>) : 'بلا معاملات'}</dd>
+          <dt>ترجع</dt><dd><code class="meem-inline-code">{f.returns}</code></dd>
+          <dt>السلوك</dt><dd>{f.doc.map((l) => <span class="doc-line">{l}</span>)}</dd>
+        </dl>
+      </section>
+    ))}
+  </>
+))}

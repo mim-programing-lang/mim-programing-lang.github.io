@@ -1,0 +1,42 @@
+---
+title: "4. الشروط"
+description: "اختر بين طريقين بـ اذا و غير ذلك."
+keywords: ["شرط", "شروط", "اذا", "غير ذلك"]
+---
+
+import HBExample from '../../../components/HBExample.astro';
+import VersionBanner from '../../../components/VersionBanner.astro';
+
+<VersionBanner />
+
+## الهدف
+
+يختار بين طريقين بـ `اذا` و`غير ذلك`.
+
+## الشرح
+
+- **الشرط** سؤال جوابه `صواب` أو `خطاء`.
+- سطر `اذا` ينتهي بنقطتين `:`، وما تحته مُزاح بمسافة بادئة هو **الكتلة** التي تُنفَّذ إن تحقق الشرط. المستوى 4 مسافات.
+- `غير ذلك اذا` شرط بديل، و`غير ذلك` لما بقي.
+
+## المثال
+
+<HBExample id="learn/README.md#4" />
+
+## الأخطاء الشائعة
+
+نسيان `:`:
+
+<HBExample id="errors/common.md#3" label="يسبب الخطأ" />
+
+<HBExample id="errors/common.md#4" label="يصلحه" />
+
+أو مسافة بادئة غير متساوية:
+
+<HBExample id="errors/common.md#5" label="يسبب الخطأ" />
+
+<HBExample id="errors/common.md#6" label="يصلحه" />
+
+## اقرأ أيضاً
+
+[العبارات](/docs/language/statements/)

@@ -1,0 +1,31 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { footerNav } from '../nav.mjs';
+import { site } from '../../site.config.mjs';
+---
+
+<Default><slot /></Default>
+<nav class="site-footer" aria-label="روابط الموقع">
+  {footerNav.map((l) => <a href={l.href}>{l.label}</a>)}
+  <span>جميع الحقوق محفوظة. الرخصة قيد الإعداد.</span>
+  <span>{site.name} — {site.status}</span>
+</nav>
+
+<style>
+  .site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-block-start: 2rem;
+    padding-block-start: 1rem;
+    border-block-start: 1px solid var(--sl-color-hairline);
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+  }
+  .site-footer a {
+    color: var(--sl-color-gray-2);
+  }
+  .site-footer span:last-child {
+    margin-inline-start: auto;
+  }
+</style>

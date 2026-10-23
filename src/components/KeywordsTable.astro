@@ -1,0 +1,28 @@
+---
+import language from '../generated/language.json';
+const kinds: Record<string, string> = {
+  control: 'تحكم', loop: 'تكرار', jump: 'قفز', definition: 'تعريف', declaration: 'تصريح', logic: 'منطق',
+};
+const rows = [
+  ...language.keywords.map((k) => ({ word: k.word, aliases: k.aliases, kind: k.kind, role: k.role, description: k.description, block: k.opens_block, contextual: k.contextual })),
+  ...language.compound_keywords.map((k) => ({ word: k.words, aliases: [] as string[], kind: k.kind, role: k.role, description: k.description, block: k.opens_block, contextual: false })),
+];
+---
+
+<table>
+  <thead>
+    <tr><th>الكلمة</th><th>الصنف</th><th>الدور (<code>role</code>)</th><th>الوصف</th><th>تفتح كتلة</th><th>سياقية</th></tr>
+  </thead>
+  <tbody>
+    {rows.map((r) => (
+      <tr>
+        <td><code class="meem-inline-code">{r.word}</code>{r.aliases.map((a) => <> / <code class="meem-inline-code">{a}</code></>)}</td>
+        <td>{kinds[r.kind] ?? r.kind}</td>
+        <td><code dir="ltr">{r.role}</code></td>
+        <td>{r.description}</td>
+        <td>{r.block ? 'نعم' : 'لا'}</td>
+        <td>{r.contextual ? 'نعم' : 'لا'}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>

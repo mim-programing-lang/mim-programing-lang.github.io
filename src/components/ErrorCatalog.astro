@@ -1,0 +1,95 @@
+---
+// فهرس رسائل الأخطاء والتحذيرات من errors/catalog.md في الكتاب المرجعي (مولَّد هناك من مصادر المجمّع).
+// لكل رسالة مرساة باسم معرّفها، ومعها أمثلة الكتاب التي تطبعها إن وُجدت. مربع التصفية يعمل في المتصفح.
+import hb from '../generated/handbook.json';
+import HBExample from './HBExample.astro';
+const phases = [...new Set(hb.catalog.map((c: any) => c.phase))];
+const withExample = hb.catalog.filter((c: any) => c.examples.length).length;
+---
+
+<p>{hb.catalog.length} رسالة، منها {withExample} لها مثال في الكتاب المرجعي يطبعها.</p>
+
+<label class="catalog-filter">
+  <span>تصفية الرسائل:</span>
+  <input type="search" id="catalog-filter" placeholder="اكتب جزءاً من الرسالة أو المعرّف" autocomplete="off" />
+</label>
+<p id="catalog-count" class="catalog-count" aria-live="polite"></p>
+
+{phases.map((phase) => (
+  <section class="catalog-phase">
+    <h2 id={`phase-${phase.replace(/\s+/g, '-')}`}>{phase}</h2>
+    {hb.catalog.filter((c: any) => c.phase === phase).map((c: any) => (
+      <article class="catalog-item" id={c.id.toLowerCase()} data-search={`${c.id} ${c.message}`}>
+        <h3><code dir="ltr">{c.id}</code> <span class="catalog-msg">{c.message}</span></h3>
+        <dl>
+          <dt>رمز الخروج</dt><dd>{c.exit}</dd>
+          <dt>المصدر في المجمّع</dt><dd><code dir="ltr">{c.source}</code></dd>
+          <dt>برنامج مرجعي يطبعها</dt><dd>{c.reference === '—' ? '—' : <code dir="ltr">{c.reference}</code>}</dd>
+        </dl>
+        {c.examples.length > 0 && (
+          <details>
+            <summary>{c.examples.length > 1 ? 'أمثلة من الكتاب تطبعها' : 'مثال من الكتاب يطبعها'}</summary>
+            {c.examples.map((id: string) => <HBExample id={id} />)}
+          </details>
+        )}
+      </article>
+    ))}
+  </section>
+))}
+
+<script>
+  const input = document.getElementById('catalog-filter') as HTMLInputElement | null;
+  const count = document.getElementById('catalog-count');
+  const items = [...document.querySelectorAll<HTMLElement>('.catalog-item')];
+  const norm = (s: string) => s.replace(/[ً-ْـ]/g, '').replace(/[أإآ]/g, 'ا').toLowerCase();
+  input?.addEventListener('input', () => {
+    const q = norm(input.value.trim());
+    let shown = 0;
+    for (const it of items) {
+      const hit = !q || norm(it.dataset.search ?? '').includes(q);
+      it.hidden = !hit;
+      if (hit) shown++;
+    }
+    if (count) count.textContent = q ? `${shown} رسالة تطابق` : '';
+  });
+</script>
+
+<style>
+  .catalog-filter {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .catalog-filter input {
+    flex: 1;
+    min-width: 12rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--meem-border);
+    border-radius: 0.35rem;
+    background: var(--sl-color-black);
+    color: var(--sl-color-white);
+    font: inherit;
+  }
+  .catalog-item {
+    border-block-start: 1px solid var(--sl-color-hairline);
+    padding-block: 0.6rem;
+  }
+  .sl-markdown-content .catalog-item h3 {
+    font-size: var(--sl-text-base);
+    margin: 0;
+  }
+  .catalog-msg {
+    unicode-bidi: plaintext;
+  }
+  .catalog-item dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.15rem 1rem;
+    margin: 0.4rem 0 0;
+    font-size: var(--sl-text-sm);
+  }
+  .catalog-item dd {
+    margin: 0;
+  }
+</style>

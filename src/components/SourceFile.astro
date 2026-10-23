@@ -1,0 +1,14 @@
+---
+// يعرض ملفاً من examples/ كما هو (ملف وحدة لا يُشغَّل وحده). الملف نفسه يفحصه البناء.
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { Code } from '@astrojs/starlight/components';
+interface Props {
+  file: string;
+}
+const { file } = Astro.props;
+const code = readFileSync(path.resolve('examples', file), 'utf8').replace(/\n+$/, '');
+const shown = file.split('/').slice(-2).join('/');
+---
+
+<Code code={code} lang="meem" title={shown} />

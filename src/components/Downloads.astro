@@ -1,0 +1,130 @@
+---
+// صفحة التنزيل تقرأ من ملف واحد: src/data/downloads.json. لكل منتج خانة؛ الفارغ منها يُعرض «قريباً».
+// لا رقم ولا رابط إلا ما في الملف، والملف يملؤه scripts/make-downloads.mjs من الملفات المبنية نفسها.
+import data from '../data/downloads.json';
+import { mb } from '../lib/size.mjs';
+import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
+
+type Product = {
+  id: string; name: string; platform: string; format: string; version: string; build: string;
+  fileName: string; bytes: number | null; sha256: string; url: string; requires: string[];
+};
+const products = data.products as Product[];
+const ready = (p: Product) => Boolean(p.fileName && p.sha256 && p.bytes);
+
+const logoPath = path.resolve('brand/editor-logo.svg');
+const editorLogo = existsSync(logoPath) ? `data:image/svg+xml;base64,${readFileSync(logoPath).toString('base64')}` : null;
+const soon = 'قريباً';
+---
+
+<div class="dl-products">
+  <section>
+    <h2>المجمّع <bdi dir="ltr">meem</bdi></h2>
+    <p>الأمر الذي يبني برامج ميم ملفات تنفيذية مستقلة، ويشغّلها مباشرة للتجربة. لينكس x86_64.</p>
+  </section>
+  <section>
+    {editorLogo && <img class="dl-logo" src={editorLogo} alt="شعار محرر ميم" width="72" height="72" />}
+    <h2>محرر ميم</h2>
+    <p>محرر لكتابة ميم من اليمين، فيه المجمّع <bdi dir="ltr">0.7.0</bdi> مضمَّناً: لا يحتاج تنزيل المجمّع وحده. لينكس x86_64، بصيغتي deb وAppImage.</p>
+  </section>
+</div>
+
+<h2 id="files">الملفات</h2>
+
+<p>لينكس x86_64 وحده. ويندوز وماك غير متاحين بعد.</p>
+
+{products.map((p) => (
+  <section class="dl-release" id={p.id}>
+    <h3>{p.name} — <bdi dir="ltr">{p.format}</bdi></h3>
+    <dl>
+      <dt>الإصدار</dt><dd>{p.version ? <bdi dir="ltr">{p.version}{p.build ? ` (${p.build})` : ''}</bdi> : soon}</dd>
+      <dt>المنصة</dt><dd>{p.platform}</dd>
+      <dt>الملف</dt>
+      <dd>{p.fileName ? (p.url ? <a href={p.url}><bdi dir="ltr">{p.fileName}</bdi></a> : <><bdi dir="ltr">{p.fileName}</bdi> — {soon}</>) : soon}</dd>
+      <dt>الحجم</dt><dd>{p.bytes ? <><bdi dir="ltr">{mb(p.bytes)}</bdi> م.ب (<bdi dir="ltr">{p.bytes}</bdi> بايتاً)</> : soon}</dd>
+      <dt>SHA-256</dt><dd>{p.sha256 ? <code dir="ltr" class="sha">{p.sha256}</code> : soon}</dd>
+      <dt>متطلبات النظام</dt><dd>{p.requires.length ? p.requires.map((q) => <span class="req">{q}</span>) : soon}</dd>
+    </dl>
+    {!ready(p) && <p class="dl-soon"><strong>{soon}.</strong> لم يُنشر هذا الملف بعد.</p>}
+  </section>
+))}
+
+<h2 id="verify">تحقق من التنزيل</h2>
+
+<p>بعد التنزيل، تأكد أن الملف لم يتغيّر في الطريق: احسب بصمته SHA-256 وقارنها بالبصمة المكتوبة هنا.</p>
+
+<pre dir="ltr" class="verify">sha256sum اسم-الملف</pre>
+
+<p>أو دع الأداة تقارن بنفسها: ضع البصمة واسم الملف في سطر واحد، بينهما مسافتان، ومرّره إليها:</p>
+
+<pre dir="ltr" class="verify">echo "البصمة  اسم-الملف" | sha256sum -c</pre>
+
+<p>إن طبعت <code dir="ltr">OK</code> فالملف سليم. وإن طبعت <code dir="ltr">FAILED</code> فلا تشغّله ونزّله من جديد.</p>
+
+{products.filter(ready).map((p) => (
+  <p class="verify-line"><bdi>{p.name} ({p.format})</bdi>:</p>
+  <pre dir="ltr" class="verify">echo "{p.sha256}  {p.fileName}" | sha256sum -c</pre>
+))}
+
+
+<style>
+  .dl-products {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    margin-block-end: 2rem;
+  }
+  .dl-products section,
+  .dl-release {
+    border: 1px solid var(--meem-border);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+  }
+  .dl-release {
+    margin-block-end: 1.5rem;
+  }
+  .dl-release dl {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.4rem 1rem;
+    margin: 0.75rem 0 0;
+  }
+  .dl-release dt {
+    color: var(--sl-color-gray-2);
+    font-size: var(--sl-text-sm);
+  }
+  .dl-release dd {
+    margin: 0;
+    min-width: 0;
+  }
+  .req {
+    display: block;
+    unicode-bidi: plaintext;
+    text-align: right;
+  }
+  .sha,
+  .verify {
+    display: block;
+    margin: 0;
+    padding: 0.4rem 0.6rem;
+    font-family: var(--sl-font-mono);
+    font-size: var(--sl-text-xs);
+    background: var(--meem-surface);
+    border: 1px solid var(--meem-border);
+    border-radius: 0.35rem;
+    overflow-x: auto;
+    white-space: pre;
+    text-align: left;
+  }
+  .dl-logo {
+    border-radius: 0.5rem;
+  }
+  .dl-soon {
+    margin-block: 0.75rem 0;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--meem-badge-bg, var(--meem-amber));
+    color: var(--meem-badge-fg, var(--meem-dark));
+  }
+</style>

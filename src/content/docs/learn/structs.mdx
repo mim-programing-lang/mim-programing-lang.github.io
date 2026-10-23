@@ -1,0 +1,34 @@
+---
+title: "9. الهياكل"
+description: "اجمع بيانات شيء واحد في هيكل."
+keywords: ["هيكل", "هياكل", "حقل", "حقول"]
+---
+
+import HBExample from '../../../components/HBExample.astro';
+import VersionBanner from '../../../components/VersionBanner.astro';
+
+<VersionBanner />
+
+## الهدف
+
+يجمع بيانات شيء واحد في هيكل.
+
+## الشرح
+
+- **الهيكل** نوع تعرّفه أنت، فيه **حقول**: لكل حقل اسم ونوع، في كل سطر حقل.
+- تنشئ قيمة منه باسمه والقيم بترتيب الحقول: `طالب("ليلى", 91)`.
+- `ط.اسم` تقرأ حقلاً.
+
+## المثال
+
+<HBExample id="learn/README.md#9" />
+
+## الأخطاء الشائعة
+
+عدد القيم لا يطابق عدد الحقول:
+
+<HBExample id="language/06-structs.md#2" label="يسبب الخطأ" />
+
+## اقرأ أيضاً
+
+[الهياكل](/docs/language/structs/)

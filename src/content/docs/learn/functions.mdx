@@ -1,0 +1,43 @@
+---
+title: "8. الدوال"
+description: "اكتب دالة بمعاملات ونوع إرجاع واستدعها بعد تعريفها."
+keywords: ["دالة", "دوال", "معامل", "معاملات", "ارجع"]
+---
+
+import HBExample from '../../../components/HBExample.astro';
+import VersionBanner from '../../../components/VersionBanner.astro';
+
+<VersionBanner />
+
+## الهدف
+
+يكتب دالة بمعاملات ونوع إرجاع، ويستدعيها بعد تعريفها.
+
+## الشرح
+
+- **الدالة** تعليمات لها اسم: `داله مساحة(ط كسر, ع كسر) كسر:` ثم جسمها مُزاحاً.
+- بين القوسين **المعاملات**: اسم كل قيمة تأخذها الدالة ونوعها. وبعد القوسين **نوع الإرجاع**: نوع ما ترجعه. `فراغ` لدالة لا ترجع قيمة.
+- `ارجع` تنهي الدالة بقيمتها.
+- الدالة تُستدعى **بعد** تعريفها في الملف.
+
+## المثال
+
+<HBExample id="learn/README.md#8" />
+
+## الأخطاء الشائعة
+
+استدعاء قبل التعريف:
+
+<HBExample id="errors/common.md#11" label="يسبب الخطأ" />
+
+<HBExample id="errors/common.md#12" label="يصلحه" />
+
+ومسار بلا `ارجع`:
+
+<HBExample id="errors/common.md#23" label="يسبب الخطأ" />
+
+<HBExample id="errors/common.md#24" label="يصلحه" />
+
+## اقرأ أيضاً
+
+[الدوال](/docs/language/functions/)

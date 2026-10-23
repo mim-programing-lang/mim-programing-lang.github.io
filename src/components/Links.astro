@@ -1,0 +1,17 @@
+---
+// روابط المشروع من site.config.mjs. ما كان فارغاً لا يظهر.
+import { links } from '../../site.config.mjs';
+const labels: Record<string, string> = {
+  compilerRepo: 'مستودع المجمّع', editorRepo: 'مستودع المحرر', siteRepo: 'مستودع الموقع',
+  issues: 'البلاغات', discussions: 'النقاشات',
+};
+const shown = Object.entries(links).filter(([, url]) => url);
+---
+
+{
+  shown.length ? (
+    <ul>{shown.map(([k, url]) => <li><a href={url}>{labels[k] ?? k}</a></li>)}</ul>
+  ) : (
+    <p>روابط المستودعات وقنوات المساهمة تُنشر هنا قريباً.</p>
+  )
+}

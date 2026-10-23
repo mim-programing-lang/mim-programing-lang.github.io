@@ -1,0 +1,27 @@
+---
+import types from '../generated/types.json';
+---
+
+<h2 id="types">الأنواع</h2>
+<table>
+  <thead><tr><th>النوع</th><th>الوصف</th></tr></thead>
+  <tbody>
+    {types.types.map((t) => <tr><td><code class="meem-inline-code">{t.word}</code></td><td>{t.description || '—'}</td></tr>)}
+  </tbody>
+</table>
+
+<h2 id="type-forms">صيغ الأنواع المركّبة</h2>
+<table>
+  <thead><tr><th>الصيغة</th><th>مثال</th></tr></thead>
+  <tbody>
+    {types.type_forms.map((t) => <tr><td><code class="meem-inline-code">{t.form}</code></td><td><code class="meem-inline-code">{t.example}</code></td></tr>)}
+  </tbody>
+</table>
+
+<h2 id="extern-types">أنواع تواقيع الدوال الخارجية</h2>
+<table>
+  <thead><tr><th>النوع في توقيع <code class="meem-inline-code">خارجي</code></th><th>نوع C</th></tr></thead>
+  <tbody>
+    {types.extern_types.map((t) => <tr><td><code class="meem-inline-code">{t.word}</code></td><td><bdi>{t.c_type}</bdi></td></tr>)}
+  </tbody>
+</table>

@@ -1,0 +1,17 @@
+---
+title: "الملعب"
+description: "جرّب برنامج ميم صغيراً على الموقع: محرر، وأمثلة من الكتاب المرجعي، وزر تشغيل يتصل بخادم تشغيل معزول حين يتاح."
+template: splash
+head:
+  - tag: meta
+    attrs:
+      http-equiv: Content-Security-Policy
+      content: __PLAYGROUND_CSP__
+---
+
+import Playground from '../../components/Playground.astro';
+import VersionBanner from '../../components/VersionBanner.astro';
+
+<VersionBanner />
+
+<Playground />

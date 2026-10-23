@@ -1,0 +1,26 @@
+---
+// خيارات سطر الأوامر كما يسردها «meem --list-options --json».
+import data from '../generated/options.json';
+type Opt = { name: string; takes_value: boolean; value: string | null; value_optional: boolean; repeatable: boolean; scope: string; since: string | null; description: string };
+const options = ((data as { options: Opt[] } | null)?.options ?? []) as Opt[];
+---
+
+{
+  options.length ? (
+    <table>
+      <thead><tr><th>الخيار</th><th>القيمة</th><th>الوصف</th><th>منذ</th></tr></thead>
+      <tbody>
+        {options.map((o) => (
+          <tr>
+            <td><code dir="ltr">{o.name}</code></td>
+            <td>{o.takes_value ? <><bdi>{o.value ?? 'قيمة'}</bdi>{o.value_optional ? ' (اختيارية)' : ''}{o.repeatable ? '، يتكرر' : ''}</> : '—'}</td>
+            <td>{o.description}</td>
+            <td>{o.since ? <bdi dir="ltr">{o.since}</bdi> : '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>المجمّع المستعمل لا يعرف <code dir="ltr">--list-options</code>.</p>
+  )
+}

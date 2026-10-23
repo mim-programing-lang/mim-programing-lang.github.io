@@ -1,0 +1,55 @@
+{
+  "note": "ملف التنزيلات الوحيد. الخانات الفارغة تُعرض «قريباً». يملؤها scripts/make-downloads.mjs من الملف المبني نفسه (الاسم والحجم وSHA-256)، والرابط يُعطى بـ --url. لا تُكتب الأرقام باليد.",
+  "products": [
+    {
+      "id": "compiler-linux-x86_64",
+      "name": "المجمّع meem",
+      "platform": "لينكس x86_64",
+      "format": "أرشيف",
+      "version": "0.7.0",
+      "build": "0.7.0+c919819",
+      "fileName": "meem-0.7.0-linux-x86_64.tar.xz",
+      "bytes": 47250296,
+      "sha256": "48561a9c36ab1f0677d6cb73370977e8953bbf17cf4b265a9188603772a4acec",
+      "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.7.0/meem-0.7.0-linux-x86_64.tar.xz",
+      "requires": [
+        "لينكس x86_64",
+        "مكتبة glibc بإصدار 2.35 أو أحدث (قياس على ملفات الحزمة)"
+      ]
+    },
+    {
+      "id": "editor-linux-deb",
+      "name": "محرر ميم",
+      "platform": "لينكس x86_64",
+      "format": "deb",
+      "version": "0.1.0",
+      "build": "",
+      "fileName": "meem-editor_0.1.0_amd64.deb",
+      "bytes": 77705388,
+      "sha256": "519f7fdc67259d6c0bc994730253609ea9d2ec24aff8489f3a0c5a72da128045",
+      "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.7.0/meem-editor_0.1.0_amd64.deb",
+      "requires": [
+        "لينكس x86_64",
+        "مكتبة glibc بإصدار 2.35 أو أحدث (وثيقة الإصدار)",
+        "من مستودعات التوزيعة: libwebkit2gtk-4.1-0 وlibgtk-3-0 (يثبّتهما apt)"
+      ]
+    },
+    {
+      "id": "editor-linux-appimage",
+      "name": "محرر ميم",
+      "platform": "لينكس x86_64",
+      "format": "AppImage",
+      "version": "0.1.0",
+      "build": "",
+      "fileName": "meem-editor_0.1.0_amd64.AppImage",
+      "bytes": 146086392,
+      "sha256": "3d75999762a6f0c47f6cdfeaafb61eccc41880c0cf62e1360916014358f86fe4",
+      "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.7.0/meem-editor_0.1.0_amd64.AppImage",
+      "requires": [
+        "لينكس x86_64",
+        "مكتبة glibc بإصدار 2.35 أو أحدث (وثيقة الإصدار)",
+        "libfuse2 (أو التشغيل بـ --appimage-extract-and-run)"
+      ]
+    }
+  ]
+}

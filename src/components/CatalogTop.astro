@@ -1,0 +1,15 @@
+---
+// قسم «أكثر الرسائل ظهوراً، بمثال» من فهرس الكتاب: عنوان كل رسالة ومثالها (الشيفرة والمخرج من الكتاب).
+import hb from '../generated/handbook.json';
+import HBExample from './HBExample.astro';
+
+const items = hb.catalogTop as { title: string; example: string }[];
+const slug = (t: string) => `top-${t.replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '')}`;
+---
+
+{items.map((t) => (
+  <>
+    <h3 id={slug(t.title)}>{t.title}</h3>
+    <HBExample id={t.example} />
+  </>
+))}

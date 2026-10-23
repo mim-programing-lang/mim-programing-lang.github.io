@@ -1,0 +1,33 @@
+---
+title: "11. الوحدات"
+description: "استورد وحدة قياسية واستعمل دوالها."
+keywords: ["وحدة", "وحدات", "استورد", "مكتبة قياسية"]
+---
+
+import HBExample from '../../../components/HBExample.astro';
+import VersionBanner from '../../../components/VersionBanner.astro';
+
+<VersionBanner />
+
+## الهدف
+
+يستورد وحدة قياسية ويستعمل دوالها.
+
+## الشرح
+
+- **الوحدة** ملف `.م` يُستورد. **المكتبة القياسية** الوحدات التي تأتي مع المجمّع.
+- `استورد رياضيات` في أول الملف، ثم `رياضيات.جذر(81.0)`: اسم الوحدة ثم نقطة ثم الدالة.
+
+## المثال
+
+<HBExample id="learn/README.md#11" />
+
+## الأخطاء الشائعة
+
+اسم وحدة غير موجود:
+
+<HBExample id="language/07-modules.md#2" label="يسبب الخطأ" />
+
+## اقرأ أيضاً
+
+[الوحدات](/docs/language/modules/) · [المكتبة القياسية](/docs/stdlib/)

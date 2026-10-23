@@ -1,0 +1,3097 @@
+{
+ "generated_by": "scripts/gen_handbook.py",
+ "release": "0.7.0",
+ "development": "0.7.0-dev",
+ "examples": [
+  {
+   "path": "docs/handbook/errors/catalog.md#1",
+   "title": "فهرس رسائل الأخطاء والتحذيرات",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:6 - دالة 'طول' تعمل فقط مع القوائم والمصفوفات والقواميس والنصوص لكن وُجد النوع 'عدد'\n   1 | اطبع(طول(5))\n     |      ^\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/catalog.md#2",
+   "title": "فهرس رسائل الأخطاء والتحذيرات",
+   "topic": "errors",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 3:10 - الوسيط للمعامل 'س' في الدالة 'ضعف' يجب أن يكون من النوع 'عدد' لكن مُرّر 'نص'\n   3 | اطبع(ضعف(\"اثنان\"))\n     |          ^\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/catalog.md#3",
+   "title": "فهرس رسائل الأخطاء والتحذيرات",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:5 - الدالة أو الهيكل 'نقطه' غير معرّف\n   1 | ن = نقطه(1, 2)\n     |     ^~~~\n  تلميح: عرّف الدالة بـ 'داله' قبل استدعائها (يجب أن يظهر تعريفها في الملف قبل أول استدعاء).\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/catalog.md#4",
+   "title": "فهرس رسائل الأخطاء والتحذيرات",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ نحوي] سطر 1:8 - متوقع ')' لكن وُجد '2'\n   1 | اطبع(1 2)\n     |        ^\n  تلميح: هل نسيت إغلاق قوس استدعاء 'اطبع' أو الفاصلة ',' بين الوسائط؟\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/catalog.md#5",
+   "title": "فهرس رسائل الأخطاء والتحذيرات",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:11 - العملية '*' غير مدعومة للأنواع 'منطقي' و 'عدد'\n   1 | اطبع(صواب * 2)\n     |           ^\n  تلميح: القيم المنطقية لا تدخل في العمليات الحسابية.\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/catalog.md#6",
+   "title": "فهرس رسائل الأخطاء والتحذيرات",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0\n",
+   "stderr": "\n[تحذير دلالي] سطر 3:6 - المتغير 'س' قد يُستخدم هنا قبل إسناد قيمة له\n   3 | اطبع(س)\n     |      ^\n  تلميح: أسند له قيمة ابتدائية قبل الشرط أو الحلقة التي تعرّفه؛ إن لم يُنفَّذ ذلك المسار فقيمته صفر أو فارغة.\n",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/catalog.md#7",
+   "title": "فهرس رسائل الأخطاء والتحذيرات",
+   "topic": "errors",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "س\n",
+   "stderr": "\n[تحذير دلالي] سطر 5:1 - الدالة 'دمج' تحجب الدالة المدمجة بالاسم نفسه\n   5 | داله دمج(ا نص) نص:\n     | ^\n  تلميح: بعد هذا التعريف لن تكون الدالة المدمجة 'دمج' متاحة.\n",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/catalog.md#8",
+   "title": "فهرس رسائل الأخطاء والتحذيرات",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "[خطأ تشغيل] سطر 1:5 - خطأ لم يُعالَج: صيغة_خاطئة\n  ن = جرّب عدد(\"ليس عدداً\")\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/catalog.md#9",
+   "title": "فهرس رسائل الأخطاء والتحذيرات",
+   "topic": "errors",
+   "tags": [
+    "بلا_افتراضي"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 2:5 - قيمة حرفية تحجز من الافتراضي: الوحدة في وضع بلا_افتراضي (لا حجز من المخصص الافتراضي)\n   2 | ق = [1, 2]\n     |     ^\n  تلميح: اكتبها قائمة_من([...], م) بمخصص صريح، فتُبنى فيه مباشرة.\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/catalog.md#10",
+   "title": "فهرس رسائل الأخطاء والتحذيرات",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "[خطأ تشغيل] سطر 2:7 - المفتاح 'ب' غير موجود في القاموس\n  اطبع(ق[\"ب\"])\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#1",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:15 - لا يمكن جمع 'نص' و 'عدد' بـ '+': النوعان مختلفان ولا تحويل تلقائياً\n   1 | اطبع(\"العمر \" + 30)\n     |               ^\n  تلميح: حوّل القيمة صراحةً ليصير الطرفان نصين: \"العدد \" + نص(5)   أو افصل القيم بفاصلة داخل اطبع: اطبع(\"العدد \", 5)\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#2",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "العمر 30\nالعمر 30\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#3",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ نحوي] سطر 2:10 - انتهى السطر بشكل مفاجئ: متوقع ':'\n   2 | اذا س > 2\n     |          ^\n  تلميح: هل نسيت ':' في نهاية سطر الشرط؟\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#4",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#5",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ لفظي] سطر 3:1 - المسافة البادئة (2) لا تطابق أي مستوى سابق\n   3 |   اطبع(2)\n     | ^~\n  تلميح: للعودة إلى كتلة سابقة استخدم نفس عدد مسافاتها تماماً (المستويات المفتوحة الآن: 4 أو 0).\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#6",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1\n2\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#7",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 2:6 - المتغير 'عدد_' غير معرف في هذا النطاق\n   2 | اطبع(عدد_)\n     |      ^~~~\n  تلميح: هل تقصد 'عداد'؟\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#8",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#9",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 2:1 - لا يمكن تعيين قيمة من النوع 'نص' للمتغير 'س' من النوع 'عدد'\n   2 | س = \"واحد\"\n     | ^\n  تلميح: النصوص لا تتحول إلى أعداد تلقائياً.\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#10",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1 واحد\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#11",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:6 - الدالة أو الهيكل 'ضعف' غير معرّف\n   1 | اطبع(ضعف(2))\n     |      ^~~\n  تلميح: هل تقصد 'اضف'؟\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#12",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "4\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#13",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "[خطأ تشغيل] سطر 2:7 - الفهرس 3 خارج الحدود (الحجم 3)\n  اطبع(ق[3])\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#14",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#15",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "[خطأ تشغيل] سطر 2:7 - المفتاح 'علي' غير موجود في القاموس\n  اطبع(ع[\"علي\"])\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#16",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "لا عمر لعلي\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#17",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "[خطأ تشغيل] سطر 2:9 - القسمة على صفر\n  اطبع(10 / ب)\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#18",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "لا قسمة على صفر\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#19",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:9 - نوع القيمة المسندة 'كسر' لا يطابق النوع المحدد 'عدد'\n   1 | س عدد = 2.5\n     |         ^\n  تلميح: لا يوجد تحويل تلقائي من كسر إلى عدد.\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#20",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2 2.5\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#21",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:6 - 'عدد(...)' من النوع '!عدد' (قد يفشل) ولا يُستعمل كأنه 'عدد'\n   1 | اطبع(عدد(\"ثلاثة\") + 1)\n     |      ^~~\n  تلميح: عالج الخطأ في موضعه:  جرّب عدد(...)  (يمرّر الخطأ إلى مستدعي الدالة)   أو   عدد(...) والا قيمة_بديلة   أو   عدد(...) والا خ:  ثم كتلة تعالج «خ»\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#22",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1\n3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#23",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] مثال.م:2:7 - نتيجة 'ملفات.اكتب_ملف(...)' من النوع '!فراغ' مهملة: قد يكون خطأً لم يُعالَج\n   2 | ملفات.اكتب_ملف(\"ناتج.txt\", \"سطر\\n\")\n     |       ^~~~~~~~~~~~~~\n  تلميح: عالج الخطأ في موضعه:  جرّب ملفات.اكتب_ملف(...)  (يمرّر الخطأ إلى مستدعي الدالة)   أو   ملفات.اكتب_ملف(...) والا خ:  ثم كتلة   أو   ملفات.اكتب_ملف(...) والا خ:  ثم كتلة تعالج «خ»\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#24",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "سطر\nسطر ثانٍ\n\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#25",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 2:10 - 'جرّب' في الدالة 'اقرأ_عدد' التي لا ترجع خطأ (نوعها 'عدد')\n   2 |     ارجع جرّب عدد(ن)\n     |          ^~~~\n  تلميح: اجعل نوع إرجاعها '!عدد' كي يمرّ الخطأ إلى مستدعيها، أو عالجه هنا بـ والا: التعبير والا قيمة_بديلة\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#26",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "5 -1\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#27",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[تحذير دلالي] سطر 1:1 - الدالة 'اشارة' قد تنتهي دون إرجاع قيمة\n   1 | داله اشارة(س عدد) نص:\n     | ^~~~~\n  تلميح: أضف 'ارجع قيمة' في نهاية الدالة وفي كل مسار من مسارات الشروط.\n[خطأ تشغيل] سطر 1:1 - انتهت الدالة 'اشارة' دون إرجاع قيمة من النوع 'نص' (أضف 'ارجع' في كل المسارات)\n  داله اشارة(س عدد) نص:\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#28",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "غير موجب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#29",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:13 - المقارنة المباشرة للقوائم والمصفوفات والقواميس والهياكل غير مدعومة\n   1 | اطبع([1, 2] == [1, 2])\n     |             ^~\n  تلميح: قارن العناصر واحداً واحداً (مثل م[0] == ن[0]).\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#30",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#31",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "[خطأ تشغيل] سطر 3:1 - تحرير مؤشر قيمته لاشيء (هل حُرّر من قبل؟)\n  حرر(م)\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#32",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#33",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:5 - 'احجز_خام' لا تُكتب إلا داخل منطقة 'خطر'\n   1 | م = احجز_خام(عدد, 2)\n     |     ^~~~~~~~\n  تلميح: ضعها في كتلة  خطر:  أو في دالة معرَّفة بـ  خطر داله ...\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/errors/common.md#34",
+   "title": "الأخطاء الشائعة: السبب والإصلاح",
+   "topic": "errors",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[0, 5]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/02-types.md#1",
+   "title": "الأنواع",
+   "topic": "language",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3.5 [ميم, نون] [1, 2] [9, 2]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/02-types.md#2",
+   "title": "الأنواع",
+   "topic": "language",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 2:1 - لا يمكن تعيين قيمة من النوع 'نص' للمتغير 'س' من النوع 'عدد'\n   2 | س = \"نص\"\n     | ^\n  تلميح: النصوص لا تتحول إلى أعداد تلقائياً.\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/03-expressions.md#1",
+   "title": "التعابير",
+   "topic": "language",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "14 -3 -1 0.5\nاب صواب 2 16\nصواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/03-expressions.md#2",
+   "title": "التعابير",
+   "topic": "language",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:15 - لا يمكن جمع 'نص' و 'عدد' بـ '+': النوعان مختلفان ولا تحويل تلقائياً\n   1 | اطبع(\"العمر \" + 30)\n     |               ^\n  تلميح: حوّل القيمة صراحةً ليصير الطرفان نصين: \"العدد \" + نص(5)   أو افصل القيم بفاصلة داخل اطبع: اطبع(\"العدد \", 5)\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/03-expressions.md#3",
+   "title": "التعابير",
+   "topic": "language",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "[خطأ تشغيل] سطر 2:7 - الفهرس 5 خارج الحدود (الحجم 2)\n  اطبع(ق[5])\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/04-statements.md#1",
+   "title": "العبارات",
+   "topic": "language",
+   "tags": [
+    "خاتمه",
+    "داله",
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "مج = 12\nب\nا\nأولاً\nثانياً\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/04-statements.md#2",
+   "title": "العبارات",
+   "topic": "language",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ نحوي] سطر 1:9 - انتهى السطر بشكل مفاجئ: متوقع ':'\n   1 | اذا صواب\n     |         ^\n  تلميح: هل نسيت ':' في نهاية سطر الشرط؟\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/05-functions.md#1",
+   "title": "الدوال",
+   "topic": "language",
+   "tags": [
+    "داله",
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "9 42 3628800\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/05-functions.md#2",
+   "title": "الدوال",
+   "topic": "language",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:6 - الدالة أو الهيكل 'ضعف' غير معرّف\n   1 | اطبع(ضعف(2))\n     |      ^~~\n  تلميح: هل تقصد 'اضف'؟\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/06-structs.md#1",
+   "title": "الهياكل",
+   "topic": "language",
+   "tags": [
+    "هيكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "نقطة { س: 3, ص: 4 } 10 نقطة { س: 1, ص: 7 } نقطة { س: 5, ص: 0 }\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/06-structs.md#2",
+   "title": "الهياكل",
+   "topic": "language",
+   "tags": [
+    "هيكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 3:5 - الهيكل 'نقطة' يملك حقلاً واحداً فقط لكن مُرّر قيمتان\n   3 | ا = نقطة(1, 2)\n     |     ^~~~\n  تلميح: الحقول: س\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/07-modules.md#1",
+   "title": "الوحدات",
+   "topic": "language",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "4.0 6 1\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/07-modules.md#2",
+   "title": "الوحدات",
+   "topic": "language",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:1 - الوحدة 'وحدة_لا_وجود_لها' غير موجودة\n   1 | استورد وحدة_لا_وجود_لها\n     | ^~~~~~\n  ملاحظة: بُحث عنها في: المكتبة القياسية، وحدة_لا_وجود_لها.م، مكتبات/وحدة_لا_وجود_لها.م\n  تلميح: تأكد من اسم الملف ومن وجوده بجوار هذا الملف.\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/08-memory.md#1",
+   "title": "الذاكرة: المخصصات و`خاتمه`",
+   "topic": "language",
+   "tags": [
+    "خاتمه",
+    "ساحة",
+    "حرر",
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "12 مرحبا 1\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/08-memory.md#2",
+   "title": "الذاكرة: المخصصات و`خاتمه`",
+   "topic": "language",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "[خطأ تشغيل] سطر 3:1 - تحرير مؤشر قيمته لاشيء (هل حُرّر من قبل؟)\n  حرر(م)\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/09-low-level.md#1",
+   "title": "الطبقة المنخفضة: `خطر` والشرائح والمؤشرات",
+   "topic": "language",
+   "tags": [
+    "حرر",
+    "خطر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[200, 0, 0, 0] 4 4\n-5 44\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/09-low-level.md#2",
+   "title": "الطبقة المنخفضة: `خطر` والشرائح والمؤشرات",
+   "topic": "language",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 1:5 - 'احجز_خام' لا تُكتب إلا داخل منطقة 'خطر'\n   1 | م = احجز_خام(عدد, 2)\n     |     ^~~~~~~~\n  تلميح: ضعها في كتلة  خطر:  أو في دالة معرَّفة بـ  خطر داله ...\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/09-low-level.md#3",
+   "title": "الطبقة المنخفضة: `خطر` والشرائح والمؤشرات",
+   "topic": "language",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "[خطأ تشغيل] سطر 2:2 - القيمة 256 خارج مدى 'طبيعي8' (من 0 إلى 255)\n  ش[0] = 256\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/10-ffi.md#1",
+   "title": "استدعاء C (FFI)",
+   "topic": "language",
+   "tags": [
+    "خارجي",
+    "هيكل_سي",
+    "هيكل",
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1.4142135623730951 6 8\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/10-ffi.md#2",
+   "title": "استدعاء C (FFI)",
+   "topic": "language",
+   "tags": [
+    "خارجي",
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ توليد الكود] سطر 1:1 - الرمز 'no_such_function_xyz' غير موجود في المكتبة 'm' ولا في مكتبة C (تصريح الدالة الخارجية 'غريبة')\n   1 | خارجي \"m\" داله غريبة(س كسر) كسر باسم \"no_such_function_xyz\"\n     | ^~~~~\n  تلميح: تأكد من اسم الدالة في C بعد 'باسم'، ومن اسم المكتبة بعد 'خارجي'.\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/11-security.md#1",
+   "title": "ما يستطيعه برنامج ميم على جهازك",
+   "topic": "language",
+   "tags": [
+    "خطر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/12-enums.md#1",
+   "title": "التعداد",
+   "topic": "language",
+   "tags": [
+    "داله",
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0: احمر (0)\n1: اخضر (2)\n2: اصفر (1)\n3: احمر (0)\nاصفر احمر\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/12-enums.md#2",
+   "title": "التعداد",
+   "topic": "language",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 5:1 - 'حالات' على التعداد 'اشارة' لا تذكر: اخضر\n   5 | حالات ا:\n     | ^~~~~\n  تلميح: اذكر كل عضو في 'حاله'، أو أضف  حاله _:  لما بقي.\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/13-errors.md#1",
+   "title": "معالجة الأخطاء",
+   "topic": "language",
+   "tags": [
+    "خاتمه",
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "40\nأُلغيت العملية\nالرصيد لا يكفي\n0\n43 -1\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/13-errors.md#2",
+   "title": "معالجة الأخطاء",
+   "topic": "language",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 3:5 - 'نصف(...)' من النوع '!عدد' (قد يفشل) ولا يُستعمل كأنه 'عدد'\n   3 | س = نصف(\"8\")\n     |     ^~~\n  تلميح: عالج الخطأ في موضعه:  جرّب نصف(...)  (يمرّر الخطأ إلى مستدعي الدالة)   أو   نصف(...) والا قيمة_بديلة   أو   نصف(...) والا خ:  ثم كتلة تعالج «خ»\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/language/13-errors.md#3",
+   "title": "معالجة الأخطاء",
+   "topic": "language",
+   "tags": [
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "",
+   "stderr": "\n[خطأ دلالي] سطر 3:9 - كتلة 'والا' يُنتظر منها قيمة من النوع 'عدد'\n   3 | ك = ف() والا خ:\n     |         ^~~~\n  تلميح: اجعل آخر سطر في كل مسار من الكتلة القيمة البديلة (أو ارجع أو توقف أو تجاوز). مثال:\n    ن = عدد(نص_ما) والا خ:\n        اطبع(\"ليس عدداً\")\n        0\n",
+   "exit": 2,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#1",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "مرحبا بالعالم\nعمري 12 سنة\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#2",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "14 3 3.5\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#3",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "ما اسمك؟ أهلاً \n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#4",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "ناجح\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#5",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [
+    "لكل",
+    "طالما"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "55\n128\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#6",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[60, 70, 82, 95] 4 3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#7",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "سارة: 30\nعلي: 25\nمنى: 28\n[سارة, علي, منى]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#8",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [
+    "ساحة",
+    "داله"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "10.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#9",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [
+    "هيكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "ليلى 91\nطالب { اسم: ليلى, درجة: 91 }\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#10",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[تفاح, موز, عنب] صواب صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#11",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "9.0 3.14\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#12",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [
+    "استورد",
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "- خبز\n- حليب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/learn/README.md#13",
+   "title": "منهج مقترح للمبتدئ",
+   "topic": "learn",
+   "tags": [
+    "خاتمه",
+    "حرر",
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "سطر 0\nسطر 1\nسطر 2\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/migration/0.6-to-0.7.md#1",
+   "title": "الترحيل من 0.6 إلى 0.7",
+   "topic": "migration",
+   "tags": [
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[اسم0, اسم1, اسم2]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/migration/0.6-to-0.7.md#2",
+   "title": "الترحيل من 0.6 إلى 0.7",
+   "topic": "migration",
+   "tags": [
+    "خاتمه",
+    "حرر",
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "7\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/migration/errors.md#1",
+   "title": "الترحيل إلى معالجة الأخطاء (0.7.0)",
+   "topic": "migration",
+   "tags": [
+    "داله",
+    "استورد",
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "9 -1\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#1",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[7, 0, 0] 3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#2",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر",
+    "خطر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "5\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#3",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "{ب: 2} [10, 30]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#4",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[1, 2, 3, 4]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#5",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "كلب وكلب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#6",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[1, 2]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#7",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "س = 3 [1, 2] صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#8",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "ساحة"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#9",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[3, 2, 1]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#10",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#11",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "طالما"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "اسطر: 0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#12",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "6 2 -1\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#13",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[ا, ب, , ج]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#14",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "42\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#15",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "بالعالم|مرحبا\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#16",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "4\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#17",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "8 4 1\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#18",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#19",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "meem ميم\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#20",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "MEEM ميم\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#21",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر",
+    "خطر",
+    "مؤشر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#22",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "قبل\n",
+   "stderr": "[خطأ تشغيل] سطر 2:1 - توقف هنا\n  خطا_قاتل(\"توقف هنا\")\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#23",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "ا - ب - ج\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#24",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "س = 3، ص = 4.5\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#25",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[1, 2, 3] [ا, ب]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#26",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "خاتمه",
+    "ساحة"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[ا, ب, ج]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#27",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر",
+    "خطر",
+    "شريحة"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[0, 0, 9]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#28",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر",
+    "خطر",
+    "خارجي",
+    "داله",
+    "مؤشر",
+    "شريحة"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[97, 98, 99]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#29",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "65535\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#30",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "4000000000\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#31",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "9223372036854775807\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#32",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "خطر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "7\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#33",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "5 3 1\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#34",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "43 -1 3 -3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#35",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "-30000\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#36",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2000000000\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#37",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "100 255\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#38",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "ساحة"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[1, 2, 3]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#39",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "مرحبا|حبا\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#40",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[نص]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#41",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[0, 3]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#42",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[1, 2]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#43",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "لا تسريب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#44",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "5.0 3.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#45",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0.10000000149011612\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#46",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "نص\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#47",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر",
+    "خطر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "7\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#48",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0\n1\n2\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#49",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[ا, ب]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#50",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر",
+    "خطر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#51",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[[1], [2]] [[1, 9], [2]]\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#52",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "120.5صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#53",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [
+    "حرر",
+    "خطر"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "ميم 217\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#54",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب خطاء\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#55",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب خطاء صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#56",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب خطاء\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/builtins.md#57",
+   "title": "المدمجات",
+   "topic": "stdlib",
+   "tags": [],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب خطاء\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#1",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "4.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#2",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1.4142135623730951\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#3",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1024.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#4",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#5",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2.5\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#6",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "7\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#7",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#8",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "-3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#9",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#10",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "-2\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#11",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#12",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "-3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#13",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#14",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3.14\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#15",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#16",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1.5\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#17",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2.5\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#18",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "-4\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#19",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#20",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#21",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#22",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#23",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1.5707963267948966\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#24",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#25",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#26",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0.7853981633974483\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#27",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3.141592653589793\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#28",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "180.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#29",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#30",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#31",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#32",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "1.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#33",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "6\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#34",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "6\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#35",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "5\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#36",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "12\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#37",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "خطاء\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#38",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "خطاء\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#39",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#40",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3.14\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#41",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2.000\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#42",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "-1234.6\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#43",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0.12\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#44",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#45",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "3.14159 18.85\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/رياضيات.md#46",
+   "title": "الوحدة `رياضيات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "2.71828 1.0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/عشوائي.md#1",
+   "title": "الوحدة `عشوائي`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/عشوائي.md#2",
+   "title": "الوحدة `عشوائي`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "5\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/عشوائي.md#3",
+   "title": "الوحدة `عشوائي`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/ملفات.md#1",
+   "title": "الوحدة `ملفات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "16 حرفاً\nتعذّرت القراءة: غير_موجود\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/ملفات.md#2",
+   "title": "الوحدة `ملفات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "بديل\nتعذّرت الكتابة: غير_موجود\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/ملفات.md#3",
+   "title": "الوحدة `ملفات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "حدث اول\nحدث ثان\n\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/ملفات.md#4",
+   "title": "الوحدة `ملفات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "خطاء\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/ملفات.md#5",
+   "title": "الوحدة `ملفات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب خطاء خطاء\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/ملفات.md#6",
+   "title": "الوحدة `ملفات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد",
+    "لكل"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "- خبز\n- حليب\n- تمر\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/ملفات.md#7",
+   "title": "الوحدة `ملفات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "[ا.png, ب.png]\nليس مجلداً: ليس_مجلدا\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/ملفات.md#8",
+   "title": "الوحدة `ملفات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "مرة ثانية: موجود\nبلا الأب: غير_موجود\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/ملفات.md#9",
+   "title": "الوحدة `ملفات`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "خطاء\nمرة ثانية: غير_موجود\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/نظام.md#1",
+   "title": "الوحدة `نظام`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "0\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/نظام.md#2",
+   "title": "الوحدة `نظام`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/نظام.md#3",
+   "title": "الوحدة `نظام`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "قبل الإنهاء\n",
+   "stderr": "",
+   "exit": 4,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/نظام.md#4",
+   "title": "الوحدة `نظام`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/نظام.md#5",
+   "title": "الوحدة `نظام`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "docs/handbook/stdlib/نظام.md#6",
+   "title": "الوحدة `نظام`",
+   "topic": "stdlib",
+   "tags": [
+    "استورد"
+   ],
+   "flags": [
+    "--deny-deprecated"
+   ],
+   "stdout": "صواب\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "examples/memory/1_ساحة_لكل_دورة.م",
+   "title": "1_ساحة_لكل_دورة",
+   "topic": "memory",
+   "tags": [
+    "خاتمه",
+    "ساحة",
+    "حرر",
+    "داله",
+    "لكل",
+    "قاموس"
+   ],
+   "flags": [
+    "--debug-mem",
+    "--strict"
+   ],
+   "stdout": "5000\n",
+   "stderr": "",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "examples/memory/2_الحاق.م",
+   "title": "2_الحاق",
+   "topic": "memory",
+   "tags": [
+    "حرر",
+    "لكل"
+   ],
+   "flags": [
+    "--debug-mem",
+    "--strict"
+   ],
+   "stdout": "20001\n20001 20002\n",
+   "stderr": "[ذاكرة] معلومة: كتل لم تُحرَّر من الافتراضي: 13 (109799 بايت)، تعود للنظام عند الخروج\n  سطر 11: 40018 بايت\n  سطر 5: 34831 بايت\n  سطر 5: 17423 بايت\n  سطر 5: 8719 بايت\n  سطر 5: 4367 بايت\n  سطر 5: 2191 بايت\n  سطر 5: 1103 بايت\n  سطر 5: 559 بايت\n  سطر 5: 287 بايت\n  سطر 5: 151 بايت\n  ...\n",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "examples/memory/3_مؤشر.م",
+   "title": "3_مؤشر",
+   "topic": "memory",
+   "tags": [
+    "حرر",
+    "هيكل",
+    "لكل",
+    "طالما",
+    "مؤشر"
+   ],
+   "flags": [
+    "--debug-mem",
+    "--strict"
+   ],
+   "stdout": "6\n",
+   "stderr": "[ذاكرة] كل الخانات حُرّرت (عددها 3).\n",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "examples/memory/3ب_تسريب.م",
+   "title": "3ب_تسريب",
+   "topic": "memory",
+   "tags": [
+    "حرر",
+    "هيكل",
+    "لكل",
+    "طالما",
+    "مؤشر"
+   ],
+   "flags": [
+    "--debug-mem",
+    "--strict"
+   ],
+   "stdout": "6\n",
+   "stderr": "[ذاكرة] خانات لم تُحرَّر: 3 من 3 (48 بايت)\n  سطر 9: مؤشر[هيكل عقدة] × 3\n",
+   "exit": 0,
+   "version": "0.7.0"
+  },
+  {
+   "path": "examples/memory/4_مزدوج.م",
+   "title": "4_مزدوج",
+   "topic": "memory",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--debug-mem",
+    "--strict"
+   ],
+   "stdout": "5\n",
+   "stderr": "[خطأ تشغيل] سطر 7:1 - تحرير مزدوج: أُنشئت الخانة في السطر 3 وحُرّرت في السطر 6\n  حرر(ن)               # خطأ: الخانة محرَّرة من قبل\n",
+   "exit": 3,
+   "version": "0.7.0"
+  },
+  {
+   "path": "examples/memory/4ب_بعد_التحرير.م",
+   "title": "4ب_بعد_التحرير",
+   "topic": "memory",
+   "tags": [
+    "حرر"
+   ],
+   "flags": [
+    "--debug-mem",
+    "--strict"
+   ],
+   "stdout": "",
+   "stderr": "[خطأ تشغيل] سطر 6:6 - استعمال مؤشر بعد تحريره: أُنشئت الخانة في السطر 3 وحُرّرت في السطر 5\n  اطبع(محتوى(ن))       # خطأ: «ن» يشير إلى خانة حُرّرت\n",
+   "exit": 3,
+   "version": "0.7.0"
+  }
+ ]
+}

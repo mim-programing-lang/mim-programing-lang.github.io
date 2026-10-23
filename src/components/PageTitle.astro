@@ -1,0 +1,14 @@
+---
+// الرئيسية تعرض عنوانها (h1) داخل HomeHero؛ بقية الصفحات على عنوان Starlight المعتاد.
+// كلمات موضوع الصفحة تُكرَّر لترفع تواترها، فتسبق في النتائج صفحاتٍ تذكر المصطلح عرضاً.
+// ومع العنوان كلمات بحث لا تُعرض: يفهرسها Pagefind من السمة (data-pagefind-index-attrs).
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+import { searchTerms } from '../lib/search-keywords.mjs';
+const route = Astro.locals.starlightRoute;
+const isHome = route.id === '';
+const terms = searchTerms(route.entry.data.title, route.entry.data.keywords, route.entry.body ?? '');
+---
+
+{!isHome && <Default />}
+{!isHome && terms.primary && <span data-pagefind-weight="7" data-pagefind-index-attrs="data-terms" data-terms={Array(4).fill(terms.primary).join(' ')} />}
+{!isHome && terms.mentioned && <span data-pagefind-weight="0.2" data-pagefind-index-attrs="data-terms" data-terms={terms.mentioned} />}

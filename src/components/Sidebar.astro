@@ -1,0 +1,39 @@
+---
+// على الهاتف لا تظهر روابط الترويسة، فتُعرض الأقسام أعلى قائمة الشريط الجانبي.
+import Default from '@astrojs/starlight/components/Sidebar.astro';
+import { topNav } from '../nav.mjs';
+const here = Astro.url.pathname;
+---
+
+<nav class="section-nav" aria-label="أقسام الموقع">
+  {topNav.map((l) => <a href={l.href} aria-current={here.startsWith(l.href) ? 'page' : undefined}>{l.label}</a>)}
+</nav>
+<Default><slot /></Default>
+
+<style>
+  .section-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-block-end: 1rem;
+    margin-block-end: 1rem;
+    border-block-end: 1px solid var(--sl-color-hairline);
+  }
+  .section-nav a {
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 999px;
+    color: var(--sl-color-white);
+    text-decoration: none;
+    font-size: var(--sl-text-sm);
+  }
+  .section-nav a[aria-current='page'] {
+    border-color: var(--meem-red);
+  }
+  /* على سطح المكتب الروابط في الترويسة. */
+  @media (min-width: 50rem) {
+    .section-nav {
+      display: none;
+    }
+  }
+</style>

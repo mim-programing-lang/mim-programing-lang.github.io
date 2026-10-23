@@ -1,0 +1,38 @@
+---
+// مثال من الكتاب المرجعي: الشيفرة من الكتاب، والمخرج من البيان examples/manifest.json كما هو.
+// لا يُشغَّل هنا: المخرج هو ما سجّلته اختبارات المجمّع (tests/test_docs.py). postbuild يقارن ما يُعرض بالبيان.
+import { Code } from '@astrojs/starlight/components';
+import hb from '../generated/handbook.json';
+import pg from '../generated/playground.json';
+
+interface Props {
+  id: string;
+  /** عنوان يظهر فوق الشيفرة بدل «مثال» */
+  label?: string;
+}
+const { id, label } = Astro.props;
+const ex = (hb.examples as Record<string, any>)[id];
+if (!ex || ex.code == null) throw new Error(`مثال غير موجود في الكتاب المرجعي: «${id}»`);
+const dev = ex.version !== hb.release;
+const lines = (s: string) => s.replace(/\n$/, '').split('\n');
+const command = ['meem', ...ex.flags, 'برنامج.م'].join(' ');
+// «جرّب هذا المثال» في صفحات التعلم وحدها، وللأمثلة الآمنة في الملعب وحدها (scripts/lib/playground.mjs).
+const tryable = Astro.url.pathname.startsWith('/learn/') && (pg.examples as { id: string }[]).some((e) => e.id === id);
+---
+
+<section class="meem-example hb-example not-content" data-hb-example={id} data-runner="manifest">
+  <Code code={ex.code} lang="meem" title={label ?? 'مثال'} />
+  <figure class="meem-output">
+    <figcaption>
+      <span>المخرج المسجَّل في الكتاب المرجعي{dev ? ' · بعد 0.7.0 (فرع التطوير)' : ''}</span>
+      <span class="meem-output-meta"><bdi dir="ltr">{command}</bdi> · <bdi dir="ltr">{ex.version}</bdi></span>
+    </figcaption>
+    <output>
+      {ex.stdout && <pre dir="rtl" class="meem-stdout" data-stream="stdout">{lines(ex.stdout).map((l: string) => <span class="line">{l || '​'}</span>)}</pre>}
+      {ex.stderr && <pre dir="rtl" class="meem-stderr" data-stream="stderr">{lines(ex.stderr).map((l: string) => <span class="line">{l || '​'}</span>)}</pre>}
+      {!ex.stdout && !ex.stderr && <p class="meem-empty">لا مخرجات.</p>}
+    </output>
+    {ex.exit !== 0 && <p class="meem-exit" data-exit={ex.exit}>رمز الخروج: <bdi>{ex.exit}</bdi></p>}
+    {tryable && <p class="hb-try"><a href={`/playground/#ex=${encodeURIComponent(id)}`} data-try-example={id}>جرّب هذا المثال في الملعب</a></p>}
+  </figure>
+</section>

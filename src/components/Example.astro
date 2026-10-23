@@ -1,0 +1,133 @@
+---
+// مثال: شفرته، ومخرجه المسجَّل من المجمّع وقت البناء.
+// لا تنفيذ في المتصفح الآن. لتوصيل خادم تشغيل لاحقاً: العنصر يحمل data-example و data-runner="recorded"،
+// والمخرج في <output>؛ يكفي سكربت يستبدل محتواه ويغيّر data-runner.
+import { Code } from '@astrojs/starlight/components';
+import examples from '../generated/examples.json';
+import version from '../generated/version.json';
+import { kb } from '../lib/size.mjs';
+
+interface Props {
+  /** مسار الملف نسبةً إلى examples/ */
+  file: string;
+}
+const { file } = Astro.props;
+const ex = examples.find((e) => e.id === file);
+if (!ex) throw new Error(`مثال غير معروف: «${file}». المسار نسبةً إلى examples/.`);
+// السطر كما يُكتب في الطرفية: متغيرات البيئة، ثم خيارات المجمّع، ثم الملف، ثم وسائط البرنامج بعد «--».
+const quote = (a: string) => (/\s/.test(a) ? `"${a}"` : a);
+const command = [
+  ...Object.entries((ex as { env?: Record<string, string> }).env ?? {}).map(([k, v]) => `${k}=${v}`),
+  'meem', ...ex.args, ex.file,
+  ...(((ex as { argv?: string[] }).argv ?? []).length ? ['--', ...(ex as { argv: string[] }).argv.map(quote)] : []),
+].join(' ');
+const lines = (s: string) => s.replace(/\n$/, '').split('\n');
+---
+
+<section class="meem-example not-content" data-example={ex.id} data-runner="recorded">
+  <Code code={ex.code} lang="meem" title={ex.file} />
+  <figure class="meem-output">
+    <figcaption>
+      <span>مخرجات مسجّلة من المجمّع</span>
+      <span class="meem-output-meta"><bdi dir="ltr">{command}</bdi> · <bdi dir="ltr">meem {(ex as { frozen?: string }).frozen ?? version.build}</bdi>{(ex as { frozen?: string }).frozen && ' · مسجَّل بإصدار أقدم، لا يُعاد تشغيله (صفحة تاريخية)'}</span>
+    </figcaption>
+    {ex.stdin && (
+      <div class="meem-stdin">
+        <span class="meem-label">الإدخال</span>
+        <pre dir="rtl">{lines(ex.stdin).map((l) => <span class="line">{l || '​'}</span>)}</pre>
+      </div>
+    )}
+    <output>
+      {ex.stdout && <pre dir="rtl" class="meem-stdout">{lines(ex.stdout).map((l) => <span class="line">{l || '​'}</span>)}</pre>}
+      {ex.stderr && <pre dir="rtl" class="meem-stderr">{lines(ex.stderr).map((l) => <span class="line">{l || '​'}</span>)}</pre>}
+      {!ex.stdout && !ex.stderr && <p class="meem-empty">لا مخرجات.</p>}
+    </output>
+    {ex.exit !== 0 && <p class="meem-exit">رمز الخروج: <bdi>{ex.exit}</bdi></p>}
+    {ex.built && (
+      <p class="meem-exit">
+        بُني أيضاً بـ <bdi dir="ltr">meem build</bdi> عند بناء الموقع: ملف {ex.built.static ? 'ساكن' : 'حركي'} حجمه{' '}
+        <bdi dir="ltr">{kb(ex.built.bytes)}</bdi> ك.ب، شُغّل وحده وطابق مخرجه المخرج أعلاه.
+      </p>
+    )}
+  </figure>
+</section>
+
+<style is:global>
+  .meem-example {
+    margin-block: 1.5rem;
+  }
+  .meem-example .expressive-code .frame pre,
+  .meem-example .expressive-code .frame {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+  .meem-output {
+    margin: 0;
+    border: 1px solid var(--meem-border);
+    border-block-start: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
+    background: var(--meem-surface);
+    overflow: hidden;
+  }
+  .meem-output figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding: 0.4rem 1rem;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-2);
+    border-block-end: 1px solid var(--meem-border);
+  }
+  .meem-output-meta {
+    font-family: var(--sl-font-mono);
+  }
+  .meem-output pre {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border: 0;
+    background: transparent;
+    font-family: var(--sl-font-mono);
+    font-size: 0.95rem;
+    line-height: 1.9;
+    overflow-x: auto;
+  }
+  /* كل سطر من المخرج فقرة مستقلة: اتجاهه من أول حرف فيه (سطر أرقام يبقى يسارياً، فيُعرض «-3» لا «3-»)، والمحاذاة يميناً. */
+  .meem-output pre .line {
+    display: block;
+    unicode-bidi: plaintext;
+    text-align: right;
+    white-space: pre;
+  }
+  .meem-output .meem-stderr {
+    border-block-start: 1px dashed var(--meem-border);
+    border-inline-start: 3px solid var(--meem-red);
+  }
+  .meem-output .meem-stdin {
+    border-block-end: 1px dashed var(--meem-border);
+    color: var(--sl-color-gray-2);
+  }
+  .meem-label,
+  .meem-empty,
+  .meem-exit {
+    display: block;
+    margin: 0;
+    padding: 0.4rem 1rem 0;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-2);
+  }
+  .meem-empty,
+  .meem-exit {
+    padding-block-end: 0.4rem;
+  }
+  .meem-exit {
+    border-block-start: 1px solid var(--meem-border);
+  }
+  .hb-try {
+    margin: 0;
+    padding: 0.4rem 1rem;
+    border-block-start: 1px solid var(--meem-border);
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+  }
+</style>

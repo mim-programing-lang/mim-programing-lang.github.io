@@ -1,0 +1,19 @@
+---
+// سطر المصدر: الملف في الكتاب المرجعي وإيداعه.
+import hb from '../generated/handbook.json';
+interface Props {
+  file: string;
+}
+const { file } = Astro.props;
+---
+
+<p class="hb-source">منقول من الكتاب المرجعي: <code dir="ltr">docs/handbook/{file}</code> · الإيداع <code dir="ltr">{hb.source.commit.slice(0, 7)}</code></p>
+
+<style>
+  .hb-source {
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+    border-inline-start: 3px solid var(--meem-border);
+    padding-inline-start: 0.75rem;
+  }
+</style>

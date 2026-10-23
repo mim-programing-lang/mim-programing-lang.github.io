@@ -1,0 +1,25 @@
+/* مولَّد بـ npm run fonts — لا تعدّله باليد. */
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  src: url('/fonts/noto-sans-arabic.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+60C, U+61B, U+61F, U+621-63A, U+640-655, U+660-66C, U+670, U+FEFB;
+}
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('/fonts/noto-sans.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+20-7E, U+A0, U+A9, U+AB, U+B1, U+B7, U+BB, U+D7, U+E9, U+200B, U+200F, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+FFFD;
+}
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/cairo.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+20-7E, U+A0, U+A9, U+AB, U+B1, U+B7, U+BB, U+D7, U+E9, U+60C, U+61B, U+61F, U+621-63A, U+640-655, U+660-66C, U+670, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+FEFB;
+}

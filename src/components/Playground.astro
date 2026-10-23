@@ -1,0 +1,179 @@
+---
+// الملعب: واجهة فقط. تتصل بخادم تشغيل عنوانه PUBLIC_PLAYGROUND_API وقت البناء؛ بلا عنوان تبقى للقراءة.
+// لا نص من الخادم ولا من الزائر يُدرج بـ innerHTML: كل عرض بـ textContent (src/scripts/playground.ts).
+import pg from '../generated/playground.json';
+
+const api = (import.meta.env.PUBLIC_PLAYGROUND_API ?? '').trim();
+const enabled = /^https?:\/\//.test(api);
+const examples = pg.examples as { id: string; title: string; topic: string }[];
+const label = (e: { id: string; title: string }) => `${e.title} — ${e.id.replace(/\.md#/, ' #').replace(/^.*\//, '')}`;
+---
+
+<div class="pg" data-api={enabled ? api : ''} data-timeout-ms="15000" data-min-interval-ms="3000" data-max-share-bytes="16384" data-max-code-bytes="65536" data-max-body-bytes="98304">
+  <p class="pg-state" id="pg-state" role="status" aria-live="polite">
+    {enabled ? 'جاهز.' : 'الملعب قيد التجهيز: التشغيل غير متاح الآن. الأمثلة ومخرجاتها المتوقعة متاحة للقراءة.'}
+  </p>
+  <p class="pg-from-link" id="pg-from-link" hidden>هذه الشيفرة جاءت من رابط. اقرأها قبل أن تضغط «شغّل».</p>
+
+  <div class="pg-toolbar">
+    <label>
+      <span>مثال من الكتاب المرجعي:</span>
+      <select id="pg-examples">
+        <option value="">— اختر مثالاً —</option>
+        {examples.map((e) => <option value={e.id}>{label(e)}</option>)}
+      </select>
+    </label>
+  </div>
+
+  <div class="pg-editor" id="pg-editor" aria-label="محرر الشيفرة"></div>
+
+  <div class="pg-actions">
+    <button type="button" id="pg-run" disabled={!enabled}>شغّل</button>
+    <button type="button" id="pg-share">انسخ رابط المشاركة</button>
+    <span id="pg-share-msg" class="pg-share-msg" aria-live="polite"></span>
+  </div>
+
+  <section class="pg-result" aria-label="النتيجة">
+    <h2>المخرج</h2>
+    <pre id="pg-stdout" class="pg-box" dir="auto"></pre>
+    <h2>الأخطاء</h2>
+    <pre id="pg-stderr" class="pg-box pg-err" dir="auto"></pre>
+    <p class="pg-exit">رمز الخروج: <bdi id="pg-exit">—</bdi> <span id="pg-duration"></span></p>
+  </section>
+
+  <details class="pg-expected" id="pg-expected" hidden>
+    <summary>المخرج المتوقع لهذا المثال (من الكتاب المرجعي)</summary>
+    <p class="pg-note">سُجّل في اختبارات المجمّع بلا خيارات الملعب؛ مع <code dir="ltr">--debug-mem</code> قد يزيد تقرير ذاكرة على الأخطاء.</p>
+    <h3>المخرج</h3>
+    <pre id="pg-exp-stdout" class="pg-box" dir="auto"></pre>
+    <h3>الأخطاء</h3>
+    <pre id="pg-exp-stderr" class="pg-box pg-err" dir="auto"></pre>
+    <p class="pg-exit">رمز الخروج: <bdi id="pg-exp-exit"></bdi></p>
+  </details>
+
+  <section class="pg-limits" aria-labelledby="pg-limits-title">
+    <h2 id="pg-limits-title">حدود الملعب</h2>
+    <ul>
+      <li>زمن التشغيل: 8 ثوانٍ.</li>
+      <li>حجم الشيفرة: 64 ك.ب.</li>
+      <li>الخرج: 64 ك.ب، وما زاد يُقطع.</li>
+      <li>لا ملفات، ولا شبكة، ولا وسائط، ولا متغيرات بيئة، ولا إدخال. الوحدات المتاحة: <code>رياضيات</code> و<code>عشوائي</code>.</li>
+      <li>خيارات المجمّع: <code dir="ltr">--no-unsafe --no-ffi --no-system --debug-mem</code>.</li>
+      <li>الشيفرة تُرسل إلى خادم التشغيل وحده، ولا تُحفظ في أي خدمة أخرى. لا تحليلات تتبع في هذه الصفحة.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+  import '../scripts/playground.ts';
+</script>
+
+<style is:global>
+  .pg-state {
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--meem-border);
+    background: var(--meem-surface);
+    font-weight: 600;
+  }
+  .pg-from-link {
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.4rem;
+    background: var(--meem-badge-bg, var(--meem-amber));
+    color: var(--meem-badge-fg, var(--meem-dark));
+    font-weight: 600;
+  }
+  .pg-toolbar label {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .pg-toolbar select {
+    max-width: 100%;
+    min-width: 0;
+    flex: 1;
+    font: inherit;
+    padding: 0.3rem;
+    background: var(--sl-color-black);
+    color: var(--sl-color-white);
+    border: 1px solid var(--meem-border);
+    border-radius: 0.35rem;
+  }
+  .pg-editor {
+    margin-block: 0.75rem;
+    border: 1px solid var(--meem-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    min-height: 12rem;
+  }
+  .pg-editor .cm-editor {
+    direction: rtl;
+    min-height: 12rem;
+    font-family: var(--sl-font-mono);
+    font-size: 0.95rem;
+    background: var(--sl-color-black);
+    color: var(--sl-color-white);
+  }
+  .pg-editor .cm-content,
+  .pg-editor .cm-line {
+    direction: rtl;
+    text-align: right;
+  }
+  .pg-editor .cm-gutters {
+    background: var(--meem-surface);
+    border: 0;
+    border-inline-end: 1px solid var(--meem-border);
+  }
+  .pg-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  .pg-actions button {
+    padding: 0.45rem 1.2rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--sl-color-gray-3);
+    background: transparent;
+    color: var(--sl-color-white);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .pg-actions #pg-run {
+    background: var(--meem-red);
+    border-color: var(--meem-red);
+    color: #fff;
+  }
+  .pg-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .pg-box {
+    min-height: 2.5rem;
+    margin: 0.25rem 0 0.75rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--meem-border);
+    border-radius: 0.4rem;
+    background: var(--meem-surface);
+    font-family: var(--sl-font-mono);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    unicode-bidi: plaintext;
+  }
+  .pg-err {
+    border-inline-start: 3px solid var(--meem-red);
+  }
+  .pg-note,
+  .pg-share-msg {
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+  }
+  .pg-limits {
+    margin-block-start: 1.5rem;
+  }
+  .sl-markdown-content .pg h2 {
+    font-size: var(--sl-text-h4);
+  }
+</style>

@@ -1,0 +1,189 @@
+---
+title: "الأخطاء الشائعة: السبب والإصلاح"
+description: "لكل خطأ مثال يسببه (الناتج كما يطبعه المجمّع، برمز خروجه) ومثال يصلحه؛ كلاهما يُشغَّل في tests/test_docs.py. الفهرس الكامل لكل رسالة في فهرس رسائل الأخطاء…"
+keywords: ["خطأ","اخطاء","اصلاح"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import HBSource from '../../../../components/HBSource.astro';
+
+<VersionBanner />
+
+<HBSource file="errors/common.md" />
+
+لكل خطأ مثال يسببه (الناتج كما يطبعه المجمّع، برمز خروجه) ومثال يصلحه؛ كلاهما يُشغَّل في `tests/test_docs.py`.
+الفهرس الكامل لكل رسالة في [فهرس رسائل الأخطاء والتحذيرات](/docs/errors/catalog/). رمز 2: خطأ ترجمة لم يُنفَّذ معه شيء؛ رمز 3: خطأ تشغيل بعد ما
+طُبع قبله.
+
+## نص مع عدد بـ`+`
+
+**يسببه:**
+
+<HBExample id="errors/common.md#1" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#2" />
+
+## نسيان `:` بعد الشرط
+
+**يسببه:**
+
+<HBExample id="errors/common.md#3" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#4" />
+
+## مسافة بادئة لا تطابق
+
+**يسببه:**
+
+<HBExample id="errors/common.md#5" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#6" />
+
+## متغير غير معرَّف (أو خطأ إملائي)
+
+**يسببه:**
+
+<HBExample id="errors/common.md#7" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#8" />
+
+## تغيير نوع المتغير
+
+**يسببه:**
+
+<HBExample id="errors/common.md#9" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#10" />
+
+## استدعاء دالة قبل تعريفها
+
+**يسببه:**
+
+<HBExample id="errors/common.md#11" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#12" />
+
+## فهرس خارج القائمة
+
+**يسببه:**
+
+<HBExample id="errors/common.md#13" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#14" />
+
+## مفتاح غائب من القاموس
+
+**يسببه:**
+
+<HBExample id="errors/common.md#15" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#16" />
+
+## القسمة على صفر
+
+**يسببه:**
+
+<HBExample id="errors/common.md#17" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#18" />
+
+## كسر في متغير عدد
+
+**يسببه:**
+
+<HBExample id="errors/common.md#19" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#20" />
+
+## تحويل نص إلى عدد بلا معالجة الفشل
+
+`عدد(نص)` من النوع `!عدد`: النص قد لا يكون عدداً، فيُعالَج في موضعه.
+
+**يسببه:**
+
+<HBExample id="errors/common.md#21" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#22" />
+
+## نتيجة دالة قد تفشل مهملة
+
+**يسببه:**
+
+<HBExample id="errors/common.md#23" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#24" />
+
+## `جرّب` في دالة لا ترجع خطأ
+
+**يسببه:**
+
+<HBExample id="errors/common.md#25" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#26" />
+
+## دالة لا ترجع في كل مسار
+
+**يسببه:**
+
+<HBExample id="errors/common.md#27" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#28" />
+
+## مقارنة القوائم مباشرة
+
+**يسببه:**
+
+<HBExample id="errors/common.md#29" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#30" />
+
+## تحرير مرتين
+
+**يسببه:**
+
+<HBExample id="errors/common.md#31" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#32" />
+
+## عملية خطرة خارج `خطر`
+
+**يسببه:**
+
+<HBExample id="errors/common.md#33" />
+
+**يصلحه:**
+
+<HBExample id="errors/common.md#34" />

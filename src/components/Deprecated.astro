@@ -1,0 +1,36 @@
+---
+// سجل الصيغ المهجورة من «meem --list-deprecated --json». المجمّع الأقدم لا يعرف هذا الأمر، فتقول الصفحة ذلك.
+import data from '../generated/deprecated.json';
+import version from '../generated/version.json';
+import Generated from './Generated.astro';
+type Form = { id: string; title: string; old: string; new: string; fix: boolean };
+const forms = (data as { deprecated: Form[] } | null)?.deprecated ?? null;
+---
+
+{
+  forms ? (
+    <>
+      <Generated command="meem --list-deprecated --json" />
+      <p>صيغ قديمة ما زال المجمّع يقبلها ويحذّر منها. <code class="meem-inline-code">meem --deny-deprecated</code> يجعل تحذيراتها أخطاء (رمز الخروج 2).</p>
+      {forms.map((f) => (
+        <section class="api-item">
+          <h2 id={f.id}><code dir="ltr">{f.id}</code></h2>
+          <dl>
+            <dt>الوصف</dt><dd>{f.title}</dd>
+            <dt>القديمة</dt><dd><pre dir="rtl">{f.old}</pre></dd>
+            <dt>الحالية</dt><dd><pre dir="rtl">{f.new}</pre></dd>
+            <dt>يصلحها <code dir="ltr">--fix</code></dt><dd>{f.fix ? 'نعم' : 'لا'}</dd>
+          </dl>
+        </section>
+      ))}
+    </>
+  ) : (
+    <>
+      <p>
+        هذه الصفحة تُولَّد من <code class="meem-inline-code">meem --list-deprecated</code>. المجمّع الذي بُني به الموقع
+        (<bdi dir="ltr">meem {version.build}</bdi>) لا يعرف هذا الأمر بعد، فلا سجل يُعرض.
+      </p>
+      <p>الصيغ القديمة التي يحذّر منها هذا البناء ويعيد <code class="meem-inline-code">meem --fix</code> كتابتها في <a href="/docs/syntax/#الصيغ-القديمة">النحو</a>.</p>
+    </>
+  )
+}

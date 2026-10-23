@@ -1,0 +1,43 @@
+{
+  "name": "meemlang-site",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "prebuild": "node scripts/prebuild.mjs",
+    "build": "astro build",
+    "postbuild": "node scripts/postbuild.mjs",
+    "predev": "node scripts/prebuild.mjs",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "fonts": "node scripts/build-fonts.mjs",
+    "examples:record": "node scripts/prebuild.mjs --record",
+    "screenshots": "node scripts/screenshots.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "weight": "node scripts/weight.mjs",
+    "search-test": "node scripts/search-test.mjs",
+    "make-downloads": "node scripts/make-downloads.mjs",
+    "import-docs": "node scripts/import-compiler-docs.mjs",
+    "refresh": "node scripts/import-compiler-docs.mjs && node scripts/prebuild.mjs --record",
+    "lighthouse:rounds": "node scripts/lighthouse-rounds.mjs",
+    "import-handbook": "node scripts/import-handbook.mjs",
+    "test:bidi": "bash scripts/bidi-test-container.sh",
+    "test:playground": "PG_MODE=noapi bash scripts/playground-test-container.sh"
+  },
+  "devDependencies": {
+    "harfbuzzjs": "1.6.3",
+    "lighthouse": "^13.5.0",
+    "playwright": "^1.64.0",
+    "subset-font": "^2.9.0"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.6",
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/language": "^6.13.1",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.14",
+    "@lezer/highlight": "1.2.5",
+    "astro": "^7.3.8",
+    "sharp": "^0.35.5"
+  }
+}

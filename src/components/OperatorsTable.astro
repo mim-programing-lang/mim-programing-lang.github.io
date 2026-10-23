@@ -1,0 +1,36 @@
+---
+import language from '../generated/language.json';
+const kinds: Record<string, string> = {
+  assignment: 'إسناد', comparison: 'مقارنة', concat: 'دمج', arithmetic: 'حساب', logical: 'منطق',
+};
+---
+
+<h2 id="operators">المعاملات</h2>
+<table>
+  <thead><tr><th>الرمز</th><th>الصنف</th><th>الوصف</th></tr></thead>
+  <tbody>
+    {language.operators.map((o) => <tr><td><code class="meem-inline-code">{o.symbol}</code></td><td>{kinds[o.kind] ?? o.kind}</td><td>{o.description}</td></tr>)}
+  </tbody>
+</table>
+
+<h2 id="constants">الثوابت</h2>
+<table>
+  <thead><tr><th>الثابت</th><th>النوع</th><th>الوصف</th></tr></thead>
+  <tbody>
+    {language.constants.map((c) => <tr><td><code class="meem-inline-code">{c.word}</code></td><td><code class="meem-inline-code">{c.type}</code></td><td>{c.description}</td></tr>)}
+  </tbody>
+</table>
+
+<h2 id="lexical">ثوابت الكتابة</h2>
+<table>
+  <tbody>
+    <tr><th>امتداد الملف</th><td><code class="meem-inline-code">{language.file_extension}</code></td></tr>
+    <tr><th>بداية التعليق</th><td><code class="meem-inline-code">{language.comment}</code></td></tr>
+    <tr><th>المسافة البادئة للمستوى</th><td>{language.indent.unit} مسافات (عرض الجدولة {language.indent.tab_width})</td></tr>
+    <tr><th>علامة النص</th><td><code dir="ltr">{language.string.quote}</code></td></tr>
+    <tr><th>علامة الرمز</th><td><code dir="ltr">{language.string.char_quote}</code></td></tr>
+    <tr><th>تسلسلات الهروب</th><td>{language.string.escapes.map((e) => <><code dir="ltr">{'\\' + e}</code>{' '}</>)}</td></tr>
+    <tr><th>علامات الترقيم</th><td>{language.punctuation.map((p) => <><code dir="ltr">{p}</code>{' '}</>)}</td></tr>
+    <tr><th>محارف تنهي الاسم</th><td><code dir="ltr">{language.identifier_stop_chars}</code></td></tr>
+  </tbody>
+</table>

@@ -1,0 +1,133 @@
+---
+import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
+import { site } from '../../site.config.mjs';
+import Example from './Example.astro';
+
+// البناء يُشغَّل من جذر المشروع.
+const logoPath = path.resolve('brand/language-logo.svg');
+const logo = existsSync(logoPath) ? readFileSync(logoPath, 'utf8').replace(/<\?xml[^>]*\?>/, '') : null;
+
+interface Props {
+  example: string;
+}
+const { example } = Astro.props;
+---
+
+<div class="home">
+  <div class="home-intro">
+    <div class="home-brand">
+      {/* ما دام brand/language-logo.svg غائباً يبقى الاسم وحده. */}
+      {logo && <div class="home-logo" aria-hidden="true" set:html={logo} />}
+      <h1 id="_top" class="home-name">{site.name}</h1>
+      <span class="home-badge">{site.status}</span>
+    </div>
+    <p class="home-tagline">{site.tagline}</p>
+    <p class="home-slogan">{site.slogan}</p>
+    <div class="home-actions">
+      <a class="home-button primary" href="/start/">ابدأ</a>
+      <a class="home-button" href="/download/">حمّل</a>
+    </div>
+  </div>
+  <div class="home-example">
+    <Example file={example} />
+  </div>
+</div>
+
+<style>
+  .home {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    padding-block: 1rem 2rem;
+  }
+  @media (min-width: 60rem) {
+    .home {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: 3rem;
+      padding-block: 3rem;
+    }
+  }
+  .home-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .home-logo {
+    flex: none;
+    width: 5rem;
+    height: 5rem;
+  }
+  .home-logo :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .home-brand {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+  }
+  .home-name {
+    margin: 0;
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--sl-color-white);
+  }
+  .home-badge {
+    display: inline-block;
+    padding: 0.1rem 0.75rem;
+    border-radius: 999px;
+    background: var(--meem-badge-bg, var(--meem-amber));
+    color: var(--meem-badge-fg, var(--meem-dark));
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+  }
+  .home-tagline {
+    margin: 0;
+    font-size: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+    line-height: 1.7;
+    color: var(--sl-color-white);
+    text-wrap: balance;
+  }
+  .home-slogan {
+    margin: 0;
+    font-size: var(--sl-text-lg);
+    font-weight: 600;
+    color: var(--sl-color-text-accent);
+  }
+  .home-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-block-start: 0.5rem;
+  }
+  .home-button {
+    display: inline-block;
+    min-width: 7rem;
+    padding: 0.6rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--sl-color-gray-3);
+    color: var(--sl-color-white);
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+  }
+  .home-button:hover {
+    border-color: var(--sl-color-white);
+  }
+  .home-button.primary {
+    background: var(--meem-red);
+    border-color: var(--meem-red);
+    color: #fff;
+  }
+  .home-example {
+    min-width: 0;
+  }
+  .home-example :global(.meem-example) {
+    margin: 0;
+  }
+</style>

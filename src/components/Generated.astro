@@ -1,0 +1,21 @@
+---
+// شارة توضّح أن المحتوى تحتها مولَّد من خرج المجمّع وقت البناء.
+import version from '../generated/version.json';
+interface Props {
+  command: string;
+}
+const { command } = Astro.props;
+---
+
+<p class="generated-note">
+  مولَّد وقت البناء من <code class="meem-inline-code">{command}</code> · <bdi dir="ltr">meem {version.build}</bdi>
+</p>
+
+<style>
+  .generated-note {
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+    border-inline-start: 3px solid var(--meem-amber);
+    padding-inline-start: 0.75rem;
+  }
+</style>

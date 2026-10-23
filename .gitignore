@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.env
+fonts-src/
+src/generated/
+screenshots/
+.lighthouse/
+public/favicon.svg
+handbook/_related/

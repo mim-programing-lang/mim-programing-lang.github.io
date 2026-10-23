@@ -1,0 +1,69 @@
+/* ألوان الهوية وخطوطها في مكان واحد. كل ما عداها في الموقع يشتق من هذه المتغيرات. */
+:root {
+  --meem-red: #d8271c;
+  --meem-amber: #ffc233;
+  --meem-dark: #1b1b22;
+
+  --meem-font-ui: 'Noto Sans Arabic', 'Noto Sans', system-ui, sans-serif;
+  /* خط الكود هو خط المحرر. */
+  --meem-font-code: 'Cairo', 'Noto Sans Arabic', ui-monospace, monospace;
+
+  --sl-font: var(--meem-font-ui);
+  --sl-font-mono: var(--meem-font-code);
+}
+
+/* الوضع الداكن (افتراضي Starlight). الأحمر على الداكن تباينه 3.5 فلا يصلح لوناً للنص: النص المميَّز عنبري. */
+:root {
+  --sl-color-accent-low: #4d1410;
+  --sl-color-accent: var(--meem-red);
+  --sl-color-accent-high: var(--meem-amber);
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #ededf0;
+  --sl-color-gray-2: #c6c6cf;
+  --sl-color-gray-3: #9a9aa8;
+  --sl-color-gray-4: #5a5a68;
+  --sl-color-gray-5: #34343f;
+  --sl-color-gray-6: #24242d;
+  --sl-color-black: var(--meem-dark);
+
+  --meem-button-bg: var(--meem-red);
+  --meem-button-fg: #ffffff;
+  --meem-badge-bg: var(--meem-amber);
+  --meem-badge-fg: var(--meem-dark);
+  --meem-surface: #24242d;
+  --meem-border: #34343f;
+
+  /* ألوان محرر الملعب (CodeMirror)، قريبة من سمة كتل الشيفرة الداكنة. */
+  --pg-kw: #f97583;
+  --pg-str: #9ecbff;
+  --pg-num: #79b8ff;
+  --pg-type: #b392f0;
+  --pg-builtin: #ffab70;
+}
+
+/* الوضع الفاتح. العنبري على الأبيض لا يُقرأ: يبقى خلفيةً تحت نص داكن، والنص المميَّز أحمر أغمق. */
+:root[data-theme='light'] {
+  --sl-color-accent-low: #fbe4e2;
+  --sl-color-accent: #c22218;
+  --sl-color-accent-high: #7d150e;
+  --sl-color-white: var(--meem-dark);
+  --sl-color-gray-1: #24242d;
+  --sl-color-gray-2: #34343f;
+  --sl-color-gray-3: #5a5a68;
+  --sl-color-gray-4: #81818f;
+  --sl-color-gray-5: #c6c6cf;
+  --sl-color-gray-6: #ededf0;
+  --sl-color-gray-7: #f7f7f9;
+  --sl-color-black: #ffffff;
+
+  --meem-badge-bg: var(--meem-amber);
+  --meem-badge-fg: var(--meem-dark);
+  --meem-surface: #f7f7f9;
+  --meem-border: #dcdce3;
+
+  --pg-kw: #bf3441;
+  --pg-str: #032f62;
+  --pg-num: #005cc5;
+  --pg-type: #6f42c1;
+  --pg-builtin: #b35900;
+}

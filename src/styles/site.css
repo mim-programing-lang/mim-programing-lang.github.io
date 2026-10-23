@@ -1,0 +1,96 @@
+/* كود ميم: السطر من اليمين، وكل قطعة معزولة عن جاراتها (انظر src/lib/ec-bidi.mjs). */
+.expressive-code pre[data-language='meem'],
+.expressive-code pre[data-language='meem'] .ec-line {
+  direction: rtl;
+}
+.expressive-code pre[data-language='meem'] .ec-line .code {
+  text-align: right;
+}
+.expressive-code pre[data-language='meem'] .ec-line .code span {
+  unicode-bidi: isolate;
+}
+.expressive-code pre[data-language='meem'] .ec-line .code span.meem-ltr {
+  direction: ltr;
+}
+/* بقية الكتل (أوامر الطرفية، JSON) يسارية، وقطعها معزولة كذلك: اسم ملف عربي في أمر لا يقلب ترتيب ما حوله. */
+.expressive-code pre:not([data-language='meem']) .ec-line .code span {
+  unicode-bidi: isolate;
+  direction: ltr;
+}
+.expressive-code pre:not([data-language='meem']) {
+  direction: ltr;
+}
+.expressive-code pre:not([data-language='meem']) .ec-line .code {
+  text-align: left;
+}
+
+/* الكود داخل النص: اتجاهه من أول حرف فيه، ومعزول عما حوله. */
+.sl-markdown-content :not(pre) > code,
+.meem-inline-code {
+  unicode-bidi: plaintext;
+  font-size: 0.92em;
+}
+
+/* خط Cairo أعلى من المعتاد: يُعطى الكود ارتفاع سطر يسع التشكيل. */
+.sl-markdown-content code {
+  line-height: 1.6;
+}
+
+/* الرئيسية بلا لوحة عنوان (عنوانها داخل HomeHero): اللوحة الفارغة لا تأخذ مكاناً. */
+main > .content-panel:has(> .sl-container:empty) {
+  display: none;
+}
+main > .content-panel:has(> .sl-container:empty) + .content-panel {
+  border-top: 0;
+}
+
+/* بنود المراجع (دالة، ثابت): قائمة تعريف مرصوصة. */
+.api-item {
+  border-block-start: 1px solid var(--sl-color-hairline);
+  padding-block: 0.75rem;
+}
+.api-item dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0.5rem 0 0;
+}
+.api-item dt {
+  color: var(--sl-color-gray-2);
+  font-size: var(--sl-text-sm);
+}
+.api-item dd {
+  margin: 0;
+  min-width: 0;
+}
+.api-item .doc-line {
+  display: block;
+  unicode-bidi: plaintext;
+}
+.sl-markdown-content .api-item :is(h3, h4) {
+  margin: 0;
+  font-size: var(--sl-text-h5);
+}
+
+/* الجداول العريضة تتمرّر داخل نفسها لا الصفحة. */
+.sl-markdown-content table {
+  display: block;
+  overflow-x: auto;
+}
+
+/* حل التمرين. */
+.sl-markdown-content details.solution {
+  border: 1px solid var(--meem-border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+.sl-markdown-content details.solution > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* الشارات: خط الواجهة لا خط الكود، وبلا تباعد حروف (يفصل الحروف العربية). */
+.sl-badge {
+  font-family: var(--sl-font);
+  letter-spacing: 0;
+}

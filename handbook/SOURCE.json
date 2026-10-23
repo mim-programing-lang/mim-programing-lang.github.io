@@ -1,0 +1,10 @@
+{
+  "repo": "my_compiler",
+  "branch": "0.7.0-dev",
+  "commit": "3999103b6d2660d05f29652e950a7890a1bdb764",
+  "paths": [
+    "docs/handbook",
+    "docs/playground.md",
+    "docs/v1-readiness.md"
+  ]
+}

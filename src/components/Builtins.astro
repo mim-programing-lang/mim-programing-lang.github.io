@@ -1,0 +1,18 @@
+---
+import language from '../generated/language.json';
+---
+
+{language.builtins.map((b) => (
+  <section class="api-item">
+    <h3 id={`builtin-${b.name}`}><code class="meem-inline-code">{b.name}</code></h3>
+    <dl>
+      <dt>الاستعمال</dt><dd><code class="meem-inline-code">{b.usage}</code></dd>
+      <dt>الوصف</dt><dd>{b.summary}</dd>
+      <dt>عدد الوسائط</dt><dd>{b.max_args === null ? `${b.min_args} فأكثر` : b.min_args === b.max_args ? b.min_args : `${b.min_args} إلى ${b.max_args}`}</dd>
+      <dt>ترجع</dt><dd>{b.returns ? <code class="meem-inline-code">{b.returns}</code> : 'لا شيء'}</dd>
+      {b.aliases.length > 0 && <><dt>صيغ إملائية مقبولة</dt><dd>{b.aliases.map((a) => <code class="meem-inline-code">{a}</code>)}</dd></>}
+      {b.reserved && <><dt>محجوزة</dt><dd>اسمها لا يصلح اسماً لمتغير ولا لدالة.</dd></>}
+      {b.loop_only && <><dt>قيد</dt><dd>تُستعمل في رأس حلقة <code class="meem-inline-code">لكل</code> فقط.</dd></>}
+    </dl>
+  </section>
+))}

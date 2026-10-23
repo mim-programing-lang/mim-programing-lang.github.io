@@ -1,8 +1,8 @@
 // إعدادات الموقع في مكان واحد. عدّل هنا لا في الصفحات.
 
-// عنوان الموقع المنشور (GitHub Pages، من الجذر). متغير البيئة SITE_URL يتجاوزه عند البناء.
-// النطاق meemlang.org لم يُربط بعد: خطواته في DEPLOY.md، ولا يُكتب هنا قبل تفعيله.
-export const SITE_URL = process.env.SITE_URL || 'https://mim-programing-lang.github.io';
+// عنوان الموقع المنشور (GitHub Pages بالنطاق meemlang.org، منذ 2026-10-23). متغير البيئة SITE_URL يتجاوزه عند البناء.
+// يطابق public/CNAME.
+export const SITE_URL = process.env.SITE_URL || 'https://meemlang.org';
 
 export const site = {
   name: 'ميم',

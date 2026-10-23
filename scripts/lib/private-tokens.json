@@ -1,0 +1,14 @@
+{
+  "note": "تجزئات SHA-256 لأسماء وحسابات شخصية لصاحب المشروع (كلمة كلمة، بأحرف صغيرة). postbuild يفشل إن ظهرت كلمة تطابقها في الصفحات المبنية. التجزئة لا الاسم: هذا الملف عام.",
+  "sha256": [
+    "bed32e9e071d62622a04801a8d8fa1ad3502fb84e168915232a3834a803b22d7",
+    "e4800327c9252c1ce1214b22ea8a63b4dc7c25fd6c02e0a43448adc4faf7aee7",
+    "3a0ddfce79fd822e5ba7402a753c02b71246b68bc5e68d27ea21e76882ac9f51",
+    "bb6763be3b30b33df76b8baab1c12d53873f977bf005306f9938603539d3cd70",
+    "6bd83c2008bb909ae5c5cb900e58daea52c355412bbd2d4c5b941bb69935e0fd",
+    "fc82f136d354aafdaaa2db3d18154643250bc52b281e96c0f0dd8f5cf6d24f2f",
+    "7c64c18dbe11b4bafde93d54f6798567e7775b34dc4beb8c73a8aab6e712ae18",
+    "8e1ce0411c3bffc329c8b0955056116638313eaacde45f53428230974e95bead",
+    "42e8537f403ea2ae090c4ba0aca245e8c2094b99558bd986a5b2e50cd404d44b"
+  ]
+}

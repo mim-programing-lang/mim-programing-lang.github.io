@@ -1,0 +1,45 @@
+---
+// زر التبرع: رابط عادي إلى صفحة الدفع في PayPal، يُفتح في تبويب جديد. لا سكربت ولا صورة ولا أي مورد من PayPal،
+// فلا تتبّع ولا تغيير في سياسة الأمان. الرابط من PUBLIC_PAYPAL_DONATE_URL (site.config.mjs)؛ فارغاً: «قريباً» وزر معطّل.
+import { donateUrl } from '../../site.config.mjs';
+---
+
+<div class="donate" data-donate={donateUrl ? 'ready' : 'soon'}>
+  {donateUrl ? (
+    <a class="donate-button" href={donateUrl} target="_blank" rel="noopener noreferrer">تبرّع عبر PayPal</a>
+    <p class="donate-note">يفتح صفحة الدفع في PayPal في تبويب جديد.</p>
+  ) : (
+    <button class="donate-button" type="button" disabled>تبرّع عبر PayPal</button>
+    <p class="donate-note"><strong>قريباً.</strong> التبرع غير متاح الآن.</p>
+  )}
+</div>
+
+<style>
+  .donate {
+    margin-block: 1.5rem;
+  }
+  .donate-button {
+    display: inline-block;
+    min-width: 12rem;
+    padding: 0.7rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--meem-red);
+    background: var(--meem-red);
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+  }
+  button.donate-button:disabled {
+    background: transparent;
+    border-color: var(--sl-color-gray-4);
+    color: var(--sl-color-gray-3);
+    cursor: not-allowed;
+  }
+  .donate-note {
+    margin-block-start: 0.5rem;
+    color: var(--sl-color-gray-2);
+    font-size: var(--sl-text-sm);
+  }
+</style>

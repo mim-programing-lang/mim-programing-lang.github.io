@@ -13,6 +13,13 @@ export const site = {
   status: 'بيتا',
 };
 
+// رابط التبرع عبر PayPal (صفحة «دعم»): متغير البناء PUBLIC_PAYPAL_DONATE_URL، إعداد عام لا سر. رابط عادي يُفتح في
+// تبويب جديد، لا سكربت PayPal. فارغاً: الصفحة «قريباً» والزر معطّل ولا رابط PayPal في الموقع. غير ذلك يفشل البناء.
+export const donateUrl = (process.env.PUBLIC_PAYPAL_DONATE_URL ?? '').trim();
+if (donateUrl && !/^https:\/\/www\.paypal\.com\/[^\s"'<>]*$/.test(donateUrl)) {
+  throw new Error(`PUBLIC_PAYPAL_DONATE_URL يجب أن يبدأ بـ https://www.paypal.com/ (القيمة الحالية مرفوضة: ${donateUrl})`);
+}
+
 // روابط GitHub: فارغة الآن. ما كان فارغاً لا يظهر في الموقع.
 export const links = {
   compilerRepo: '',

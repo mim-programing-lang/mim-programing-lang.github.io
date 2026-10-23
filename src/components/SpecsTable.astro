@@ -17,7 +17,7 @@ const mods = modules.map((m) => `${m.name} (${m.functions.length} دالة)`).jo
 const rows: { k: string; v: string; src: string; href?: string }[] = [
   { k: 'الهدف', v: 'ملف تنفيذي مستقل على لينكس x86_64 بالأمر meem build: ساكن، لا يحتاج ميم ولا بايثون ولا LLVM. والتشغيل المباشر (meem ملف.م) يبقى للتجربة السريعة', src: 'docs/build.md، وأمثلة تُبنى وتُشغَّل عند بناء الموقع', href: '/docs/build/' },
   { k: 'الأنواع', v: `ثابتة، تُفحص قبل التنفيذ: ${typeWords}، والهياكل`, src: 'meem --list-types', href: '/docs/language/types/' },
-  { k: 'إدارة الذاكرة', v: 'في 0.7: مخصصات و«خاتمه»، بلا عدّ مراجع ولا جامع قمامة؛ ما لا يُحرَّر يعود عند خروج البرنامج. حتى 0.6: عدّ مراجع', src: 'الكتاب المرجعي: language/08-memory.md و migration/0.6-to-0.7.md', href: '/docs/memory/' },
+  { k: 'إدارة الذاكرة', v: 'في 0.7: مخصصات و«خاتمه»، بلا عدّ مراجع ولا جامع قمامة؛ ما لا يُحرَّر يعود عند خروج البرنامج. حتى 0.6: عدّ مراجع', src: 'الكتاب المرجعي: language/08-memory.md، migration/0.6-to-0.7.md', href: '/docs/memory/' },
   { k: 'المؤشرات', v: 'مؤشر[ن] إلى خانة تُحجز بـ جديد وتُحرَّر يدوياً بـ حرر، بلا حسابات على العناوين؛ ومؤشر_خام لما يأتي من C', src: 'docs/pointers.md', href: '/docs/language/low-level/' },
   { k: 'الوحدات', v: 'استورد لملف أو لوحدة قياسية، وأسماء مؤهَّلة، وخاص لإخفاء تعريف', src: 'docs/stdlib-design.md', href: '/docs/language/modules/' },
   { k: 'الاتصال بمكتبات C', v: 'التصريح خارجي بأنواع C صريحة. جُرّب مع libc وlibm', src: 'docs/stdlib-design.md', href: '/docs/language/ffi/' },

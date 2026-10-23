@@ -13,6 +13,7 @@ import { root } from './lib/meem.mjs';
 import { hbExamples } from './lib/handbook.mjs';
 import { proseOf } from './lib/prose.mjs';
 import { checkWording } from './lib/wording.mjs';
+import { donateUrl } from '../site.config.mjs';
 
 const dist = path.join(root, 'dist');
 const walk = (d) =>
@@ -149,6 +150,53 @@ for (const [file, { html }] of pages) {
   wordingChecked++;
 }
 console.log(`[postbuild] الصياغة: ${wordingChecked} صفحة فُحص نثرها بـ wording.json.`);
+// 10) الخصوصية وPayPal: لا بريد ولا اسم شخصي (تجزئات scripts/lib/private-tokens.json) في الصفحات وأصولنا، ولا مورد من
+//     PayPal (سكربت أو صورة أو إطار أو نموذج). رابط التبرع وحده، في /support/، ومضبوط كما يجب؛ وبلا المتغير لا رابط PayPal.
+{
+  const privateHashes = new Set(JSON.parse(readFileSync(path.join(root, 'scripts/lib/private-tokens.json'), 'utf8')).sha256);
+  const sha = (t) => createHash('sha256').update(t.normalize('NFC').toLowerCase()).digest('hex');
+  const EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}/g;
+  // الصفحات: لا بريد أياً كان. الأصول (_astro): فيها مكتبات من غيرنا تذكر بُرد مترجميها (Pagefind)، فيُفحص فيها الاسم
+  // والمسار وحدهما؛ وأجزاء أي بريد كلمات تمرّ بفحص التجزئة.
+  const scan = (where, text, emails = true) => {
+    if (emails) for (const m of text.match(EMAIL) ?? []) errors.push(`${where}: بريد في المبني «${m}»`);
+    // كلمات بحسب الخط (عربي أو لاتيني) لا بالمسافة وحدها، فـ«وفلان» و«فلان-آخر» تُفحصان؛ وللعربية بلا سوابق (و ب ل ف ك ال).
+    const words = new Set();
+    for (const w of text.match(/[\p{Script=Arabic}\p{N}]+|[\p{Script=Latin}\p{N}_-]+/gu) ?? []) {
+      for (const p of [w, ...w.split(/[-_]+/)]) {
+        words.add(p);
+        if (/\p{Script=Arabic}/u.test(p)) for (let q = p; /^[وفبلك]/.test(q) || q.startsWith('ال'); ) words.add((q = q.startsWith('ال') ? q.slice(2) : q.slice(1)));
+      }
+    }
+    for (const w of words) if (w && privateHashes.has(sha(w))) errors.push(`${where}: اسم أو حساب شخصي (تطابق تجزئة في private-tokens.json)`);
+    if (/\/home\/[a-z]/.test(text)) errors.push(`${where}: مسار من جهاز البناء (/home/…)`);
+  };
+  const assets = readdirSync(path.join(dist, '_astro')).filter((f) => /\.(js|css)$/.test(f));
+  for (const f of assets) scan(`/_astro/${f}`, readFileSync(path.join(dist, '_astro', f), 'utf8'), false);
+  let donateLinks = 0;
+  for (const [file, { html }] of pages) {
+    const page = rel(file);
+    scan(page, html);
+    for (const m of html.matchAll(/<(\w+)\b[^>]*\b(?:src|href|action|data|srcset|poster|formaction)="([^"]*paypal[^"]*)"[^>]*>/gi)) {
+      if (m[1].toLowerCase() !== 'a') errors.push(`${page}: مورد من PayPal في <${m[1]}> (المسموح رابط <a> وحده)`);
+    }
+    for (const m of html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)) if (/paypal/i.test(m[1])) errors.push(`${page}: سكربت يذكر PayPal`);
+    if (/http-equiv="Content-Security-Policy" content="[^"]*paypal/i.test(html)) errors.push(`${page}: سياسة الأمان تذكر PayPal`);
+    for (const m of html.matchAll(/<a\b[^>]*href="([^"]*paypal[^"]*)"[^>]*>/gi)) {
+      donateLinks++;
+      const ok = donateUrl && page === '/support/' && decode(m[1]) === donateUrl && /\btarget="_blank"/.test(m[0]) && /\brel="noopener noreferrer"/.test(m[0]);
+      if (!ok) errors.push(`${page}: رابط PayPal غير متوقع «${m[0].slice(0, 120)}»`);
+    }
+  }
+  const support = pages.get(path.join(dist, 'support/index.html'))?.html ?? '';
+  if (!support) errors.push('/support/: الصفحة غائبة');
+  else if (donateUrl) {
+    if (donateLinks !== 1 || !support.includes('data-donate="ready"')) errors.push(`/support/: رابط التبرع يجب أن يظهر مرة واحدة (وُجد ${donateLinks})`);
+  } else if (donateLinks || !/data-donate="soon"/.test(support) || !/<button[^>]*donate-button[^>]*disabled/.test(support) || !support.includes('قريباً')) {
+    errors.push('/support/: بلا PUBLIC_PAYPAL_DONATE_URL يجب «قريباً» وزر معطّل وبلا رابط PayPal');
+  }
+  console.log(`[postbuild] الخصوصية: ${pages.size} صفحة و${assets.length} أصلاً بلا اسم شخصي، والصفحات بلا بريد؛ PayPal: ${donateUrl ? `رابط واحد في /support/` : 'بلا رابط («قريباً»)'}، ولا مورد منه.`);
+}
 console.log(`[postbuild] أمثلة الكتاب المرجعي المعروضة: ${seenHb.size} من ${Object.values(hb).filter((e) => e.code != null).length}`);
 if (errors.length) {
   console.error(`\n[فشل البناء] فحوص الموقع المبني (${errors.length}):\n\n${errors.map((e) => `  ✗ ${e}`).join('\n')}\n`);

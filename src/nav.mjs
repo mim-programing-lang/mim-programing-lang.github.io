@@ -73,12 +73,14 @@ export const topNav = [
   { label: 'أمثلة', href: '/try/' },
   { label: 'الملعب', href: '/playground/' },
   { label: 'التنزيل', href: '/download/' },
+  { label: 'دعم', href: '/support/' },
 ];
 
 // روابط التذييل.
 export const footerNav = [
   { label: 'حول المشروع', href: '/about/' },
   { label: 'التنزيل', href: '/download/' },
+  { label: 'دعم ميم', href: '/support/' },
 ];
 
 export const sidebar = sections.map(({ label, items }) => ({ label, items }));

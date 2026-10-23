@@ -1,0 +1,975 @@
+<!DOCTYPE html><html lang="ar" dir="rtl" data-theme="dark" data-has-toc data-has-sidebar class="astro-g5ptsecz"><head><meta charset="utf-8"/><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval' 'sha256-VWo5Wp4aqSj6nSgMpeAp9cKieaoIfwFUAunAVugI5gA=' 'sha256-f/zAUE74ucc3JYp4r4QQvkJofoQdkOIhHYK+jeZ6eko=' 'sha256-GkZBRnvSuhtx/cvzvukVkX2JJZW+DdPlVr7BX8Tefqo=' 'sha256-nVO98WGdJA5yup1/MAdukGqUlS6Psuf7JJFF5ikWqbQ=' 'sha256-hP48sUywTAXyg22qvpdOC/cYIA8MfPdKEbPC/mvGk4M=' 'sha256-ucPfdYc9FPIvbmnn9ECv3eLKYLt8/heMPFQ+hNTn6jY=' 'sha256-wX2yOADeV+NMngflD5uYi3vl50SHC4sfM1EmylVjlX4=' 'sha256-7eCV4jtsr4t4knb3c4FCRPeu7GGZeOUGE3XvWix0XOQ=' 'sha256-VgrgcKBvIM3XpiLJ6fEv1Vy6YHBwlKLkYtFdfBMouTo='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'"><meta name="viewport" content="width=device-width, initial-scale=1"/><title>الأداء | ميم</title><link rel="canonical" href="https://meemlang.org/docs/performance/"/><link rel="sitemap" href="/sitemap-index.xml"/><link rel="preload" href="/fonts/noto-sans-arabic.woff2" as="font" type="font/woff2" crossorigin/><link rel="preload" href="/fonts/noto-sans.woff2" as="font" type="font/woff2" crossorigin/><link rel="preload" href="/fonts/cairo.woff2" as="font" type="font/woff2" crossorigin/><link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.3.8"/><meta name="generator" content="Starlight v0.42.6"/><meta property="og:title" content="الأداء"/><meta property="og:type" content="article"/><meta property="og:url" content="https://meemlang.org/docs/performance/"/><meta property="og:locale" content="ar"/><meta property="og:description" content="قياس زمن برامج ميم مقابل C وRust على سبعة برامج، بمنهجه وحدوده، وكلفة الفحوص والعدّ المرجعي، وما لم يُقس."/><meta property="og:site_name" content="ميم"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="قياس زمن برامج ميم مقابل C وRust على سبعة برامج، بمنهجه وحدوده، وكلفة الفحوص والعدّ المرجعي، وما لم يُقس."/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/_astro/common.RfXLqcAM.css"><script type="module" src="/_astro/page.cNngjUgL.js"></script><style>.meem-example{margin-block:1.5rem}.meem-example .expressive-code .frame pre,.meem-example .expressive-code .frame{border-end-end-radius:0;border-end-start-radius:0}.meem-output{border:1px solid var(--meem-border);background:var(--meem-surface);border-block-start:0;border-radius:0 0 .5rem .5rem;margin:0;overflow:hidden}.meem-output figcaption{font-size:var(--sl-text-xs);color:var(--sl-color-gray-2);border-block-end:1px solid var(--meem-border);flex-wrap:wrap;justify-content:space-between;gap:.25rem 1rem;padding:.4rem 1rem;display:flex}.meem-output-meta{font-family:var(--sl-font-mono)}.meem-output pre{font-family:var(--sl-font-mono);background:0 0;border:0;margin:0;padding:.75rem 1rem;font-size:.95rem;line-height:1.9;overflow-x:auto}.meem-output pre .line{text-align:right;white-space:pre;unicode-bidi:plaintext;display:block}.meem-output .meem-stderr{border-block-start:1px dashed var(--meem-border);border-inline-start:3px solid var(--meem-red)}.meem-output .meem-stdin{border-block-end:1px dashed var(--meem-border);color:var(--sl-color-gray-2)}.meem-label,.meem-empty,.meem-exit{font-size:var(--sl-text-xs);color:var(--sl-color-gray-2);margin:0;padding:.4rem 1rem 0;display:block}.meem-empty,.meem-exit{padding-block-end:.4rem}.meem-exit{border-block-start:1px solid var(--meem-border)}.hb-try{border-block-start:1px solid var(--meem-border);font-size:var(--sl-text-sm);margin:0;padding:.4rem 1rem;font-weight:600}
+</style></head><body class="astro-g5ptsecz"><a class="sl-skip-link astro-qb7clj6f" href="#_top">تخطَّ إلى المحتوى</a><div class="page sl-flex astro-yntsjkba"><header class="header astro-yntsjkba"><div class="header astro-by6fddyj"><div class="title-wrapper sl-flex astro-by6fddyj"><a href="/" class="site-title sl-flex astro-6rvad3va"><img class="astro-6rvad3va" alt="شعار ميم" src="/_astro/language-logo.B_zM1KRS.svg" width="512" height="512"><span class="astro-6rvad3va" translate="no">ميم</span></a></div><div class="sl-flex print:hidden astro-by6fddyj"><site-search class="astro-by6fddyj astro-b5kgnn7o" data-translations="{&quot;placeholder&quot;:&quot;ابحث&quot;,&quot;clear_search&quot;:&quot;امسح&quot;,&quot;load_more&quot;:&quot;نتائج أخرى&quot;,&quot;search_label&quot;:&quot;ابحث في الموقع&quot;,&quot;filters_label&quot;:&quot;التصفية&quot;,&quot;zero_results&quot;:&quot;لا نتائج لـ [SEARCH_TERM]&quot;,&quot;many_results&quot;:&quot;نتائج [SEARCH_TERM]: [COUNT]&quot;,&quot;one_result&quot;:&quot;نتيجة واحدة لـ [SEARCH_TERM]&quot;,&quot;alt_search&quot;:&quot;لا نتائج لـ [SEARCH_TERM]. هذه نتائج [DIFFERENT_TERM]&quot;,&quot;search_suggestion&quot;:&quot;لا نتائج لـ [SEARCH_TERM]. جرّب أحد هذه:&quot;,&quot;searching&quot;:&quot;يبحث عن [SEARCH_TERM]...&quot;}"><button data-open-modal disabled aria-label="ابحث" aria-keyshortcuts="Control+K" class="astro-b5kgnn7o"><svg aria-hidden="true" class="astro-b5kgnn7o astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-b5kgnn7o" aria-hidden="true">ابحث</span><kbd class="sl-hidden md:sl-flex astro-b5kgnn7o" style="display: none;"><kbd class="astro-b5kgnn7o">Ctrl</kbd><kbd class="astro-b5kgnn7o">K</kbd></kbd></button><dialog style="padding:0" aria-label="ابحث" class="astro-b5kgnn7o"><div class="dialog-frame sl-flex astro-b5kgnn7o"><button data-close-modal class="sl-flex md:sl-hidden astro-b5kgnn7o">إلغاء</button><div class="search-container astro-b5kgnn7o"><div id="starlight__search" class="astro-b5kgnn7o"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.g9hoxVJg.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-by6fddyj"><div class="sl-flex social-icons astro-by6fddyj"><nav class="top-nav astro-o2gh7vpa" aria-label="أقسام الموقع"><a href="/learn/" class="astro-o2gh7vpa">تعلّم ميم</a><a href="/docs/" aria-current="page" class="astro-o2gh7vpa">المرجع</a><a href="/try/" class="astro-o2gh7vpa">أمثلة</a><a href="/playground/" class="astro-o2gh7vpa">الملعب</a><a href="/download/" class="astro-o2gh7vpa">التنزيل</a><a href="/support/" class="astro-o2gh7vpa">دعم</a></nav></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-2z5xp7gb"><span class="sr-only astro-2z5xp7gb">اختر المظهر</span><svg aria-hidden="true" class="icon label-icon astro-2z5xp7gb astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-2z5xp7gb"><option value="dark" class="astro-2z5xp7gb">داكن</option><option value="light" class="astro-2z5xp7gb">فاتح</option><option value="auto" selected class="astro-2z5xp7gb">تلقائي</option></select><svg aria-hidden="true" class="icon caret astro-2z5xp7gb astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-yntsjkba" aria-label="قائمة الصفحات"><button popovertarget="starlight__sidebar" class="sl-menu-button sl-flex md:sl-hidden print:hidden astro-r2osgdlg"><svg aria-hidden="true" class="open-menu astro-r2osgdlg astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-r2osgdlg astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg><span class="sr-only astro-r2osgdlg">القائمة</span></button><script type="module">var e=class extends HTMLElement{constructor(){super();let e=matchMedia(`(min-width: 50em)`),t=()=>{this.popover=e.matches?null:`auto`};t(),e.addEventListener(`change`,()=>t()),this.addEventListener(`toggle`,({newState:e})=>this.trapFocus(e===`open`))}trapFocus(e){document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}};customElements.define(`sl-sidebar-pane`,e);</script><sl-sidebar-pane popover id="starlight__sidebar" class="sidebar-pane astro-yntsjkba"><div class="sidebar-content sl-flex astro-yntsjkba"><nav class="section-nav astro-wv7whodv" aria-label="أقسام الموقع"><a href="/learn/" class="astro-wv7whodv">تعلّم ميم</a><a href="/docs/" aria-current="page" class="astro-wv7whodv">المرجع</a><a href="/try/" class="astro-wv7whodv">أمثلة</a><a href="/playground/" class="astro-wv7whodv">الملعب</a><a href="/download/" class="astro-wv7whodv">التنزيل</a><a href="/support/" class="astro-wv7whodv">دعم</a></nav><sl-sidebar-state-persist data-hash="1lietp1" class="astro-ipdry5cl"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/docs/" class="large astro-rmhv4bp6"><span class="astro-rmhv4bp6">نظرة عامة</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/handbook/" class="large astro-rmhv4bp6"><span class="astro-rmhv4bp6">الكتاب المرجعي</span></a></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">اللغة</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/docs/language/lexicon/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">المفردات</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/types/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الأنواع</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/expressions/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">التعابير</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/statements/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">العبارات</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/functions/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الدوال</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/structs/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الهياكل</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/modules/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدات</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/low-level/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الطبقة المنخفضة: خطر والشرائح والمؤشرات</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/ffi/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">استدعاء C (FFI)</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/security/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">ما يستطيعه برنامج ميم على جهازك</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/enums/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">التعداد</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/language/errors/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">معالجة الأخطاء</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">الذاكرة اليدوية</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/docs/memory/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الذاكرة اليدوية</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/memory/reference/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الذاكرة: المخصصات وخاتمه</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/memory/refcount/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">العدّ المرجعي (تاريخي: 0.6 وما قبله)</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">المكتبة القياسية</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/docs/stdlib/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">المكتبة القياسية</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/stdlib/builtins/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">المدمجات</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/stdlib/math/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدة رياضيات</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/stdlib/system/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدة نظام</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/stdlib/files/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدة ملفات</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/stdlib/random/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدة عشوائي</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">الأخطاء</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/docs/errors/common/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الأخطاء الشائعة: السبب والإصلاح</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/errors/catalog/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">فهرس رسائل الأخطاء والتحذيرات</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">الأدوات</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/docs/tools/options/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">خيارات سطر الأوامر</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/tools/check-json/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">خرج الفحص meem --check --json</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/build/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">البناء: meem build</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">الترحيل</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/docs/migration/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.6 إلى 0.7</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/migration/errors/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل إلى معالجة الأخطاء (0.7.0)</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><a href="/docs/glossary/" class="large astro-rmhv4bp6"><span class="astro-rmhv4bp6">المصطلحات</span></a></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">من خارج الكتاب (0.6)</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/docs/performance/" aria-current="page" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الأداء</span></a></li><li class="astro-rmhv4bp6"><a href="/docs/whats-new/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">ما الجديد</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-p4azlveh"><div class="social-icons astro-p4azlveh"><nav class="top-nav astro-o2gh7vpa" aria-label="أقسام الموقع"><a href="/learn/" class="astro-o2gh7vpa">تعلّم ميم</a><a href="/docs/" aria-current="page" class="astro-o2gh7vpa">المرجع</a><a href="/try/" class="astro-o2gh7vpa">أمثلة</a><a href="/playground/" class="astro-o2gh7vpa">الملعب</a><a href="/download/" class="astro-o2gh7vpa">التنزيل</a><a href="/support/" class="astro-o2gh7vpa">دعم</a></nav></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-2z5xp7gb"><span class="sr-only astro-2z5xp7gb">اختر المظهر</span><svg aria-hidden="true" class="icon label-icon astro-2z5xp7gb astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-2z5xp7gb"><option value="dark" class="astro-2z5xp7gb">داكن</option><option value="light" class="astro-2z5xp7gb">فاتح</option><option value="auto" selected class="astro-2z5xp7gb">تلقائي</option></select><svg aria-hidden="true" class="icon caret astro-2z5xp7gb astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script></div></div></div></sl-sidebar-pane></nav><div class="main-frame astro-yntsjkba"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-lrzkfocr"><aside class="right-sidebar-container print:hidden astro-lrzkfocr"><div class="right-sidebar astro-lrzkfocr"><div class="lg:sl-hidden astro-qok35upx"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-66cqc7ze"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-66cqc7ze"><details id="starlight__mobile-toc" class="astro-66cqc7ze"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-66cqc7ze"><span class="toggle sl-flex astro-66cqc7ze">على هذه الصفحة<svg aria-hidden="true" class="caret astro-66cqc7ze astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-66cqc7ze"></span></summary><div class="dropdown astro-66cqc7ze"><ul class="isMobile astro-jugkfwgx" style="--depth: 0;"><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#_top" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">نظرة عامة</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#0-النتائج-060" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">0. النتائج (0.6.0)</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#1-النتائج-052" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">1. النتائج (0.5.2)</span></a><ul class="isMobile astro-jugkfwgx" style="--depth: 1;"><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#قبل-وبعد-051-ثم-052-بالأسلوب-نفسه-وعلى-الجهاز-في-الحال-نفسها" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">قبل وبعد (0.5.1 ثم 0.5.2)، بالأسلوب نفسه وعلى الجهاز في الحال نفسها</span></a></li></ul></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#2-ما-يطلبه-المجمّع-من-llvm" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">2. ما يطلبه المجمّع من LLVM</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#3-لماذا-يتقدم-c-القياس-على-051" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">3. لماذا يتقدم C: القياس (على 0.5.1)</span></a><ul class="isMobile astro-jugkfwgx" style="--depth: 1;"><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#السبب-الأول-في-كل-البرامج-العددية-المتغيرات-في-الذاكرة" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">السبب الأول، في كل البرامج العددية: المتغيرات في الذاكرة</span></a></li><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#2-فيبوناتشي-73" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">2. فيبوناتشي (×7.3)</span></a></li><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#3-n-body-42-وبأسلوب-c-29" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">3. n-body (×4.2، وبأسلوب C ×2.9)</span></a></li><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#4-الغربال-17" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">4. الغربال (×1.7)</span></a></li><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#5-النصوص-ساكن-84-حركي-28" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">5. النصوص (ساكن ×8.4، حركي ×2.8)</span></a></li><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#6-القاموس-26" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">6. القاموس (×2.6)</span></a></li></ul></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#4-أهم-التحسينات-الممكنة-كما-قُدّرت-على-051-الأول-والثاني-والخامس-نُفّذت" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">4. أهم التحسينات الممكنة (كما قُدّرت على 0.5.1؛ الأول والثاني والخامس نُفّذت)</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#5-كلفة-فحوص-التشغيل-النسبة-الحقيقية-بعد-052" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">5. كلفة فحوص التشغيل (النسبة الحقيقية بعد 0.5.2)</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#6-كلفة-العدّ-المرجعي" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">6. كلفة العدّ المرجعي</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#7-musl-مقابل-glibc-ما-كان-السبب-وما-اختير" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">7. musl مقابل glibc: ما كان السبب، وما اختير</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#8-ما-لم-يُقس" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">8. ما لم يُقس</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#9-قياس-051-المنشور-سابقاً" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">9. قياس 0.5.1 المنشور سابقاً</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.C3fM4Kra.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-qok35upx"><div class="sl-container astro-qok35upx"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">على هذه الصفحة</h2><ul class="astro-jugkfwgx" style="--depth: 0;"><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#_top" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">نظرة عامة</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#0-النتائج-060" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">0. النتائج (0.6.0)</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#1-النتائج-052" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">1. النتائج (0.5.2)</span></a><ul class="astro-jugkfwgx" style="--depth: 1;"><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#قبل-وبعد-051-ثم-052-بالأسلوب-نفسه-وعلى-الجهاز-في-الحال-نفسها" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">قبل وبعد (0.5.1 ثم 0.5.2)، بالأسلوب نفسه وعلى الجهاز في الحال نفسها</span></a></li></ul></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#2-ما-يطلبه-المجمّع-من-llvm" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">2. ما يطلبه المجمّع من LLVM</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#3-لماذا-يتقدم-c-القياس-على-051" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">3. لماذا يتقدم C: القياس (على 0.5.1)</span></a><ul class="astro-jugkfwgx" style="--depth: 1;"><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#السبب-الأول-في-كل-البرامج-العددية-المتغيرات-في-الذاكرة" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">السبب الأول، في كل البرامج العددية: المتغيرات في الذاكرة</span></a></li><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#2-فيبوناتشي-73" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">2. فيبوناتشي (×7.3)</span></a></li><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#3-n-body-42-وبأسلوب-c-29" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">3. n-body (×4.2، وبأسلوب C ×2.9)</span></a></li><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#4-الغربال-17" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">4. الغربال (×1.7)</span></a></li><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#5-النصوص-ساكن-84-حركي-28" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">5. النصوص (ساكن ×8.4، حركي ×2.8)</span></a></li><li style="--depth: 1;" class="astro-jugkfwgx"><a href="#6-القاموس-26" style="--depth: 1;" class="astro-jugkfwgx"><span style="--depth: 1;" class="astro-jugkfwgx">6. القاموس (×2.6)</span></a></li></ul></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#4-أهم-التحسينات-الممكنة-كما-قُدّرت-على-051-الأول-والثاني-والخامس-نُفّذت" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">4. أهم التحسينات الممكنة (كما قُدّرت على 0.5.1؛ الأول والثاني والخامس نُفّذت)</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#5-كلفة-فحوص-التشغيل-النسبة-الحقيقية-بعد-052" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">5. كلفة فحوص التشغيل (النسبة الحقيقية بعد 0.5.2)</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#6-كلفة-العدّ-المرجعي" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">6. كلفة العدّ المرجعي</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#7-musl-مقابل-glibc-ما-كان-السبب-وما-اختير" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">7. musl مقابل glibc: ما كان السبب، وما اختير</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#8-ما-لم-يُقس" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">8. ما لم يُقس</span></a></li><li style="--depth: 0;" class="astro-jugkfwgx"><a href="#9-قياس-051-المنشور-سابقاً" style="--depth: 0;" class="astro-jugkfwgx"><span style="--depth: 0;" class="astro-jugkfwgx">9. قياس 0.5.1 المنشور سابقاً</span></a></li></ul></nav></starlight-toc><script type="module" src="/_astro/TableOfContents.astro_astro_type_script_index_0_lang.BpJaGz7G.js"></script></div></div></div></aside><div class="main-pane astro-lrzkfocr"><main data-pagefind-body class="astro-g5ptsecz" lang="ar" dir="rtl"><div class="content-panel astro-a7po4psb"><div class="sl-container astro-a7po4psb"><h1 id="_top" class="astro-bebwqqxs">الأداء</h1><span data-pagefind-weight="7" data-pagefind-index-attrs="data-terms" data-terms="الاداء اداء اداءات اداءون اداءين سرعة السرعة سرعه سرعات السرعات قياس القياس قياسات قياسون قياسين القياسات قياسة زمن الزمن زمنات زمنون زمنين مقارنة المقارنة مقارنه مقارنات المقارنات الاداء اداء اداءات اداءون اداءين سرعة السرعة سرعه سرعات السرعات قياس القياس قياسات قياسون قياسين القياسات قياسة زمن الزمن زمنات زمنون زمنين مقارنة المقارنة مقارنه مقارنات المقارنات الاداء اداء اداءات اداءون اداءين سرعة السرعة سرعه سرعات السرعات قياس القياس قياسات قياسون قياسين القياسات قياسة زمن الزمن زمنات زمنون زمنين مقارنة المقارنة مقارنه مقارنات المقارنات الاداء اداء اداءات اداءون اداءين سرعة السرعة سرعه سرعات السرعات قياس القياس قياسات قياسون قياسين القياسات قياسة زمن الزمن زمنات زمنون زمنين مقارنة المقارنة مقارنه مقارنات المقارنات"></span><span data-pagefind-weight="0.2" data-pagefind-index-attrs="data-terms" data-terms="وحدة الوحدة وحدات الوحدات مؤشر المؤشر مؤشرات المؤشرات قائمة القائمة قوائم القوائم دالة الدالة دوال الدوال داله الداله قاموس القاموس قواميس القواميس نص النص نصوص النصوص متغير المتغير متغيرات المتغيرات حلقة الحلقة حلقات الحلقات خطا الخطا اخطاء الاخطاء مكتبة المكتبة مكتبات المكتبات معامل المعامل معاملات المعاملات مفتاح المفتاح مفاتيح المفاتيح حقل الحقل حقول الحقول ثابت الثابت ثوابت الثوابت مصفوفة المصفوفة مصفوفات المصفوفات عملية العملية عمليات العمليات"></span></div></div><div class="content-panel astro-a7po4psb"><div class="sl-container astro-a7po4psb"><div class="sl-markdown-content"><aside aria-label="المصدر" class="starlight-aside starlight-aside--note"><p class="starlight-aside__title" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="starlight-aside__icon"><path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z"/></svg>المصدر</p><div class="starlight-aside__content"><p>نص هذه الصفحة منقول حرفياً من <code dir="auto">docs/performance.md</code> في مستودع المجمّع (الإيداع <code dir="auto">d882040</code>).</p></div></aside>
+<aside aria-label="اقرأ الأرقام بمنهجها" class="starlight-aside starlight-aside--caution"><p class="starlight-aside__title" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="starlight-aside__icon"><path d="M12 16a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm10.67 1.47-8.05-14a3 3 0 0 0-5.24 0l-8 14A3 3 0 0 0 3.94 22h16.12a3 3 0 0 0 2.61-4.53Zm-1.73 2a1 1 0 0 1-.88.51H3.94a1 1 0 0 1-.88-.51 1 1 0 0 1 0-1l8-14a1 1 0 0 1 1.78 0l8.05 14a1 1 0 0 1 .05 1.02v-.02ZM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1Z"/></svg>اقرأ الأرقام بمنهجها</p><div class="starlight-aside__content"><ul>
+<li>الأزمنة <strong>وسيط ثلاث جولات</strong>، و<strong>حمل الجهاز لم يكن صفراً</strong> أثناء القياس (بين 1.37 و1.72 لقياس 0.6.0). الفروق الأصغر من 5% لا يُعتدّ بها.</li>
+<li><strong>الجداول نسبة إلى C لا زمن مطلق</strong>: الثواني تتغير بحال الجهاز، والنسبة هي ما يُقارن.</li>
+<li>النسب إلى C في قياس 0.6.0 (جدول القسم 0، عمود «مبني»): <strong>فيبوناتشي 2.7×</strong>، <strong>النصوص 2.3×</strong>، <strong>n-body بأسلوب C 1.1×</strong>، n-body 1.8×، القاموس 1.7×، الغربال 1.5×، والحلقة العددية 0.9×.</li>
+<li>المعالج كان أبطأ في قياس 0.6.0 منه في قياس 0.5.2، فالمقارنة بين الإصدارين بالنسبة إلى C لا بالثواني.</li>
+<li>لم يُقس على جهاز هادئ ولا على معالجات أخرى ولا على برامج حقيقية (القسم «ما لم يُقس»).</li>
+</ul></div></aside>
+<p>قيس في 2026-10-11 على 0.5.2. <strong>الجهاز ليس خالياً</strong> (حِمل 1.2 إلى 1.9 على أربعة خيوط)؛ السكربت يطبع الحمل قبل
+كل برنامج، والانحراف المذكور يبيّن أثره. الفروق الأصغر من 5% لا يُعتدّ بها.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>المعالج</td>
+<td>Intel Core i3-8130U (نواتان، 4 خيوط، حتى 3.4 غ.هـ؛ L2 512 ك.ب، L3 4 م.ب)</td>
+</tr>
+<tr>
+<td>الذاكرة والنظام</td>
+<td>7.6 غ.ب؛ لينكس 7.1 x86_64، glibc 2.41</td>
+</tr>
+<tr>
+<td>المجمّعات</td>
+<td>gcc 14.2 (<code dir="auto">-O2</code>)؛ rustc 1.99 (<code dir="auto">-O</code>)؛ ميم 0.5.2 (llvmlite 0.49، LLVM 22.1 كما يبلّغ عنه)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>لإعادة القياس:</strong> <code dir="auto">python bench/run.py --rounds 3</code> (من المجلد الأب: <code dir="auto">.env/bin/python my_compiler/bench/run.py</code>).
+البرامج في <code dir="auto">bench/</code>: لكل برنامج نسخة ميم ونسخة C ونسخة Rust بالخوارزمية نفسها، والسكربت يتحقق أن مخرجاتها
+متطابقة (وكانت متطابقة في السبعة).</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="0-النتائج-060">0. النتائج (0.6.0)</h2><a class="sl-anchor-link" href="#0-النتائج-060"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «0. النتائج (0.6.0)»</span></a></div>
+<p>قيس في 2026-10-16 على 0.6.0، والحمل قبل الجولات بين 1.37 و1.72 (يطبعه السكربت). وسيط ثلاث جولات. «مبني» صار
+<strong>محسَّناً افتراضياً</strong> (O2)، و«-O0» بلا O2، و«native» بـ<code dir="auto">--cpu=native</code>. <strong>المعالج كان أبطأ في هذا القياس منه في قياس
+0.5.2</strong> (C نفسه 1.09 ث للحلقة مقابل 0.76)، فالمقارنة بين الإصدارين بالنسبة إلى C لا بالثواني.</p>
+<table>
+<thead>
+<tr>
+<th>البرنامج</th>
+<th>مبني</th>
+<th>مبني -O0</th>
+<th>مبني native</th>
+<th>حركي</th>
+<th>مباشر</th>
+<th>C</th>
+<th>Rust</th>
+<th>النسبة إلى C: 0.5.2 مبني ← 0.6.0 مبني</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. حلقة</td>
+<td>1.00 ±0.06</td>
+<td>1.35</td>
+<td><strong>0.64</strong></td>
+<td>1.25</td>
+<td>1.27</td>
+<td>1.09</td>
+<td>0.76</td>
+<td>0.9 ← 0.9</td>
+</tr>
+<tr>
+<td>2. فيبوناتشي</td>
+<td>1.03 ±0.01</td>
+<td>1.06</td>
+<td>1.04</td>
+<td>0.98</td>
+<td>1.13</td>
+<td>0.38</td>
+<td>0.53</td>
+<td><strong>4.0 ← 2.7</strong></td>
+</tr>
+<tr>
+<td>3. n-body</td>
+<td>0.50 ±0.05</td>
+<td>1.05</td>
+<td>0.48</td>
+<td>0.50</td>
+<td>1.43</td>
+<td>0.28</td>
+<td>0.29</td>
+<td><strong>3.7 ← 1.8</strong></td>
+</tr>
+<tr>
+<td>3. n-body بأسلوب C</td>
+<td>0.31 ±0.02</td>
+<td>0.64</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>0.28</td>
+<td></td>
+<td>2.5 ← <strong>1.1</strong></td>
+</tr>
+<tr>
+<td>4. غربال</td>
+<td>0.34 ±0.02</td>
+<td>0.42</td>
+<td>0.27</td>
+<td>0.26</td>
+<td>0.64</td>
+<td>0.23</td>
+<td>0.24</td>
+<td>1.6 ← 1.5</td>
+</tr>
+<tr>
+<td>5. نصوص</td>
+<td>0.46 ±0.02</td>
+<td>0.50</td>
+<td>0.46</td>
+<td>0.23</td>
+<td>0.60</td>
+<td>0.20</td>
+<td>0.07</td>
+<td>2.8 ← 2.3</td>
+</tr>
+<tr>
+<td>6. قاموس</td>
+<td>0.37 ±0.02</td>
+<td>0.63</td>
+<td>0.46</td>
+<td>0.40</td>
+<td>0.96</td>
+<td>0.22</td>
+<td>0.47</td>
+<td>2.4 ← 1.7</td>
+</tr>
+<tr>
+<td>7. قيم مُدارة</td>
+<td>0.105 ±0.007</td>
+<td>0.124</td>
+<td>0.103</td>
+<td>0.052</td>
+<td>0.49</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>ما صنع الفرق:</strong> حارس المكدس بدل عدّاد العودية (فيبوناتشي)، والبناء بـO2 افتراضياً (n-body والقاموس والغربال).</li>
+<li><strong>فحوص الحدود والتجاوز بعد 0.6.0</strong> («بلا فحوص» في سكربت القياس، مبنياً بـO2): الحلقة 1.00 ← 0.77 (23%)، فيبوناتشي
+1.03 ← 0.94 (9%)، n-body 0.50 ← 0.37 (26%)، الغربال 0.34 ← 0.26 (24%)، القاموس 0.37 ← 0.43 (تشويش)، النصوص
+والقيم المُدارة ضمن التشويش.</li>
+<li><strong>التشغيل المباشر</strong> لم يتغير (سريع الترجمة بالقرار 11)، فصار الفرق بينه وبين المبني كبيراً في البرامج الحسابية
+(n-body 1.43 مقابل 0.50).</li>
+<li><code dir="auto">--cpu=native</code> يفيد الحلقة العددية وحدها بوضوح (1.00 ← 0.64)، ويبطئ القاموس هنا (0.37 ← 0.46؛ لم يُحلَّل).</li>
+<li><strong>لإعادة القياس:</strong> <code dir="auto">python bench/run.py --rounds 3</code>.</li>
+</ul>
+<div class="sl-heading-wrapper level-h2"><h2 id="1-النتائج-052">1. النتائج (0.5.2)</h2><a class="sl-anchor-link" href="#1-النتائج-052"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «1. النتائج (0.5.2)»</span></a></div>
+<p>زمن الحائط بالثواني، وسيط ثلاث جولات ± الانحراف المعياري؛ «×» نسبةً إلى C. حمل الجهاز قبل الجولات 1.3 إلى 1.9
+(يطبعه السكربت قبل كل برنامج).</p>
+<table>
+<thead>
+<tr>
+<th>البرنامج</th>
+<th>مبني</th>
+<th>مبني <code dir="auto">-O</code></th>
+<th>حركي</th>
+<th>حركي <code dir="auto">-O</code></th>
+<th>مباشر</th>
+<th>C</th>
+<th>Rust</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. حلقة عددية، 300 مليون</td>
+<td>0.71 ±0.01 (×0.9)</td>
+<td>0.67 ±0.01</td>
+<td>0.97 ±0.02</td>
+<td>0.65 ±0.01</td>
+<td>0.84 ±0.02</td>
+<td>0.76 ±0.02</td>
+<td>0.51 ±0.01</td>
+</tr>
+<tr>
+<td>2. فيبوناتشي، ن=40</td>
+<td>1.01 ±0.01 (<strong>×4.0</strong>)</td>
+<td>0.97 ±0.02 (×3.9)</td>
+<td>1.01 ±0.04</td>
+<td>0.99 ±0.04</td>
+<td>1.04 ±0.02</td>
+<td>0.25 ±0.01</td>
+<td>0.30 ±0.01</td>
+</tr>
+<tr>
+<td>3. n-body</td>
+<td>0.69 ±0.01 (<strong>×3.7</strong>)</td>
+<td>0.35 ±0.00 (×1.9)</td>
+<td>0.72 ±0.01</td>
+<td>0.36 ±0.02</td>
+<td>0.97 ±0.01</td>
+<td>0.18 ±0.00</td>
+<td>0.21 ±0.00</td>
+</tr>
+<tr>
+<td>3. n-body بأسلوب C</td>
+<td>0.45 ±0.02 (×2.5)</td>
+<td>0.20 ±0.02 (×1.1)</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4. غربال 20 مليوناً</td>
+<td>0.32 ±0.00 (×1.6)</td>
+<td>0.29 ±0.01 (×1.5)</td>
+<td>0.30 ±0.01</td>
+<td>0.27 ±0.01</td>
+<td>0.51 ±0.03</td>
+<td>0.19 ±0.01</td>
+<td>0.20 ±0.00</td>
+</tr>
+<tr>
+<td>5. نصوص</td>
+<td>0.36 ±0.01 (<strong>×2.8</strong>)</td>
+<td>0.33 ±0.01</td>
+<td>0.19 ±0.01 (×1.5)</td>
+<td>0.16 ±0.01 (×1.2)</td>
+<td>0.39 ±0.01</td>
+<td>0.13 ±0.03</td>
+<td>0.05 ±0.00</td>
+</tr>
+<tr>
+<td>6. قاموس، مليون مفتاح</td>
+<td>0.43 ±0.03 (×2.4)</td>
+<td>0.29 ±0.02 (×1.6)</td>
+<td>0.43 ±0.01</td>
+<td>0.26 ±0.00</td>
+<td>0.62 ±0.01</td>
+<td>0.18 ±0.00</td>
+<td>0.36 ±0.02</td>
+</tr>
+<tr>
+<td>7. قيم مُدارة كثيرة الحركة</td>
+<td>0.088 ±0.006</td>
+<td>0.073 ±0.006</td>
+<td>0.050 ±0.007</td>
+<td>0.043 ±0.004</td>
+<td>0.38 ±0.03</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>«مبني»</strong> <code dir="auto">meem build</code> (ساكن، musl)؛ <strong>«حركي»</strong> <code dir="auto">--dynamic</code> (glibc)؛ <strong>«مباشر»</strong> <code dir="auto">meem برنامج.م</code> وفيه نحو 0.25 إلى
+0.30 ث ترجمةً وبدءاً.</li>
+<li><strong>«بأسلوب C»</strong> كُتبت للبرنامج 3 وحده (مصفوفات ثابتة بدل قوائم). للغربال وللقاموس اليدوي <strong>لم تُكتب</strong>: اللغة لا
+تعطي مصفوفة ثابتة كبيرة ولا حجز كتلة.</li>
+<li>القاموس: نسخة C جدول يدوي بحجم ثابت بلا توسعة، وفي Rust <code dir="auto">HashMap</code> القياسي؛ فليست تنفيذاً بتنفيذ.</li>
+<li>الحلقة العددية حركياً بلا <code dir="auto">-O</code> أبطأ من الساكن (0.97 مقابل 0.71) والسبب <strong>غير مقيس</strong> (الشيفرة نفسها، بنموذج عنونة
+آخر).</li>
+</ul>
+<div class="sl-heading-wrapper level-h3"><h3 id="قبل-وبعد-051-ثم-052-بالأسلوب-نفسه-وعلى-الجهاز-في-الحال-نفسها">قبل وبعد (0.5.1 ثم 0.5.2)، بالأسلوب نفسه وعلى الجهاز في الحال نفسها</h3><a class="sl-anchor-link" href="#قبل-وبعد-051-ثم-052-بالأسلوب-نفسه-وعلى-الجهاز-في-الحال-نفسها"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «قبل وبعد (0.5.1 ثم 0.5.2)، بالأسلوب نفسه وعلى الجهاز في الحال نفسها»</span></a></div>
+<p>«قبل» قيس ثانيةً على إيداع 0.5.1 (<code dir="auto">5d2c1f0</code>) بالسكربت نفسه، في الساعة نفسها (حمل 1.2 إلى 1.3). الأرقام في
+القسم 9 قيست تحت حِمل أعلى، فلا تُقارن بهذه.</p>
+<table>
+<thead>
+<tr>
+<th>البرنامج</th>
+<th>0.5.1 مبني</th>
+<th>0.5.2 مبني</th>
+<th>0.5.2 مبني <code dir="auto">-O</code></th>
+<th>0.5.1 حركي</th>
+<th>0.5.2 حركي</th>
+<th>C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. حلقة</td>
+<td>1.39</td>
+<td><strong>0.71</strong></td>
+<td>0.67</td>
+<td>1.40</td>
+<td>0.97</td>
+<td>0.74 إلى 0.76</td>
+</tr>
+<tr>
+<td>2. فيبوناتشي</td>
+<td>1.40</td>
+<td><strong>1.01</strong></td>
+<td>0.97</td>
+<td>1.39</td>
+<td>1.01</td>
+<td>0.25 إلى 0.26</td>
+</tr>
+<tr>
+<td>3. n-body</td>
+<td>0.75</td>
+<td>0.69</td>
+<td><strong>0.35</strong></td>
+<td>0.78</td>
+<td>0.72</td>
+<td>0.18</td>
+</tr>
+<tr>
+<td>3. n-body بأسلوب C</td>
+<td>0.52</td>
+<td>0.45</td>
+<td><strong>0.20</strong></td>
+<td>—</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>4. غربال</td>
+<td>0.34</td>
+<td>0.32</td>
+<td>0.29</td>
+<td>0.36</td>
+<td>0.30</td>
+<td>0.18 إلى 0.19</td>
+</tr>
+<tr>
+<td>5. نصوص</td>
+<td>0.87</td>
+<td><strong>0.36</strong></td>
+<td>0.33</td>
+<td>0.29</td>
+<td><strong>0.19</strong></td>
+<td>0.09 إلى 0.13</td>
+</tr>
+<tr>
+<td>6. قاموس</td>
+<td>0.47</td>
+<td>0.43</td>
+<td><strong>0.29</strong></td>
+<td>0.43</td>
+<td>0.43</td>
+<td>0.18 إلى 0.19</td>
+</tr>
+<tr>
+<td>7. قيم مُدارة</td>
+<td>0.33</td>
+<td><strong>0.088</strong></td>
+<td>0.073</td>
+<td>0.125</td>
+<td><strong>0.050</strong></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>ما صنع الفرق، خطوةً خطوة:</p>
+<table>
+<thead>
+<tr>
+<th>الخطوة</th>
+<th>ما قيس بعدها</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>(أ) SROA وتبسيط خفيف في كل تشغيل</strong></td>
+<td>حلقة 1.39 إلى 0.70؛ فيبوناتشي 1.40 إلى 0.99؛ n-body 0.75 إلى 0.69؛ غربال 0.34 إلى 0.31؛ قاموس 0.47 إلى 0.44؛ النصوص بلا تغيير. <strong>زمن الترجمة لم يتغير</strong>: <code dir="auto">كل_اللغة</code> 0.429 إلى 0.443 ث (+3%)، <code dir="auto">قواميس</code> +1%، <code dir="auto">قاموس_تجزئة</code> -3% (أفضل 9، ضمن التشويش)</td>
+</tr>
+<tr>
+<td><strong>(ب) <code dir="auto">meem build -O</code></strong> (مسار O1)</td>
+<td>n-body 0.69 إلى 0.35؛ قاموس 0.43 إلى 0.29؛ غربال 0.32 إلى 0.29؛ فيبوناتشي 1.01 إلى 0.97 فقط. زمن البناء: <code dir="auto">كل_اللغة</code> 0.50 إلى 0.74 ث (+47%)، <code dir="auto">قواميس</code> 0.30 إلى 0.45 (+50%)</td>
+</tr>
+<tr>
+<td><strong>(ج) دمج النصوص بنسخ القطع بلا <code dir="auto">snprintf</code></strong></td>
+<td>نصوص: ساكن 0.86 إلى 0.36، حركي 0.30 إلى 0.19. قيم مُدارة: ساكن 0.33 إلى 0.088، حركي 0.12 إلى 0.050</td>
+</tr>
+</tbody>
+</table>
+<p>المخرجات: كل اختبارات المجمّع (556) تمرّ بلا تغيير في أي ناتج مرجعي بعد (أ) وبعد (ج)، ومنها برامج الأخطاء
+وبرامج الكاشف ووضع البناء.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="2-ما-يطلبه-المجمّع-من-llvm">2. ما يطلبه المجمّع من LLVM</h2><a class="sl-anchor-link" href="#2-ما-يطلبه-المجمّع-من-llvm"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «2. ما يطلبه المجمّع من LLVM»</span></a></div>
+<table>
+<thead>
+<tr>
+<th>السؤال</th>
+<th>الجواب (0.6.0)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>مستوى التحسين</td>
+<td><strong>توليد الكود بالمستوى 2</strong>. وعلى مستوى IR: التشغيل المباشر <strong>SROA ثم تبسيط التعليمات ثم تبسيط مخطط التحكم</strong>؛ و<code dir="auto">meem build</code> <strong>مسار O2 الكامل</strong> افتراضياً منذ 0.6.0 (و<code dir="auto">-O0</code> يعيده إلى التحسين الخفيف). برنامج فوق 5000 كتلة يُولَّد بالمستوى 0 بلا تحسين IR</td>
+</tr>
+<tr>
+<td>إعدادات المعالج</td>
+<td><strong>عامة</strong> (x86_64 الأساسي) افتراضياً؛ و<code dir="auto">meem build --cpu=native</code> لمعالج الجهاز (منذ 0.6.0)</td>
+</tr>
+<tr>
+<td>الدمج (inlining)</td>
+<td>التشغيل المباشر و<code dir="auto">-O0</code>: النداءات المعلَّمة لدوال التشغيل الصغيرة داخل الحلقات فقط. <code dir="auto">meem build</code> (افتراضياً): دمج LLVM العام بمستوى O2. ونداءات دوال المستخدم <code dir="auto">notail</code>: العودية الذيلية لا تصير حلقة، كي يبقى تجاوز المكدس خطأ تشغيل</td>
+</tr>
+<tr>
+<td>إعادة معالجة الوحدة</td>
+<td>مرة واحدة بالمسار المذكور، قبل توليد الكود</td>
+</tr>
+</tbody>
+</table>
+<p>(في 0.5.1 وما قبله: لا تحسين على مستوى IR إطلاقاً.)</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="3-لماذا-يتقدم-c-القياس-على-051">3. لماذا يتقدم C: القياس (على 0.5.1)</h2><a class="sl-anchor-link" href="#3-لماذا-يتقدم-c-القياس-على-051"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «3. لماذا يتقدم C: القياس (على 0.5.1)»</span></a></div>
+<p>الطريقتان: عدّ التعليمات المنفَّذة (valgrind/callgrind، على بناء حركي غير مجرَّد) ومقارنة الشيفرة المولَّدة
+(<code dir="auto">objdump</code>)، ثم تجارب تعدّل المجمّع <strong>للقياس فقط</strong> (<code dir="auto">bench/meem_variant.py</code>؛ لا شيء منها في المجمّع).</p>
+<table>
+<thead>
+<tr>
+<th>البرنامج</th>
+<th>تعليمات ميم</th>
+<th>تعليمات C</th>
+<th>النسبة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2. فيبوناتشي</td>
+<td>11.09 مليار</td>
+<td>2.96 مليار</td>
+<td>3.7</td>
+</tr>
+<tr>
+<td>3. n-body</td>
+<td>6.21 مليار</td>
+<td>1.30 مليار</td>
+<td>4.8</td>
+</tr>
+<tr>
+<td>5. النصوص</td>
+<td>2.29 مليار</td>
+<td>0.88 مليار</td>
+<td>2.6</td>
+</tr>
+<tr>
+<td>6. القاموس</td>
+<td>394 مليوناً</td>
+<td>94 مليوناً</td>
+<td>4.2</td>
+</tr>
+</tbody>
+</table>
+<p>والتجارب (ثوانٍ، مبني ساكن):</p>
+<table>
+<thead>
+<tr>
+<th>البرنامج</th>
+<th>اليوم</th>
+<th>SROA وتبسيط</th>
+<th>مسار O1</th>
+<th>مسار O2</th>
+<th>O2 + معالج الجهاز</th>
+<th>بلا فحوص</th>
+<th>بلا فحوص + O2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. حلقة</td>
+<td>2.60</td>
+<td>—</td>
+<td>—</td>
+<td>1.45</td>
+<td>1.19</td>
+<td>3.06</td>
+<td>1.07</td>
+</tr>
+<tr>
+<td>2. فيبوناتشي</td>
+<td>2.80</td>
+<td>1.40</td>
+<td>0.97</td>
+<td>1.67</td>
+<td>1.56</td>
+<td>1.89</td>
+<td>1.50</td>
+</tr>
+<tr>
+<td>3. n-body</td>
+<td>1.11</td>
+<td>0.71</td>
+<td>0.36</td>
+<td>0.54</td>
+<td>0.49</td>
+<td>0.86</td>
+<td>0.35</td>
+</tr>
+<tr>
+<td>4. غربال</td>
+<td>0.40</td>
+<td>—</td>
+<td>—</td>
+<td>0.26</td>
+<td>0.26</td>
+<td>0.44</td>
+<td>0.23</td>
+</tr>
+<tr>
+<td>5. نصوص</td>
+<td>1.26</td>
+<td>—</td>
+<td>—</td>
+<td>1.24</td>
+<td>1.17</td>
+<td>1.27</td>
+<td>1.23</td>
+</tr>
+<tr>
+<td>6. قاموس</td>
+<td>0.52</td>
+<td>0.42</td>
+<td>0.29</td>
+<td>0.35</td>
+<td>0.27</td>
+<td>0.56</td>
+<td>0.30</td>
+</tr>
+</tbody>
+</table>
+<p>(«SROA وتبسيط» و«O1» قيسا جولة واحدة لثلاثة برامج.)</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="السبب-الأول-في-كل-البرامج-العددية-المتغيرات-في-الذاكرة">السبب الأول، في كل البرامج العددية: المتغيرات في الذاكرة</h3><a class="sl-anchor-link" href="#السبب-الأول-في-كل-البرامج-العددية-المتغيرات-في-الذاكرة"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «السبب الأول، في كل البرامج العددية: المتغيرات في الذاكرة»</span></a></div>
+<p>شيفرة الحلقة (البرنامج 1) كما ولّده ميم، مقابل gcc: متغير الحلقة على المكدس والمجموع في متغير عام، وكلاهما
+<strong>يُقرأ من الذاكرة ويُكتب فيها في كل دورة</strong> (<code dir="auto">mov (%rsp),%rcx</code> … <code dir="auto">incq (%rsp)</code>؛ <code dir="auto">add (%r8,%rsi,1),%r14</code> ثم
+<code dir="auto">mov %r14,(%r8,%rsi,1)</code>)، ومعها قفزة فحص تجاوز بعد كل عملية (<code dir="auto">jo</code>)، وفحص «القسمة على صفر» على مقسوم عليه
+ثابت لم يُطوَ. gcc يبقي الاثنين في مسجِّلين بلا ذاكرة ولا فحوص. هذا ما تزيله SROA/mem2reg، وهي غير مشغَّلة.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="2-فيبوناتشي-73">2. فيبوناتشي (×7.3)</h3><a class="sl-anchor-link" href="#2-فيبوناتشي-73"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «2. فيبوناتشي (×7.3)»</span></a></div>
+<p>33.5 تعليمة لكل استدعاء مقابل 8.9 في C (331 مليون استدعاء). في كل استدعاء: زيادة عدّاد عمق العودية وإنقاصه
+(متغير عام: قراءتان وكتابتان) وفحص الحد، وثلاثة فحوص تجاوز، ومعامل ونتائج وسيطة على المكدس. نسبة الزمن (7.3)
+أكبر من نسبة التعليمات (3.7) لأن الكتابة في العدّاد العام وقراءته تسلسلان الاستدعاءات. وgcc يحوّل أحد
+الاستدعاءين إلى حلقة. أثر عدّاد العمق وحده: <strong>غير مقيس منفرداً</strong>.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="3-n-body-42-وبأسلوب-c-29">3. n-body (×4.2، وبأسلوب C ×2.9)</h3><a class="sl-anchor-link" href="#3-n-body-42-وبأسلوب-c-29"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «3. n-body (×4.2، وبأسلوب C ×2.9)»</span></a></div>
+<p>كل <code dir="auto">س[ا]</code> على قائمة: قراءة رأس القائمة، قراءة العدد، فحص الحدود، قراءة مؤشر البيانات، ثم العنصر؛ والقوائم السبع
+متغيرات عامة تُعاد قراءتها. المصفوفة الثابتة تحذف القراءات غير المباشرة (1.11 إلى 0.75). و<code dir="auto">رياضيات.جذر</code> نداء دالة
+غير مضمَّن فيه فحص السالب (6.4% من التعليمات). مع O1: 0.36 ث، أي ×1.4 من C.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="4-الغربال-17">4. الغربال (×1.7)</h3><a class="sl-anchor-link" href="#4-الغربال-17"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «4. الغربال (×1.7)»</span></a></div>
+<p>الحلقة الداخلية: فحص الحدود وقراءة رأس القائمة في كل كتابة، والعدّادان في الذاكرة. مع O2: 0.26 (×1.1)؛ ومعه بلا
+فحوص: 0.23، وهو زمن C.</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="5-النصوص-ساكن-84-حركي-28">5. النصوص (ساكن ×8.4، حركي ×2.8)</h3><a class="sl-anchor-link" href="#5-النصوص-ساكن-84-حركي-28"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «5. النصوص (ساكن ×8.4، حركي ×2.8)»</span></a></div>
+<p>سببان مختلفان:</p>
+<ul>
+<li><strong>musl</strong> (ثلثا الفرق): البرنامج نفسه 1.26 ث ساكناً و0.43 حركياً. انظر القسم 6.</li>
+<li><strong>الباقي (×2.8)</strong>: 2.29 مليار تعليمة مقابل 0.88. البحث نفسه (<code dir="auto">strstr</code>) 590 مليوناً في الاثنين. الزائد: تحويل
+العدد إلى نص ودمج القطع يمرّان بـ<code dir="auto">snprintf</code> (نحو 800 مليون تعليمة في آلة <code dir="auto">printf</code>، مقابل نداء واحد في C)، ونصان
+مؤقتان يُحجزان ويُعادان في كل دورة، و<code dir="auto">طول</code> يعدّ الأحرف بالمرور على النص كله في كل استدعاء. تحسينات IR لا تغيّر
+شيئاً هنا (1.24 مع O2): الزمن في مكتبة التشغيل ومكتبة C.</li>
+</ul>
+<div class="sl-heading-wrapper level-h3"><h3 id="6-القاموس-26">6. القاموس (×2.6)</h3><a class="sl-anchor-link" href="#6-القاموس-26"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «6. القاموس (×2.6)»</span></a></div>
+<p>45% من التعليمات في دالة تحديد الموضع و12% في دالة التجزئة، <strong>وكلتاهما نداء غير مضمَّن</strong> (سمة التضمين عليهما لا
+تُنفَّذ إلا إن عمل مسار التضمين، وهو لا يعمل لهذا البرنامج). مع O1: 0.29 ث (×1.4)؛ مع O2 ومعالج الجهاز: 0.27.
+و5% في إعادة بناء الفهارس عند التوسعة، وهي كلفة جدول يكبر (نسخة C بحجم ثابت).</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="4-أهم-التحسينات-الممكنة-كما-قُدّرت-على-051-الأول-والثاني-والخامس-نُفّذت">4. أهم التحسينات الممكنة (كما قُدّرت على 0.5.1؛ الأول والثاني والخامس نُفّذت)</h2><a class="sl-anchor-link" href="#4-أهم-التحسينات-الممكنة-كما-قُدّرت-على-051-الأول-والثاني-والخامس-نُفّذت"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «4. أهم التحسينات الممكنة (كما قُدّرت على 0.5.1؛ الأول والثاني والخامس نُفّذت)»</span></a></div>
+<table>
+<thead>
+<tr>
+<th>التحسين</th>
+<th>الأثر المقيس</th>
+<th>الكلفة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>تشغيل SROA وتبسيط خفيف على IR</strong> قبل توليد الكود</td>
+<td>فيبوناتشي 2.80 إلى 1.40؛ n-body 1.11 إلى 0.71؛ قاموس 0.52 إلى 0.42. <strong>وزمن الترجمة ينقص</strong>: <code dir="auto">كل_اللغة</code> 0.87 إلى 0.55 ث، <code dir="auto">قاموس_تجزئة</code> 0.86 إلى 0.77 (مولّد الشيفرة يستلم تعليمات أقل)</td>
+<td>سطور قليلة في <code dir="auto">finish_module</code>. يلزمه تشغيل المجموعة والبذور كلها (يغيّر الشيفرة المولَّدة لكل برنامج)، ومراجعة رسائل أخطاء التشغيل</td>
+</tr>
+<tr>
+<td><strong>مسار O1 كاملاً</strong> (فيه التضمين)</td>
+<td>فيبوناتشي 0.97 (×2.5 من C)؛ n-body 0.36 (×1.4)؛ قاموس 0.29 (×1.4)</td>
+<td>زمن الترجمة يزيد: <code dir="auto">كل_اللغة</code> 0.87 إلى 1.11 ث (+27%)، <code dir="auto">قواميس</code> 0.42 إلى 0.83 (+97%)، <code dir="auto">قاموس_تجزئة</code> +64%. يتجاوز حدّ الـ15% المعتمد: يصلح لـ<code dir="auto">meem build</code> (خيار <code dir="auto">-O</code>) لا للتشغيل المباشر</td>
+</tr>
+<tr>
+<td><strong>معالج الجهاز</strong> في التشغيل المباشر</td>
+<td>فوق O2: حلقة 1.45 إلى 1.19؛ قاموس 0.35 إلى 0.27؛ الباقي ضمن التشويش</td>
+<td>سطر. <strong>لا يصلح للملف المبني</strong> الذي يُنقل إلى جهاز آخر إلا بخيار صريح</td>
+</tr>
+<tr>
+<td><strong>سعة النص في رأسه</strong> بدل الاعتماد على سعة كتلة <code dir="auto">malloc</code></td>
+<td>يُتوقع أن يزيل أغلب فرق musl في النصوص (1.26 مقابل 0.43): <strong>تقدير</strong>، غير مقيس</td>
+<td>متوسطة: حقل في رأس النص، ومراجعة كل من يقرأ الرأس</td>
+</tr>
+<tr>
+<td><strong>تحويل العدد إلى نص بلا <code dir="auto">snprintf</code></strong></td>
+<td>يزيل نحو ثلث تعليمات برنامج النصوص: <strong>تقدير</strong> من عدّ التعليمات</td>
+<td>صغيرة: دالة تشغيل للأعداد الصحيحة</td>
+</tr>
+<tr>
+<td><strong>تخفيف حارس عمق العودية</strong> (عدّاد في مسجِّل أو فحص عنوان المكدس)</td>
+<td>غير مقيس منفرداً</td>
+<td>متوسطة؛ يمسّ رسالة «تجاوز عمق العودية»</td>
+</tr>
+<tr>
+<td><strong>حذف فحوص الحدود التي تُثبَت</strong> (فهرس حلقة <code dir="auto">مدى(0, طول)</code>)</td>
+<td>حدّها الأعلى ما في القسم 5</td>
+<td>يأتي جزء منه مع مسارات IR؛ الباقي تحليل في المجمّع</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="5-كلفة-فحوص-التشغيل-النسبة-الحقيقية-بعد-052">5. كلفة فحوص التشغيل (النسبة الحقيقية بعد 0.5.2)</h2><a class="sl-anchor-link" href="#5-كلفة-فحوص-التشغيل-النسبة-الحقيقية-بعد-052"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «5. كلفة فحوص التشغيل (النسبة الحقيقية بعد 0.5.2)»</span></a></div>
+<p>التجربة: فحص حدود الفهرسة موقوف (تعديل تجريبي) وفحص التجاوز موقوف (<code dir="auto">--wrap-overflow</code>). فحوص القسمة على صفر
+والمؤشر الفارغ وعمق العودية <strong>باقية</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>البرنامج</th>
+<th>مبني</th>
+<th>بلا فحوص</th>
+<th>الكلفة</th>
+<th>مبني <code dir="auto">-O</code></th>
+<th>بلا فحوص <code dir="auto">-O</code></th>
+<th>الكلفة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. حلقة</td>
+<td>0.708</td>
+<td>0.705</td>
+<td>0%</td>
+<td>0.665</td>
+<td>0.671</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>2. فيبوناتشي</td>
+<td>1.006</td>
+<td>1.041</td>
+<td>0%</td>
+<td>0.970</td>
+<td>1.002</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>3. n-body</td>
+<td>0.686</td>
+<td>0.515</td>
+<td><strong>25%</strong></td>
+<td>0.353</td>
+<td>0.321</td>
+<td>9%</td>
+</tr>
+<tr>
+<td>4. غربال</td>
+<td>0.315</td>
+<td>0.378</td>
+<td>0% (أبطأ بلا فحوص: تشويش أو ترتيب الشيفرة)</td>
+<td>0.289</td>
+<td>0.269</td>
+<td>7%</td>
+</tr>
+<tr>
+<td>5. نصوص</td>
+<td>0.362</td>
+<td>0.361</td>
+<td>0%</td>
+<td>0.328</td>
+<td>0.320</td>
+<td>2%</td>
+</tr>
+<tr>
+<td>6. قاموس</td>
+<td>0.433</td>
+<td>0.440</td>
+<td>0%</td>
+<td>0.290</td>
+<td>0.255</td>
+<td>12%</td>
+</tr>
+<tr>
+<td>7. قيم مُدارة</td>
+<td>0.088</td>
+<td>0.084</td>
+<td>5%</td>
+<td>0.073</td>
+<td>0.069</td>
+<td>5%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الخلاصة:</strong> الفحوص تكلّف ما بين صفر و12% في ستة من سبعة، و<strong>25% في برنامج واحد</strong> كثير الفهرسة على قوائم قصيرة
+داخل حلقة (n-body)، تنزل إلى 9% مع <code dir="auto">-O</code> (المسار يحذف المكرر منها). الانحراف في هذه القياسات 1% إلى 5%.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="6-كلفة-العدّ-المرجعي">6. كلفة العدّ المرجعي</h2><a class="sl-anchor-link" href="#6-كلفة-العدّ-المرجعي"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «6. كلفة العدّ المرجعي»</span></a></div>
+<p>«بلا عدّ» نسخة تجريبية لا تزيد ولا تنقص، <strong>فلا تحرّر شيئاً</strong> (كل قيمة تتسرّب): هي «نسخة افتراضية بلا عدّ» من
+حيث التعليمات، وأسوأ من حيث الذاكرة.</p>
+<table>
+<thead>
+<tr>
+<th>البرنامج</th>
+<th>زيادات</th>
+<th>نقصانات</th>
+<th>اليوم</th>
+<th>بلا عدّ</th>
+<th>ذاكرة الذروة: اليوم / بلا عدّ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>بلا قيم مُدارة (1، 2)</td>
+<td>0</td>
+<td>0</td>
+<td>2.60 / 2.80</td>
+<td>3.09 / 2.55</td>
+<td>12 / 12 م.ب</td>
+</tr>
+<tr>
+<td>نصوص كثيرة (5)</td>
+<td>0</td>
+<td>808,043</td>
+<td>1.26</td>
+<td>1.17</td>
+<td>12 / 141 م.ب</td>
+</tr>
+<tr>
+<td>قوائم وقواميس ونصوص متحركة (7)</td>
+<td>1,500,200</td>
+<td>2,096,302</td>
+<td>0.51</td>
+<td>0.57</td>
+<td>12 / 25 م.ب</td>
+</tr>
+<tr>
+<td>n-body، غربال، قاموس أعداد (3، 4، 6)</td>
+<td>0</td>
+<td>9، 1، 1</td>
+<td>—</td>
+<td>مثل اليوم</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>برنامج بلا قيم مُدارة لا يدفع شيئاً</strong>: صفر عملية (الفرق في الجدول تشويش).</li>
+<li><strong>الكلفة في البرنامجين المُدارَين أصغر من تشويش القياس</strong>؛ «بلا عدّ» ليس أسرع (والتسريب يكلّفه حجزاً من النظام).
+<strong>تقدير</strong> من العدد: 3.6 مليون عملية في البرنامج 7، كل منها قراءة وكتابة وقفزة، نحو 1 إلى 2 نانوثانية، أي 4 إلى
+7 مللي ثانية من 510 (نحو 1%). الزمن في الحجز والتحرير، لا في العدّ.</li>
+<li><strong>ما يحذفه تحليل ثابت، تقديراً (غير منفَّذ):</strong>
+<ul>
+<li>البرنامج 7، لكل دورة داخلية 5 زيادات و7 نقصانات. ثلاثة متغيرات محلية (<code dir="auto">ن</code>، <code dir="auto">م</code>، <code dir="auto">صف</code>) تأخذ قيمة مستعارة من
+حاوية لا تتغير ما دامت تُستعمل ثم تتركها: زيادة ونقصان لكلٍّ، أي <strong>3 من 5 زيادات و3 من 7 نقصانات (نحو
+النصف)</strong> يحذفها تحليل «محلي مستعار لا يهرب». الباقي تحرير مؤقتات (نص المفتاح) وتخزين في حاوية: لازم.</li>
+<li>البرنامج 5: النقصانات كلها تحرير نصين مؤقتين في كل دورة. لا يُحذف منها شيء بتحليل؛ يحذفها بناء النص بلا مؤقتات.</li>
+<li>النقل (move) مطبَّق اليوم للقيمة المملوكة تُسند إلى موضع. تمرير الوسائط بلا عدّ مطبَّق (المعاملات مستعارة).</li>
+</ul>
+</li>
+</ul>
+<div class="sl-heading-wrapper level-h2"><h2 id="7-musl-مقابل-glibc-ما-كان-السبب-وما-اختير">7. musl مقابل glibc: ما كان السبب، وما اختير</h2><a class="sl-anchor-link" href="#7-musl-مقابل-glibc-ما-كان-السبب-وما-اختير"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «7. musl مقابل glibc: ما كان السبب، وما اختير»</span></a></div>
+<p>في 0.5.1 كان الملف الساكن (musl) أبطأ ثلاثة أضعاف من الحركي في البرامج النصية والكثيرة الحجز. القياس، لا الظن:</p>
+<p><strong>1. عزل الأنماط</strong> (0.5.1، ثوانٍ):</p>
+<table>
+<thead>
+<tr>
+<th>النمط</th>
+<th>ساكن</th>
+<th>حركي</th>
+<th>×</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>إلحاق بنص، 30 مليون مرة (بلا حجز جديد)</td>
+<td>10.27</td>
+<td>3.12</td>
+<td>3.3</td>
+</tr>
+<tr>
+<td>نصوص مؤقتة، 4 ملايين</td>
+<td>4.09</td>
+<td>1.11</td>
+<td>3.7</td>
+</tr>
+<tr>
+<td>تقسيم نص كبير</td>
+<td>0.82</td>
+<td>0.29</td>
+<td>2.8</td>
+</tr>
+<tr>
+<td>قوائم صغيرة تُنشأ وتُترك، مليونان</td>
+<td>0.41</td>
+<td>0.17</td>
+<td>2.5</td>
+</tr>
+<tr>
+<td><code dir="auto">اضف</code> لقائمة أعداد، 30 مليوناً</td>
+<td>0.24</td>
+<td>0.24</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<p>الإلحاق لا يحجز ومع ذلك أبطأ ثلاث مرات: <strong>فالمخصص ليس السبب الأول</strong>.</p>
+<p><strong>2. ربط mimalloc ساكناً بدل مخصص musl</strong> (تجربة يدوية بمكتبة ألباين 3.20): الإلحاق 10.23 إلى 9.89، المؤقتات 4.05
+إلى 3.68، برنامج النصوص 0.84 إلى 0.67. تحسّن صغير، والفرق عن glibc باقٍ.</p>
+<p><strong>3. عدّ التعليمات</strong> في حلقة الإلحاق: 55% منها في آلة <code dir="auto">printf</code> (‏<code dir="auto">snprintf</code> تُستدعى مرتين لكل دمج أو إلحاق: مرة
+للطول ومرة للكتابة). و<code dir="auto">snprintf</code> في musl أبطأ منها في glibc بمراتب. <strong>هذا السبب.</strong></p>
+<p><strong>ما نُفّذ:</strong> دمج النصوص والإلحاق ينسخان القطع بـ<code dir="auto">memcpy</code> (طول النص من رأسه، والعدد الصحيح بدالة تحويل في مكتبة
+التشغيل)، بلا <code dir="auto">snprintf</code>. لا اعتماد جديد، ويفيد المكتبتين، والنواتج المرجعية كلها لم تتغير.</p>
+<table>
+<thead>
+<tr>
+<th>النمط</th>
+<th>ساكن قبل</th>
+<th>ساكن بعد</th>
+<th>حركي قبل</th>
+<th>حركي بعد</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>إلحاق بنص</td>
+<td>10.27</td>
+<td><strong>2.08</strong></td>
+<td>3.12</td>
+<td>0.93</td>
+</tr>
+<tr>
+<td>نصوص مؤقتة</td>
+<td>4.09</td>
+<td><strong>0.95</strong></td>
+<td>1.11</td>
+<td>0.33</td>
+</tr>
+<tr>
+<td>تقسيم نص كبير</td>
+<td>0.82</td>
+<td><strong>0.32</strong></td>
+<td>0.29</td>
+<td>0.15</td>
+</tr>
+<tr>
+<td>برنامج النصوص (5)</td>
+<td>0.86</td>
+<td><strong>0.36</strong></td>
+<td>0.30</td>
+<td>0.19</td>
+</tr>
+<tr>
+<td>قيم مُدارة (7)</td>
+<td>0.33</td>
+<td><strong>0.088</strong></td>
+<td>0.12</td>
+<td>0.050</td>
+</tr>
+<tr>
+<td>قوائم صغيرة</td>
+<td>0.41</td>
+<td>0.41</td>
+<td>0.17</td>
+<td>0.17</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الحلول الأربعة المقترحة سابقاً، وما قاله القياس:</strong></p>
+<table>
+<thead>
+<tr>
+<th>الحل</th>
+<th>الحكم</th>
+<th>السبب</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>سعة النص في رأسه</td>
+<td><strong>مرفوض</strong></td>
+<td>الإلحاق يضاعف السعة أصلاً، ومخصص سريع الاستعلام عن السعة (mimalloc) لم يسرّع الإلحاق: ليست السعة ما يكلّف</td>
+</tr>
+<tr>
+<td>مخصص صغير مضمَّن في الشيفرة المولَّدة</td>
+<td><strong>مؤجَّل</strong></td>
+<td>أثره محدود بما أظهره mimalloc (القوائم الصغيرة والتقسيم)، ومخاطرته أعلى الأربعة (يمسّ كل حجز وتحرير والكاشف)</td>
+</tr>
+<tr>
+<td>ربط mimalloc ساكناً</td>
+<td><strong>لم يُنفَّذ؛ قرار عند مالك اللغة</strong></td>
+<td>بعد الإصلاح يسدّ أغلب الباقي: قوائم صغيرة 0.45 إلى 0.06، تقسيم 0.32 إلى 0.15، نصوص 0.35 إلى 0.20، قيم مُدارة 0.087 إلى 0.062. <strong>لكنه</strong> يضاعف زمن <code dir="auto">اضف</code> لقائمة كبيرة (0.23 إلى 0.47) ويبطئ القاموس قليلاً (0.43 إلى 0.46)، ويكبّر كل ملف مبني من نحو 40 إلى 175 ك.ب، ويضيف رخصة (MIT) وتنزيلاً مثبَّتاً آخر</td>
+</tr>
+<tr>
+<td>تدوين أن <code dir="auto">--dynamic</code> أسرع</td>
+<td><strong>قائم</strong></td>
+<td>الجدول أعلاه</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الباقي بعد الإصلاح:</strong> الساكن ما زال أبطأ من الحركي 1.8 إلى 2.9 مرة في الأنماط النصية والكثيرة الحجز (برنامج
+النصوص 0.36 مقابل 0.19). جزء منه المخصص (ما يسدّه mimalloc)، وجزء في الإلحاق الخالص (2.08 مقابل 0.93، ولا يتغير
+مع mimalloc) <strong>سببه غير مقيس</strong> (المرشَّح: <code dir="auto">memcpy</code> و<code dir="auto">malloc_usable_size</code> في musl). <strong>الافتراضي بقي الساكن.</strong></p>
+<div class="sl-heading-wrapper level-h2"><h2 id="8-ما-لم-يُقس">8. ما لم يُقس</h2><a class="sl-anchor-link" href="#8-ما-لم-يُقس"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «8. ما لم يُقس»</span></a></div>
+<ul>
+<li>على جهاز هادئ: لا. الأرقام وسيط ثلاث جولات تحت حِمل.</li>
+<li>معالجات أخرى، وARM: لا.</li>
+<li>أثر عدّاد عمق العودية منفرداً، ونسبة سببَي musl، وأطول توقف عند تحرير بنية كبيرة: لا.</li>
+<li><code dir="auto">--debug-mem</code>: كلفته لم تُقس هنا.</li>
+<li>برامج حقيقية (لا معيارية صغيرة): لا.</li>
+<li>بعد 0.5.2: لم يُعَد عدّ التعليمات (callgrind)، ولم يُحلَّل لماذا بقي فيبوناتشي عند ×4 (المرشَّح: عدّاد عمق
+العودية في متغير عام)، ولا الباقي من فرق musl في الإلحاق الخالص.</li>
+</ul>
+<div class="sl-heading-wrapper level-h2"><h2 id="9-قياس-051-المنشور-سابقاً">9. قياس 0.5.1 المنشور سابقاً</h2><a class="sl-anchor-link" href="#9-قياس-051-المنشور-سابقاً"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>رابط إلى قسم «9. قياس 0.5.1 المنشور سابقاً»</span></a></div>
+<p>للسجل: قياس 0.5.1 الأول جرى تحت حِمل 2.3 إلى 2.9 فجاءت أزمنته كلها أكبر (C نفسه 1.96 ث للحلقة مقابل 0.74 هنا).
+نِسَبه إلى C كانت: حلقة 1.3، فيبوناتشي 7.3، n-body 4.2، غربال 1.7، نصوص 8.4 (ساكن) و2.8 (حركي)، قاموس 2.6.
+جدولا القسمين 3 و4 من ذلك القياس.</p></div><footer class="sl-flex astro-ddtxxk7k"><div class="meta sl-flex astro-ddtxxk7k"></div><div class="pagination-links print:hidden astro-b5raizh3" dir="rtl"><a href="/docs/glossary/" rel="prev" class="astro-b5raizh3"><svg aria-hidden="true" class="astro-b5raizh3 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-b5raizh3">السابق<br class="astro-b5raizh3"><span class="link-title astro-b5raizh3">المصطلحات</span></span></a><a href="/docs/whats-new/" rel="next" class="astro-b5raizh3"><svg aria-hidden="true" class="astro-b5raizh3 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-b5raizh3">التالي<br class="astro-b5raizh3"><span class="link-title astro-b5raizh3">ما الجديد</span></span></a></div></footer><nav class="site-footer astro-jo6i4kqk" aria-label="روابط الموقع"><a href="/about/" class="astro-jo6i4kqk">حول المشروع</a><a href="/download/" class="astro-jo6i4kqk">التنزيل</a><a href="/support/" class="astro-jo6i4kqk">دعم ميم</a><span class="astro-jo6i4kqk">جميع الحقوق محفوظة. الرخصة قيد الإعداد.</span><span class="astro-jo6i4kqk">ميم — بيتا</span></nav></div></div></main></div></div></div></div></body></html>

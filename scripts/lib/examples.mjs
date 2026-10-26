@@ -6,7 +6,7 @@
 //   اسم.argv  وسائط البرنامج نفسه، وسيط في كل سطر (meem ملف.م -- وسائط؛ وللملف المبني: ./ناتج وسائط)
 //   اسم.env   متغيرات بيئة للتشغيل، NAME=value في كل سطر
 //   اسم.doc-err / اسم.doc-exit  كما في وثيقة المجمّع، مثل doc-out
-//   اسم.warn-ok  مثال منقول من وثيقة المجمّع: الحارس عليه --deny-deprecated بلا --strict
+//   اسم.warn-ok  مثال منقول من وثيقة المجمّع: الحارس عليه بلا --strict (ومعه --deny-deprecated على مجمّع قبل 0.8)
 //   اسم.frozen  مسجَّل بإصدار أقدم (رقم بنائه في الملف) لصفحة تاريخية: لا يُعاد تشغيله، ويُعرض موسوماً بإصداره
 //   اسم.in   الإدخال (اختياري)      اسم.args خيارات المجمّع، سطر واحد (اختياري)
 // البناء يشغّل المجمّع على كل مثال ويقارن. «npm run examples:record» يسجّل من جديد (راجع الفرق قبل الإيداع).
@@ -26,16 +26,19 @@ const LIB_DIRS = new Set(['مكتبات', 'وحدات']);
 
 const read = (f) => (existsSync(f) ? readFileSync(f, 'utf8') : '');
 
-/** خيارات الحارس. --deny-deprecated يجعل الصيغ المهجورة أخطاء، و--strict يرقّي بقية التحذيرات. */
+/**
+ * خيارات الحارس. --strict يرقّي التحذيرات إلى أخطاء. وعلى مجمّع يعرف الصيغ المهجورة (0.4 إلى 0.7) يُضاف --deny-deprecated؛
+ * ومنذ 0.8.0 الصيغ المهجورة أخطاء ترجمة بذاتها، والخياران --list-deprecated و--deny-deprecated أُزيلا.
+ */
 export function guardFlags() {
-  if (meem(['--list-deprecated', '--json']).status !== 0) {
-    throw new BuildError('المجمّع المستعمل لا يعرف --list-deprecated: حارس الصيغ يحتاج 0.4.0+42d5437 أو أحدث.');
-  }
-  return ['--json', '--deny-deprecated', '--strict'];
+  if (meem(['--list-deprecated', '--json']).status === 0) return ['--json', '--deny-deprecated', '--strict'];
+  const opts = meem(['--list-options', '--json']);
+  if (opts.status !== 0) throw new BuildError('المجمّع المستعمل لا يعرف --list-deprecated ولا --list-options: أقدم من أن يبني الموقع.');
+  return ['--json', '--strict'];
 }
 
 /**
- * يفحص ملفاً أو نصاً بـ«meem --check --json --deny-deprecated --strict» ويقرأ التشخيصات.
+ * يفحص ملفاً أو نصاً بـ«meem --check» وخيارات الحارس (guardFlags) ويقرأ التشخيصات.
  * يرجع قائمة مشاكل نصية (فارغة = سليم). الصيغة المهجورة تُذكر بمعرّفها من الحقل deprecated.
  */
 export function guardCheck(args, opts, guard) {

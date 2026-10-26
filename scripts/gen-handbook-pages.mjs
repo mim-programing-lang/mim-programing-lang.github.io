@@ -16,6 +16,12 @@ const { commit } = hbSource();
 
 // إضافات الموقع على نص الكتاب، بأمر صاحب المشروع (2026-10-18)، ومسجَّلة في docs-gaps.md.
 const CORRECTIONS = {
+  // حالة الإصدار: الكتاب عند الوسم v0.8.0 (36cff0b) كُتب قبل الإصدار فيقول «0.8.0 في التطوير، لم يصدر». الموقع ينقل
+  // تصحيح المجمّع نفسه (2bef573 في 0.8.0-dev) مع حالة النشر بعد رفع الحزمة. مسجَّل في docs-gaps.md.
+  'README.md': [
+    ['يصف **0.7.0**، وقد صدرت ونُشرت: الوسم `v0.7.0` (الإيداع `c919819`)، والحزمة\n`meem 0.7.0+c919819` ([../release-0.7.0.md](../release-0.7.0.md)). وحقل `version` في البيان يقول لكل مثال إن كان\nيعمل بحزمة الإصدار (`0.7.0`) أم في شجرة التطوير وحدها (`0.8.0`، لم يصدر)؛ وما بعد 0.7.0 موسوم «منذ 0.8.0» في الصفحات.', 'يصف **0.8.0**، وقد صدرت: الوسم `v0.8.0` (الإيداع `36cff0b`)، والحزمة\n`meem 0.8.0+36cff0b` ([../release-0.8.0.md](../release-0.8.0.md)). وحقل `version` في البيان يقول لكل مثال إن كان\nيعمل بحزمة الإصدار (`0.8.0`) أم في شجرة التطوير وحدها. ما أُضيف في 0.8.0 موسوم «منذ 0.8.0» في الصفحات.'],
+    ['| 0.8.0 | **في التطوير، لم يصدر**:', '| 0.8.0 | **صدرت**: `master` بالوسم `v0.8.0` (إيداع `36cff0b`)، والحزمة `meem-0.8.0-linux-x86_64.tar.xz` منشورة؛ ومحرر ميم 0.2.0 يعمل بميم 0.8.0، والموقع https://meemlang.org على 0.8.0. وفيها:'],
+  ],
   // سطران يضيفهما الموقع إلى المصطلحات بأمر صاحب المشروع.
   'glossary.md': [
     ['| الملعب | playground |', '| LLVM | LLVM | مكتبة ترجمة يولّد بها المجمّع شيفرة الآلة من البرنامج (الخيار `--emit-ir` يحفظ ما يعطيه لها) |\n| IEEE-754 | IEEE-754 | معيار تمثيل الأعداد الكسرية في الحاسوب؛ `كسر` في ميم عشري مضاعف الدقة عليه (64 بتاً) |\n| الملعب | playground |'],
@@ -46,10 +52,12 @@ export const PAGES = {
   'stdlib/نظام.md': { slug: 'docs/stdlib/system' },
   'stdlib/ملفات.md': { slug: 'docs/stdlib/files' },
   'stdlib/عشوائي.md': { slug: 'docs/stdlib/random' },
+  'stdlib/مسارات.md': { slug: 'docs/stdlib/paths', keywords: ['مسار', 'مسارات', 'ملف', 'مجلد', 'امتداد'] },
   'errors/common.md': { slug: 'docs/errors/common', keywords: ['خطأ', 'اخطاء', 'اصلاح'] },
   'tools/options.md': { slug: 'docs/tools/options' },
   'tools/check-json.md': { slug: 'docs/tools/check-json', schema: true },
   'migration/0.6-to-0.7.md': { slug: 'docs/migration' },
+  'migration/0.7-to-0.8.md': { slug: 'docs/migration/to-0-8', description: 'ما تغيّر بين ميم 0.7 و0.8: الصيغ المهجورة صارت أخطاء ترجمة، والرسائل بمعرّفات ثابتة، وصيغ جديدة في النصوص، وما يُضاف ولا يكسر.', keywords: ['ترحيل', 'ترقية', '0.8', 'مهجورة', 'معرف'] },
   'migration/errors.md': { slug: 'docs/migration/errors', keywords: ['ترحيل', 'معالجة الاخطاء', 'جرب', 'والا'] },
   'glossary.md': { slug: 'docs/glossary' },
   // errors/catalog.md يعرضه مكوّن خاص (src/components/ErrorCatalog.astro) في docs/errors/catalog.mdx
@@ -165,7 +173,7 @@ for (const [file, meta] of Object.entries(PAGES)) {
   }
   const page = `---
 title: ${JSON.stringify(title)}
-description: ${JSON.stringify(description(body) || title)}${meta.keywords ? `\nkeywords: ${JSON.stringify(meta.keywords)}` : ''}
+description: ${JSON.stringify(meta.description ?? (description(body) || title))}${meta.keywords ? `\nkeywords: ${JSON.stringify(meta.keywords)}` : ''}
 ---
 
 import HBExample from '${up}components/HBExample.astro';

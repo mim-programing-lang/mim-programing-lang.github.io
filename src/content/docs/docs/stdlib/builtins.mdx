@@ -60,6 +60,10 @@ import HBSource from '../../../../components/HBSource.astro';
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
+**أخطاؤها:**
+
+- النص المطلوب استبداله في 'استبدال' لا يمكن أن يكون فارغاً
+
 <HBExample id="stdlib/builtins.md#5" />
 
 ## `اضف`
@@ -145,6 +149,10 @@ import HBSource from '../../../../components/HBSource.astro';
 يقسّم النص عند كل ظهور للفاصل إلى قائمة نصوص
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
+
+**أخطاؤها:**
+
+- فاصل 'تقسيم' لا يمكن أن يكون نصاً فارغاً
 
 <HBExample id="stdlib/builtins.md#13" />
 
@@ -233,10 +241,6 @@ import HBSource from '../../../../components/HBSource.astro';
 
 ينهي البرنامج بخطأ تشغيل (رمز الخروج 3) برسالته: لخطأ المبرمج الذي لا يُكمَل بعده
 
-**أخطاؤها:**
-
-- %.*s
-
 <HBExample id="stdlib/builtins.md#22" />
 
 ## `دمج`
@@ -279,13 +283,25 @@ import HBSource from '../../../../components/HBSource.astro';
 
 <HBExample id="stdlib/builtins.md#25" />
 
+## `رتب_ب`
+
+**الصيغة:** `رتب_ب(القائمة, قبل)`
+
+يرتّب القائمة في مكانها بمقارن: قبل(ا, ب) صواب إن كان ا قبل ب. ترتيب مستقر (المتساويان يبقيان بترتيبهما)، ولأي نوع عناصر (منذ 0.8.0)
+
+**أخطاؤها:**
+
+- مقارن 'رتب_ب' من النوع '…' لكن وُجد '…'
+
+<HBExample id="stdlib/builtins.md#26" />
+
 ## `ساحة`
 
 **الصيغة:** `ساحة(الاصل)`
 
 مخصص يأخذ كتلاً من أصله ويحجز منها بالتتابع؛ اعد(س) يعيدها كلها دفعة واحدة (حرر وحده لا يعيد شيئاً)
 
-<HBExample id="stdlib/builtins.md#26" />
+<HBExample id="stdlib/builtins.md#27" />
 
 ## `شريحة`
 
@@ -300,7 +316,7 @@ import HBSource from '../../../../components/HBSource.astro';
 - طول الشريحة %lld سالب
 - طول الشريحة عدد صحيح لا '…'
 
-<HBExample id="stdlib/builtins.md#27" />
+<HBExample id="stdlib/builtins.md#28" />
 
 ## `شريحة_خام`
 
@@ -313,7 +329,7 @@ import HBSource from '../../../../components/HBSource.astro';
 - 'شريحة_خام' تأخذ مؤشر_خام لكن وُجد '…'
 - شريحة_خام: طول سالب، أو مؤشر لاشيء بطول %lld
 
-<HBExample id="stdlib/builtins.md#28" />
+<HBExample id="stdlib/builtins.md#29" />
 
 ## `طبيعي16`
 
@@ -321,7 +337,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 القيمة كما يخزّنها 'طبيعي16'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
 
-<HBExample id="stdlib/builtins.md#29" />
+<HBExample id="stdlib/builtins.md#30" />
 
 ## `طبيعي32`
 
@@ -329,7 +345,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 القيمة كما يخزّنها 'طبيعي32'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
 
-<HBExample id="stdlib/builtins.md#30" />
+<HBExample id="stdlib/builtins.md#31" />
 
 ## `طبيعي64`
 
@@ -337,7 +353,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 القيمة كما يخزّنها 'طبيعي64'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
 
-<HBExample id="stdlib/builtins.md#31" />
+<HBExample id="stdlib/builtins.md#32" />
 
 ## `طبيعي8`
 
@@ -347,7 +363,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 القيمة كما يخزّنها 'طبيعي8'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
 
-<HBExample id="stdlib/builtins.md#32" />
+<HBExample id="stdlib/builtins.md#33" />
 
 ## `طول`
 
@@ -360,7 +376,7 @@ import HBSource from '../../../../components/HBSource.astro';
 - دالة 'طول' تعمل فقط مع القوائم والمصفوفات والقواميس والنصوص لكن وُجد النوع '…'
 - دالة 'طول' لا تعمل مع النوع '…'
 
-<HBExample id="stdlib/builtins.md#33" />
+<HBExample id="stdlib/builtins.md#34" />
 
 ## `عدد`
 
@@ -373,7 +389,7 @@ import HBSource from '../../../../components/HBSource.astro';
 - لا يمكن تحويل الكسر %s إلى عدد: خارج مدى الأعداد الصحيحة أو ليس عدداً
 - لا يمكن تحويل النوع '…' إلى عدد
 
-<HBExample id="stdlib/builtins.md#34" />
+<HBExample id="stdlib/builtins.md#35" />
 
 ## `عدد16`
 
@@ -381,7 +397,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 القيمة كما يخزّنها 'عدد16'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
 
-<HBExample id="stdlib/builtins.md#35" />
+<HBExample id="stdlib/builtins.md#36" />
 
 ## `عدد32`
 
@@ -389,7 +405,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 القيمة كما يخزّنها 'عدد32'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
 
-<HBExample id="stdlib/builtins.md#36" />
+<HBExample id="stdlib/builtins.md#37" />
 
 ## `عدد8`
 
@@ -397,7 +413,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 القيمة كما يخزّنها 'عدد8'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
 
-<HBExample id="stdlib/builtins.md#37" />
+<HBExample id="stdlib/builtins.md#38" />
 
 ## `قائمة_من`
 
@@ -411,7 +427,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 - 'قائمة_من' تأخذ قائمة لا '…'
 
-<HBExample id="stdlib/builtins.md#38" />
+<HBExample id="stdlib/builtins.md#39" />
 
 ## `قص`
 
@@ -421,7 +437,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
-<HBExample id="stdlib/builtins.md#39" />
+<HBExample id="stdlib/builtins.md#40" />
 
 ## `قص_الفراغات`
 
@@ -429,7 +445,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 النص بلا فراغات في أوله وآخره (المسافة و\t و\n و\r و\v و\f)، عرضاً على بايتاته نفسها بلا حجز (كـ جزء)
 
-<HBExample id="stdlib/builtins.md#40" />
+<HBExample id="stdlib/builtins.md#41" />
 
 ## `قطعة`
 
@@ -443,7 +459,7 @@ import HBSource from '../../../../components/HBSource.astro';
 - القطعة من %lld إلى %lld خارج الشريحة (طولها %lld)
 - حدّا القطعة عددان صحيحان لا '…'
 
-<HBExample id="stdlib/builtins.md#41" />
+<HBExample id="stdlib/builtins.md#42" />
 
 ## `قيم`
 
@@ -453,7 +469,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
-<HBExample id="stdlib/builtins.md#42" />
+<HBExample id="stdlib/builtins.md#43" />
 
 ## `كاشف`
 
@@ -461,7 +477,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 مخصص يلفّ أصله ويسجّل كل كتلة: يكشف التحرير المزدوج والتحرير بمخصص آخر، ويبلّغ عمّا لم يُحرَّر عند اعد أو عند نهاية البرنامج
 
-<HBExample id="stdlib/builtins.md#43" />
+<HBExample id="stdlib/builtins.md#44" />
 
 ## `كسر`
 
@@ -473,7 +489,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 - لا يمكن تحويل النوع '…' إلى كسر
 
-<HBExample id="stdlib/builtins.md#44" />
+<HBExample id="stdlib/builtins.md#45" />
 
 ## `كسر32`
 
@@ -481,7 +497,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 القيمة كما يخزّنها 'كسر32'، ناتجها كسر؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
 
-<HBExample id="stdlib/builtins.md#45" />
+<HBExample id="stdlib/builtins.md#46" />
 
 ## `محتوى`
 
@@ -489,7 +505,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 الخانة التي يشير إليها المؤشر: تُقرأ ويُسند إليها (محتوى(م) = قيمة)
 
-<HBExample id="stdlib/builtins.md#46" />
+<HBExample id="stdlib/builtins.md#47" />
 
 ## `مخزن_ثابت`
 
@@ -501,7 +517,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 - 'مخزن_ثابت' يأخذ شريحة[بايت] لا '…'
 
-<HBExample id="stdlib/builtins.md#47" />
+<HBExample id="stdlib/builtins.md#48" />
 
 ## `مدى`
 
@@ -515,7 +531,7 @@ import HBSource from '../../../../components/HBSource.astro';
 - حدود 'مدى' يجب أن تكون أعداداً صحيحة لكن وُجد النوع '…'
 - خطوة 'مدى' لا يمكن أن تكون صفراً
 
-<HBExample id="stdlib/builtins.md#48" />
+<HBExample id="stdlib/builtins.md#49" />
 
 ## `مفاتيح`
 
@@ -525,7 +541,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
-<HBExample id="stdlib/builtins.md#49" />
+<HBExample id="stdlib/builtins.md#50" />
 
 ## `من_نص_سي`
 
@@ -537,7 +553,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 - 'من_نص_سي' تأخذ نص_سي (مؤشر[طبيعي8]) لكن وُجد '…'
 
-<HBExample id="stdlib/builtins.md#50" />
+<HBExample id="stdlib/builtins.md#51" />
 
 ## `نسخ`
 
@@ -552,7 +568,7 @@ import HBSource from '../../../../components/HBSource.astro';
 - 'نسخ' تعمل مع القوائم والقواميس والهياكل والمصفوفات لكن وُجد النوع '…'
 - 'نسخ' لا تعمل مع النوع '…'
 
-<HBExample id="stdlib/builtins.md#51" />
+<HBExample id="stdlib/builtins.md#52" />
 
 ## `نص`
 
@@ -566,7 +582,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 - لا يمكن تحويل … إلى نص
 
-<HBExample id="stdlib/builtins.md#52" />
+<HBExample id="stdlib/builtins.md#53" />
 
 ## `نص_سي`
 
@@ -581,7 +597,7 @@ import HBSource from '../../../../components/HBSource.astro';
 - 'نص_سي' تأخذ نصاً لكن وُجد '…'
 - 'نص_سي' على نص قيمته لاشيء (تحقق منه أولاً: س != لاشيء)
 
-<HBExample id="stdlib/builtins.md#53" />
+<HBExample id="stdlib/builtins.md#54" />
 
 ## `يبدأ_بـ`
 
@@ -589,7 +605,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 هل يبدأ النص بالبادئة؟ (البادئة الفارغة: صواب)
 
-<HBExample id="stdlib/builtins.md#54" />
+<HBExample id="stdlib/builtins.md#55" />
 
 ## `يحوي`
 
@@ -597,7 +613,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 هل يظهر الجزء في النص، أو القيمة في القائمة، أو المفتاح في القاموس (كـ يوجد)؟
 
-<HBExample id="stdlib/builtins.md#55" />
+<HBExample id="stdlib/builtins.md#56" />
 
 ## `ينتهي_بـ`
 
@@ -605,7 +621,7 @@ import HBSource from '../../../../components/HBSource.astro';
 
 هل ينتهي النص باللاحقة؟ (اللاحقة الفارغة: صواب)
 
-<HBExample id="stdlib/builtins.md#56" />
+<HBExample id="stdlib/builtins.md#57" />
 
 ## `يوجد`
 
@@ -613,4 +629,4 @@ import HBSource from '../../../../components/HBSource.astro';
 
 هل المفتاح موجود في القاموس؟
 
-<HBExample id="stdlib/builtins.md#57" />
+<HBExample id="stdlib/builtins.md#58" />

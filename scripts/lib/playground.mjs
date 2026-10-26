@@ -24,7 +24,7 @@ const STOP = '\\s!"#$%&\'()*+,\\-./:;<=>?@\\[\\\\\\]^{|}~،؛؟';
 const word = (w) => new RegExp(`(^|[${STOP}])${w}(?=$|[${STOP}])`);
 
 /** يرجع أسباب استبعاد المثال (قائمة فارغة: يصلح للملعب). */
-export function exclusionReasons(ex, { includeDev = false, release = '0.7.0' } = {}) {
+export function exclusionReasons(ex, { includeDev = false, release } = {}) {
   const reasons = [];
   if (ex.code == null) return ['شيفرته ليست في الكتاب المرجعي (من examples/ في المستودع)'];
   // الكود بلا تعليقات ولا نصوص، كي لا تُحسب كلمة في نص أو تعليق.
@@ -41,6 +41,6 @@ export function exclusionReasons(ex, { includeDev = false, release = '0.7.0' } =
   for (const t of ex.tags ?? []) if (TAGS.has(t)) reasons.push(TAGS.get(t));
   const extra = (ex.flags ?? []).filter((f) => f !== '--deny-deprecated');
   if (extra.length) reasons.push(`سُجّل مخرجه بخيارات (${extra.join(' ')}) غير خيارات الملعب`);
-  if (!includeDev && ex.version !== release) reasons.push('بعد 0.7.0 (فرع التطوير)، والخادم يشغّل حزمة 0.7.0');
+  if (!includeDev && ex.version !== release) reasons.push(`بعد ${release} (فرع التطوير)، والخادم يشغّل حزمة ${release}`);
   return [...new Set(reasons)];
 }

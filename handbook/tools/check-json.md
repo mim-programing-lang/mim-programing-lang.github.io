@@ -7,11 +7,11 @@
 
 | الحقل الأعلى | المعنى |
 |---|---|
-| `version` | 2 |
+| `version` | 3 (منذ 0.8.0) |
 | `ok` | لا أخطاء |
 | `file`، `path` | الملف الرئيسي للعرض، ومساره الكامل |
-| `summary` | عدد الأخطاء والتحذيرات والصيغ المهجورة |
-| `diagnostics` | كل تشخيص: `severity` و`phase` و`message` و`line` و`column` و`length` و`hint` و`notes` و`related` و`source_line` و`deprecated` و`advisory`، و`unsafe` حين يوجد |
+| `summary` | عدد الأخطاء والتحذيرات |
+| `diagnostics` | كل تشخيص: `id` (معرّف الرسالة الثابت، منذ 0.8.0) و`severity` و`phase` و`message` و`line` و`column` و`length` و`hint` و`notes` و`related` و`source_line` و`advisory`، و`unsafe` حين يوجد |
 | `imports` | ما يستورده الملف الرئيسي مباشرة |
 | `files` | كل ملفات البرنامج بترتيب التحميل |
 

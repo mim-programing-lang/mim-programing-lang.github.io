@@ -1,6 +1,7 @@
 ---
 // فهرس رسائل الأخطاء والتحذيرات من errors/catalog.md في الكتاب المرجعي (مولَّد هناك من مصادر المجمّع).
-// لكل رسالة مرساة باسم معرّفها، ومعها أمثلة الكتاب التي تطبعها إن وُجدت. مربع التصفية يعمل في المتصفح.
+// لكل رسالة مرساة بمعرّفها الثابت كما يطبعه المجمّع (#E0136، منذ 0.8.0) على عنوانها، فيصل إليها البحث والروابط مباشرة،
+// ومعها أمثلة الكتاب التي تطبع وسمها إن وُجدت. مربع التصفية يعمل في المتصفح.
 import hb from '../generated/handbook.json';
 import HBExample from './HBExample.astro';
 const phases = [...new Set(hb.catalog.map((c: any) => c.phase))];
@@ -19,8 +20,8 @@ const withExample = hb.catalog.filter((c: any) => c.examples.length).length;
   <section class="catalog-phase">
     <h2 id={`phase-${phase.replace(/\s+/g, '-')}`}>{phase}</h2>
     {hb.catalog.filter((c: any) => c.phase === phase).map((c: any) => (
-      <article class="catalog-item" id={c.id.toLowerCase()} data-search={`${c.id} ${c.message}`}>
-        <h3><code dir="ltr">{c.id}</code> <span class="catalog-msg">{c.message}</span></h3>
+      <article class="catalog-item" data-search={`${c.id} ${c.message}`}>
+        <h3 id={c.id}><code dir="ltr">{c.id}</code> <span class="catalog-msg">{c.message}</span></h3>
         <dl>
           <dt>رمز الخروج</dt><dd>{c.exit}</dd>
           <dt>المصدر في المجمّع</dt><dd><code dir="ltr">{c.source}</code></dd>

@@ -110,14 +110,17 @@ try {
   const catalogText = readFileSync(path.join(hbDir, 'errors/catalog.md'), 'utf8');
   const catalog = parseCatalog(catalogText, hb.examples);
   const catalogTop = parseCatalogTop(catalogText);
-  write('handbook.json', { source: hbSource(), release: hb.release, development: hb.development, examples: hb.examples, catalog, catalogTop });
+  // إصدار الموقع: البيان قد يُكتب قبل الإصدار (عند الوسم v0.8.0 يقول release 0.7.0 وdevelopment 0.8.0). إن كان المجمّع الذي
+  // يبني الموقع هو إصدار التطوير نفسه فقد صدر، وأمثلته ليست «بعد الإصدار».
+  const release = hb.development && version.version === hb.development ? hb.development : hb.release;
+  write('handbook.json', { source: hbSource(), release, development: hb.development, examples: hb.examples, catalog, catalogTop });
 
-  // أمثلة الملعب: الآمنة وحدها. PUBLIC_PLAYGROUND_INCLUDE_DEV=1 يُدخل أمثلة ما بعد 0.7.0 إن كان الخادم يشغّل حزمة منها.
+  // أمثلة الملعب: الآمنة وحدها. PUBLIC_PLAYGROUND_INCLUDE_DEV=1 يُدخل أمثلة ما بعد الإصدار إن كان الخادم يشغّل حزمة منها.
   const includeDev = process.env.PUBLIC_PLAYGROUND_INCLUDE_DEV === '1';
   const pgAllowed = [];
   const pgExcluded = [];
   for (const ex of Object.values(hb.examples)) {
-    const reasons = exclusionReasons(ex, { includeDev, release: hb.release });
+    const reasons = exclusionReasons(ex, { includeDev, release });
     if (reasons.length) pgExcluded.push({ id: ex.id, title: ex.title, reasons });
     else pgAllowed.push({ id: ex.id, title: ex.title, topic: ex.topic, code: ex.code, stdout: ex.stdout, stderr: ex.stderr, exit: ex.exit, version: ex.version });
   }
@@ -129,7 +132,7 @@ try {
     constants: highlightLang.constants.map((c) => c.word),
   };
   write('playground.json', { includeDev, words, examples: pgAllowed, excluded: pgExcluded.map(({ id, reasons }) => ({ id, reasons })) });
-  writePlaygroundExclusions(pgAllowed, pgExcluded, includeDev);
+  writePlaygroundExclusions(pgAllowed, pgExcluded, includeDev, release);
 
   const help = meem(['--help']);
   writeFileSync(path.join(outDir, 'help.txt'), help.stdout);
@@ -189,14 +192,20 @@ function parseCatalog(text, examples) {
   for (const line of text.split('\n')) {
     const h = /^## (.*)$/.exec(line);
     if (h) phase = h[1].trim();
-    const r = /^\| `(M[0-9A-F]+)` \| (.*) \| (\d+) \| (.*) \| (.*) \|$/.exec(line);
+    // المعرّف ثابت منذ 0.8.0 (E0136)، ويطبعه المجمّع في وسم الرسالة؛ وقبلها مؤقت (M41D733) مشتق من النص.
+    const r = /^\| `(E\d{4}|M[0-9A-F]+)` \| (.*) \| (\d+) \| (.*) \| (.*) \|$/.exec(line);
     if (!r) continue;
     const message = r[2].replace(/\\\|/g, '|');
     // الجزء المتغير: «…» في الفهرس، أو صيغة printf كما في رسائل التشغيل (%s، %lld).
     const parts = message.split(/…|%l{0,2}[dsfgu]/).map((s) => s.trim()).filter((s) => s.length >= 4);
-    const uses = parts.length
-      ? Object.values(examples).filter((e) => parts.every((p) => (e.stderr + e.stdout).includes(p))).map((e) => e.id)
-      : [];
+    // بالمعرّف الثابت: المثال الذي يطبع وسم الرسالة «[… E0136]». وللمعرّف المؤقت (قبل 0.8): بنص الرسالة.
+    const stable = r[1].startsWith('E');
+    const tag = new RegExp(`\\[[^\\]\\n]* ${r[1]}\\]`);
+    const uses = stable
+      ? Object.values(examples).filter((e) => e.code != null && tag.test(e.stderr + e.stdout)).map((e) => e.id)
+      : parts.length
+        ? Object.values(examples).filter((e) => parts.every((p) => (e.stderr + e.stdout).includes(p))).map((e) => e.id)
+        : [];
     out.push({ id: r[1], phase, message, exit: Number(r[3]), source: r[4].replace(/`/g, ''), reference: r[5].replace(/`/g, ''), examples: uses });
   }
   return out;
@@ -231,7 +240,7 @@ function mergeHandbookLexicon(language) {
 }
 
 /** سجل الأمثلة المستبعدة من الملعب وأسبابها: docs/playground-excluded.md في الموقع (يُكتب في كل بناء). */
-function writePlaygroundExclusions(allowed, excluded, includeDev) {
+function writePlaygroundExclusions(allowed, excluded, includeDev, release) {
   const byReason = new Map();
   for (const e of excluded) for (const r of e.reasons) byReason.set(r, (byReason.get(r) ?? 0) + 1);
   const lines = [
@@ -239,7 +248,7 @@ function writePlaygroundExclusions(allowed, excluded, includeDev) {
     '',
     'مولَّد في كل بناء (scripts/prebuild.mjs، والقواعد في scripts/lib/playground.mjs). لا يُحرَّر باليد.',
     '',
-    `المتاح في الملعب: ${allowed.length} مثالاً. المستبعد: ${excluded.length}. أمثلة ما بعد 0.7.0: ${includeDev ? 'مُدخلة' : 'مستبعدة'} (PUBLIC_PLAYGROUND_INCLUDE_DEV).`,
+    `المتاح في الملعب: ${allowed.length} مثالاً. المستبعد: ${excluded.length}. أمثلة ما بعد ${release}: ${includeDev ? 'مُدخلة' : 'مستبعدة'} (PUBLIC_PLAYGROUND_INCLUDE_DEV).`,
     '',
     '## الأسباب',
     '',

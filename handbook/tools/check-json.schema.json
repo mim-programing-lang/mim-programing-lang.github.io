@@ -1,26 +1,27 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
- "title": "meem --check --json (version 2, tools contract 1)",
+ "title": "meem --check --json (version 3, tools contract 2)",
  "description": "مخطط خرج الفحص كما في docs/tools-contract.md. يتحقق منه tests/test_docs.py على خرج المجمّع الفعلي.",
  "type": "object",
  "required": ["version", "ok", "file", "path", "summary", "diagnostics", "imports", "files"],
  "properties": {
-  "version": {"type": "integer", "enum": [2]},
+  "version": {"type": "integer", "enum": [3]},
   "ok": {"type": "boolean"},
   "file": {"type": ["string", "null"]},
   "path": {"type": ["string", "null"]},
   "summary": {
    "type": "object",
-   "required": ["errors", "warnings", "deprecated"],
-   "properties": {"errors": {"type": "integer"}, "warnings": {"type": "integer"}, "deprecated": {"type": "integer"}}
+   "required": ["errors", "warnings"],
+   "properties": {"errors": {"type": "integer"}, "warnings": {"type": "integer"}}
   },
   "diagnostics": {
    "type": "array",
    "items": {
     "type": "object",
-    "required": ["file", "path", "severity", "phase", "phase_label", "message", "line", "column", "length", "hint",
-                 "notes", "related", "source_line", "deprecated", "advisory"],
+    "required": ["id", "file", "path", "severity", "phase", "phase_label", "message", "line", "column", "length",
+                 "hint", "notes", "related", "source_line", "advisory"],
     "properties": {
+     "id": {"type": ["string", "null"], "pattern": "^E[0-9]{4}$"},
      "file": {"type": ["string", "null"]},
      "path": {"type": ["string", "null"]},
      "severity": {"type": "string", "enum": ["error", "warning"]},
@@ -42,7 +43,6 @@
       }
      },
      "source_line": {"type": ["string", "null"]},
-     "deprecated": {"type": ["string", "null"]},
      "advisory": {"type": "boolean"},
      "unsafe": {"type": "string", "enum": ["unsafe-required", "unsafe-disabled", "unsafe-managed"]}
     }

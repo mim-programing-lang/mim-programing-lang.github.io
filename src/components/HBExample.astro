@@ -17,6 +17,9 @@ const ex = (hb.examples as Record<string, any>)[id];
 if (!ex || ex.code == null) throw new Error(`مثال غير موجود في الكتاب المرجعي: «${id}»`);
 if (section && ex.section !== section) throw new Error(`المثال «${id}» صار تحت «${ex.section}» لا «${section}»: صحّح رقمه.`);
 const dev = ex.version !== hb.release;
+// معرّفات الرسائل الثابتة التي يطبعها المثال («[خطأ دلالي E0136]»)، بروابط إلى مراسيها في فهرس الأخطاء.
+const catalogIds = new Set((hb.catalog as { id: string }[]).map((c) => c.id));
+const printedIds = [...new Set([...`${ex.stderr}${ex.stdout}`.matchAll(/\[[^\]\n]* (E\d{4})\]/g)].map((m) => m[1]))].filter((i) => catalogIds.has(i));
 const lines = (s: string) => s.replace(/\n$/, '').split('\n');
 const command = ['meem', ...ex.flags, 'برنامج.م'].join(' ');
 // «جرّب هذا المثال» في صفحات التعلم وحدها، وللأمثلة الآمنة في الملعب وحدها (scripts/lib/playground.mjs).
@@ -27,7 +30,7 @@ const tryable = Astro.url.pathname.startsWith('/learn/') && (pg.examples as { id
   <Code code={ex.code} lang="meem" title={label ?? 'مثال'} />
   <figure class="meem-output">
     <figcaption>
-      <span>المخرج المسجَّل في الكتاب المرجعي{dev ? ' · بعد 0.7.0 (فرع التطوير)' : ''}</span>
+      <span>المخرج المسجَّل في الكتاب المرجعي{dev ? ` · بعد ${hb.release} (فرع التطوير)` : ''}</span>
       <span class="meem-output-meta"><bdi dir="ltr">{command}</bdi> · <bdi dir="ltr">{ex.version}</bdi></span>
     </figcaption>
     <output>
@@ -36,6 +39,9 @@ const tryable = Astro.url.pathname.startsWith('/learn/') && (pg.examples as { id
       {!ex.stdout && !ex.stderr && <p class="meem-empty">لا مخرجات.</p>}
     </output>
     {ex.exit !== 0 && <p class="meem-exit" data-exit={ex.exit}>رمز الخروج: <bdi>{ex.exit}</bdi></p>}
+    {printedIds.length > 0 && (
+      <p class="meem-ids">في فهرس الأخطاء: {printedIds.map((i, n) => <>{n ? '، ' : ''}<a href={`/docs/errors/catalog/#${i}`}><code dir="ltr">{i}</code></a></>)}</p>
+    )}
     {tryable && <p class="hb-try"><a href={`/playground/#ex=${encodeURIComponent(id)}`} data-try-example={id}>جرّب هذا المثال في الملعب</a></p>}
   </figure>
 </section>

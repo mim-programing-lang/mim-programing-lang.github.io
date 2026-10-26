@@ -15,7 +15,7 @@
 ```sh
 SITE_URL=https://meemlang.org \
 PUBLIC_PAYPAL_DONATE_URL=https://www.paypal.com/ncp/payment/SBZ3RJL5FWHME \
-MEEM_BIN=/مسار/إلى/meem-0.7.0-linux-x86_64/meem \
+MEEM_BIN=/مسار/إلى/meem-0.8.0-linux-x86_64/meem \
   nice -n 10 npm run build
 scripts/publish-pages.sh
 ```
@@ -34,6 +34,13 @@ scripts/publish-pages.sh
 لا يُدفع تاريخ المستودع المحلي القديم.
 
 ## التنزيلات
+
+الإصدارات في مستودع الموقع: `v0.7.0` (ميم 0.7.0 ومحرر ميم 0.1.0) و`v0.8.0` (ميم 0.8.0 ومحرر ميم 0.2.0)، والموقع يشير إلى
+الأحدث. الإصدار القديم يبقى كما هو.
+
+**المجمّع الذي يبني الموقع:** فكّ أرشيف الإصدار نفسه في مجلد مؤقت ومرّر `meem` منه في `MEEM_BIN`
+(`tar -xJf meem-0.8.0-linux-x86_64.tar.xz -C /مجلد/مؤقت`). المجلد `build/release/meem-linux-x86_64/` في مستودع المجمّع
+قد يبقى على إصدار أقدم (كان 0.7.0 عند إصدار 0.8.0)، فتحقق بـ `meem --version` قبل البناء.
 
 الملفات على GitHub Releases في المستودع نفسه (الوسم `v0.7.0`)، لا في `gh-pages`: الحزم أكبر من أن تُوضع في الموقع.
 

@@ -1,7 +1,7 @@
 {
   "repo": "my_compiler",
   "branch": "0.7.0-dev",
-  "commit": "996137204c0776d0715d240704f038f880fb17c6",
+  "commit": "36cff0b20e660dd924f855250024020a5899b4e5",
   "paths": [
     "docs/handbook",
     "docs/playground.md",

@@ -143,6 +143,29 @@ if (reallyMissing.length) {
   );
 }
 
+// 8ب) معرّفات الرسائل الثابتة (منذ 0.8.0): مرساة لكل رسالة في الفهرس باسم معرّفها، وكل مثال خطأ يطبع معرّف رسالته (إلا
+//     رسالة يكتبها البرنامج نفسه بـ«خطا_قاتل»)، ولا أثر للمعرّفات المؤقتة القديمة (M41D733) في المراسي والروابط.
+{
+  const hbData = JSON.parse(readFileSync(path.join(root, 'src/generated/handbook.json'), 'utf8'));
+  const stable = hbData.catalog.filter((c) => /^E\d{4}$/.test(c.id));
+  if (stable.length) {
+    const cat = pages.get(path.join(dist, 'docs/errors/catalog/index.html'));
+    const missing = stable.filter((c) => !cat?.ids.has(c.id));
+    if (missing.length) errors.push(`/docs/errors/catalog/: ${missing.length} رسالة بلا مرساة بمعرّفها (أولها ${missing[0].id})`);
+    for (const ex of Object.values(hbData.examples)) {
+      if (ex.code == null) continue;
+      for (const tag of `${ex.stderr}${ex.stdout}`.match(/\[(?:خطأ|تحذير)[^\]\n]*\]/g) ?? []) {
+        if (!/ E\d{4}\]$/.test(tag) && !/خطا_قاتل/.test(ex.code)) errors.push(`${ex.id}: وسم رسالة بلا معرّف ثابت «${tag}»`);
+      }
+    }
+    for (const [file, { html }] of pages) {
+      const old = html.match(/(?:\bid="|href="[^"]*#)[mM][0-9a-fA-F]{6}"|<code dir="ltr">M[0-9A-F]{6}<\/code>/);
+      if (old) errors.push(`${rel(file)}: معرّف رسالة مؤقت قديم «${old[0]}»`);
+    }
+    console.log(`[postbuild] معرّفات الرسائل: ${stable.length} رسالة بمرساة ثابتة، ولا معرّف مؤقت قديم.`);
+  }
+}
+
 // 9) الصياغة: صيغ محظورة في نثر الصفحات (scripts/lib/wording.json)، بلا شيفرة ولا مخرجات.
 let wordingChecked = 0;
 for (const [file, { html }] of pages) {

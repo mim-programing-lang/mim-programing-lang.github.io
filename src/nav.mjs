@@ -56,11 +56,11 @@ export const sections = [
       { label: 'الذاكرة اليدوية', items: ['docs/memory', 'docs/memory/reference', 'docs/memory/refcount'] },
       {
         label: 'المكتبة القياسية',
-        items: ['docs/stdlib', 'docs/stdlib/builtins', 'docs/stdlib/math', 'docs/stdlib/system', 'docs/stdlib/files', 'docs/stdlib/random'],
+        items: ['docs/stdlib', 'docs/stdlib/builtins', 'docs/stdlib/math', 'docs/stdlib/system', 'docs/stdlib/files', 'docs/stdlib/paths', 'docs/stdlib/random'],
       },
       { label: 'الأخطاء', items: ['docs/errors/common', 'docs/errors/catalog'] },
       { label: 'الأدوات', items: ['docs/tools/options', 'docs/tools/check-json', 'docs/build'] },
-      { label: 'الترحيل', items: ['docs/migration', 'docs/migration/errors'] },
+      { label: 'الترحيل', items: ['docs/migration/to-0-8', 'docs/migration', 'docs/migration/errors'] },
       'docs/glossary',
       { label: 'من خارج الكتاب (0.6)', items: ['docs/performance', 'docs/whats-new'] },
     ],

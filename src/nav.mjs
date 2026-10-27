@@ -80,6 +80,7 @@ export const topNav = [
 export const footerNav = [
   { label: 'حول المشروع', href: '/about/' },
   { label: 'التنزيل', href: '/download/' },
+  { label: 'جرّب 0.9 معنا', href: '/beta/' },
   { label: 'دعم ميم', href: '/support/' },
 ];
 

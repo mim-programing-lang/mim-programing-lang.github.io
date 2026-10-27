@@ -1,6 +1,6 @@
 ---
 title: "التنزيل"
-description: "نزّل مجمّع ميم 0.8.0 ومحرر ميم 0.2.0 للينكس x86_64، مع بصمة SHA-256 لكل ملف وخطوات التثبيت."
+description: "نزّل مجمّع ميم 0.9.0 ومحرر ميم 0.3.0 للينكس x86_64، مع بصمة SHA-256 لكل ملف وخطوات التثبيت."
 keywords: ["تحميل", "تنزيل", "تثبيت", "محرر", "deb", "AppImage", "sha256sum"]
 template: splash
 ---
@@ -8,6 +8,10 @@ template: splash
 import Downloads from '../../components/Downloads.astro';
 
 <Downloads />
+
+:::note[0.9 إصدار تجريبي]
+ميم 0.9 هي النسخة التجريبية قبل 1.0. ما نطلب اختباره، وكيف تبلّغ عن خطأ، وما هو معروف: [جرّب 0.9 معنا](/beta/).
+:::
 
 ## المتطلبات
 
@@ -25,9 +29,9 @@ import Downloads from '../../components/Downloads.astro';
 فك الأرشيف في أي مجلد، ثم شغّل `meem` من داخله. لا يحتاج تثبيتاً ولا صلاحيات مدير:
 
 ```sh
-tar -xJf meem-0.8.0-linux-x86_64.tar.xz
-meem-0.8.0-linux-x86_64/meem --version
-meem-0.8.0-linux-x86_64/meem برنامج.م
+tar -xJf meem-0.9.0-linux-x86_64.tar.xz
+meem-0.9.0-linux-x86_64/meem --version
+meem-0.9.0-linux-x86_64/meem برنامج.م
 ```
 
 يُنقل المجلد كما هو، ولا يُكتب فيه شيء عند التشغيل. الخطوة التالية: [البدء](/start/).
@@ -37,7 +41,7 @@ meem-0.8.0-linux-x86_64/meem برنامج.م
 لأوبونتو ودبيان:
 
 ```sh
-sudo apt install ./meem-editor_0.2.0_amd64.deb
+sudo apt install ./meem-editor_0.3.0_amd64.deb
 ```
 
 ثم افتح «محرر ميم» من قائمة التطبيقات، أو شغّله بالأمر `meem-editor`.
@@ -47,11 +51,11 @@ sudo apt install ./meem-editor_0.2.0_amd64.deb
 لأي توزيعة فيها glibc 2.35 أو أحدث ومكتبات الواجهة:
 
 ```sh
-chmod +x meem-editor_0.2.0_amd64.AppImage
-./meem-editor_0.2.0_amd64.AppImage
+chmod +x meem-editor_0.3.0_amd64.AppImage
+./meem-editor_0.3.0_amd64.AppImage
 ```
 
-إن ظهرت الرسالة «Cannot mount AppImage» فثبّت `libfuse2`، أو شغّله بـ `./meem-editor_0.2.0_amd64.AppImage --appimage-extract-and-run`.
+إن ظهرت الرسالة «Cannot mount AppImage» فثبّت `libfuse2`، أو شغّله بـ `./meem-editor_0.3.0_amd64.AppImage --appimage-extract-and-run`.
 
 ## الرخصة
 

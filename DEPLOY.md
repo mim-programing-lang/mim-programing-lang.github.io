@@ -15,7 +15,7 @@
 ```sh
 SITE_URL=https://meemlang.org \
 PUBLIC_PAYPAL_DONATE_URL=https://www.paypal.com/ncp/payment/SBZ3RJL5FWHME \
-MEEM_BIN=/مسار/إلى/meem-0.8.0-linux-x86_64/meem \
+MEEM_BIN=/مسار/إلى/meem-0.9.0-linux-x86_64/meem \
   nice -n 10 npm run build
 scripts/publish-pages.sh
 ```
@@ -35,8 +35,8 @@ scripts/publish-pages.sh
 
 ## التنزيلات
 
-الإصدارات في مستودع الموقع: `v0.7.0` (ميم 0.7.0 ومحرر ميم 0.1.0) و`v0.8.0` (ميم 0.8.0 ومحرر ميم 0.2.0)، والموقع يشير إلى
-الأحدث. الإصدار القديم يبقى كما هو.
+الإصدارات في مستودع الموقع: `v0.7.0` (ميم 0.7.0 ومحرر ميم 0.1.0) و`v0.8.0` (ميم 0.8.0 ومحرر ميم 0.2.0) و`v0.9.0`
+(ميم 0.9.0 ومحرر ميم 0.3.0)، والموقع يشير إلى الأحدث. الإصدار القديم يبقى كما هو.
 
 **المجمّع الذي يبني الموقع:** فكّ أرشيف الإصدار نفسه في مجلد مؤقت ومرّر `meem` منه في `MEEM_BIN`
 (`tar -xJf meem-0.8.0-linux-x86_64.tar.xz -C /مجلد/مؤقت`). المجلد `build/release/meem-linux-x86_64/` في مستودع المجمّع
@@ -52,6 +52,13 @@ scripts/publish-pages.sh
 3. املأ `src/data/downloads.json` بـ `scripts/make-downloads.mjs` من الملفات نفسها، والرابط بـ `--url`
    (`https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/<الوسم>/<الملف>`).
 4. ابنِ وانشر.
+
+## صفحة «جرّب 0.9 معنا» ورابط البلاغات
+
+`/beta/` مكتوبة من `docs/beta-0.9.md` في مستودع المجمّع: ما يُطلب اختباره، وقالب البلاغ، وما هو معروف، ومعيار 1.0. رابط
+البلاغات من `links.issues` في `site.config.mjs` (`src/components/IssuesLink.astro`)، **فارغ الآن**: تعرض الصفحة «قريباً» بلا
+رابط. حين يُعطى اسم المستودع: ضع عنوان صفحة بلاغاته (`https://github.com/<الحساب>/<المستودع>/issues/new`) في
+`links.issues`، ثم ابنِ وانشر. يظهر الرابط أيضاً في صفحة «حول المشروع» (`Links.astro`).
 
 ## التبرع (صفحة «دعم»)
 

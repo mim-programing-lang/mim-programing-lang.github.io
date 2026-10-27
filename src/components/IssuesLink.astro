@@ -1,0 +1,10 @@
+---
+// رابط البلاغات (GitHub Issues) من links.issues في site.config.mjs. فارغاً: «قريباً» بلا رابط. لا يُخترع عنوان.
+import { links } from '../../site.config.mjs';
+---
+
+{links.issues ? (
+  <p class="issues-link"><a href={links.issues}>افتح بلاغاً جديداً</a></p>
+) : (
+  <p class="issues-link"><strong>قريباً.</strong> رابط صفحة البلاغات يُنشر هنا حين تُتاح.</p>
+)}

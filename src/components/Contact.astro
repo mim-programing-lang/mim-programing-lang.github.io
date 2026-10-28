@@ -1,0 +1,7 @@
+---
+// بريد المشروع العام من site.config.mjs. لا بريد شخصي.
+import { contactEmail, links } from '../../site.config.mjs';
+---
+
+<p>للتواصل، ولطلب الأذونات التي تذكرها <a href="/license/">رخصة ميم</a>: <a href={`mailto:${contactEmail}`} dir="ltr">{contactEmail}</a></p>
+{links.issues && <p>وللأخطاء والاقتراحات العلنية: <a href={links.issues}>مستودع البلاغات</a>.</p>}

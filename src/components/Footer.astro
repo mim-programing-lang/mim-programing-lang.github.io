@@ -7,7 +7,7 @@ import { site } from '../../site.config.mjs';
 <Default><slot /></Default>
 <nav class="site-footer" aria-label="روابط الموقع">
   {footerNav.map((l) => <a href={l.href}>{l.label}</a>)}
-  <span>جميع الحقوق محفوظة. الرخصة قيد الإعداد.</span>
+  <span>جميع الحقوق محفوظة إلا ما تمنحه <a href="/license/">رخصة ميم</a>.</span>
   <span>{site.name} — {site.status}</span>
 </nav>
 

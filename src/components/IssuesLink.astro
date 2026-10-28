@@ -4,7 +4,7 @@ import { links } from '../../site.config.mjs';
 ---
 
 {links.issues ? (
-  <p class="issues-link"><a href={links.issues}>افتح بلاغاً جديداً</a></p>
+  <p class="issues-link"><a href={`${links.issues}/new/choose`}>افتح بلاغاً أو اقتراحاً</a> · <a href={links.issues}>البلاغات المفتوحة</a></p>
 ) : (
   <p class="issues-link"><strong>قريباً.</strong> رابط صفحة البلاغات يُنشر هنا حين تُتاح.</p>
 )}

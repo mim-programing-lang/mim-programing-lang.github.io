@@ -13,7 +13,7 @@ import { root } from './lib/meem.mjs';
 import { hbExamples } from './lib/handbook.mjs';
 import { proseOf } from './lib/prose.mjs';
 import { checkWording } from './lib/wording.mjs';
-import { donateUrl } from '../site.config.mjs';
+import { donateUrl, contactEmail } from '../site.config.mjs';
 
 const dist = path.join(root, 'dist');
 const walk = (d) =>
@@ -182,7 +182,8 @@ console.log(`[postbuild] الصياغة: ${wordingChecked} صفحة فُحص ن�
   // الصفحات: لا بريد أياً كان. الأصول (_astro): فيها مكتبات من غيرنا تذكر بُرد مترجميها (Pagefind)، فيُفحص فيها الاسم
   // والمسار وحدهما؛ وأجزاء أي بريد كلمات تمرّ بفحص التجزئة.
   const scan = (where, text, emails = true) => {
-    if (emails) for (const m of text.match(EMAIL) ?? []) errors.push(`${where}: بريد في المبني «${m}»`);
+    // بريد المشروع العام (site.config.mjs) وحده مسموح؛ أي بريد غيره يفشل البناء.
+    if (emails) for (const m of text.match(EMAIL) ?? []) if (m !== contactEmail) errors.push(`${where}: بريد في المبني «${m}»`);
     // كلمات بحسب الخط (عربي أو لاتيني) لا بالمسافة وحدها، فـ«وفلان» و«فلان-آخر» تُفحصان؛ وللعربية بلا سوابق (و ب ل ف ك ال).
     const words = new Set();
     for (const w of text.match(/[\p{Script=Arabic}\p{N}]+|[\p{Script=Latin}\p{N}_-]+/gu) ?? []) {
@@ -218,7 +219,7 @@ console.log(`[postbuild] الصياغة: ${wordingChecked} صفحة فُحص ن�
   } else if (donateLinks || !/data-donate="soon"/.test(support) || !/<button[^>]*donate-button[^>]*disabled/.test(support) || !support.includes('قريباً')) {
     errors.push('/support/: بلا PUBLIC_PAYPAL_DONATE_URL يجب «قريباً» وزر معطّل وبلا رابط PayPal');
   }
-  console.log(`[postbuild] الخصوصية: ${pages.size} صفحة و${assets.length} أصلاً بلا اسم شخصي، والصفحات بلا بريد؛ PayPal: ${donateUrl ? `رابط واحد في /support/` : 'بلا رابط («قريباً»)'}، ولا مورد منه.`);
+  console.log(`[postbuild] الخصوصية: ${pages.size} صفحة و${assets.length} أصلاً بلا اسم شخصي، والصفحات بلا بريد غير بريد المشروع؛ PayPal: ${donateUrl ? `رابط واحد في /support/` : 'بلا رابط («قريباً»)'}، ولا مورد منه.`);
 }
 console.log(`[postbuild] أمثلة الكتاب المرجعي المعروضة: ${seenHb.size} من ${Object.values(hb).filter((e) => e.code != null).length}`);
 if (errors.length) {

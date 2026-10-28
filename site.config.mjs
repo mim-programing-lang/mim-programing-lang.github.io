@@ -21,10 +21,13 @@ if (donateUrl && !/^https:\/\/www\.paypal\.com\/[^\s"'<>]*$/.test(donateUrl)) {
 }
 
 // روابط GitHub: فارغة الآن. ما كان فارغاً لا يظهر في الموقع.
+// بريد المشروع العام (التواصل وطلب الأذونات). الوحيد المسموح في الصفحات المبنية (scripts/postbuild.mjs، البند 10).
+export const contactEmail = 'meemlang@outlook.sa';
+
 export const links = {
   compilerRepo: '',
   editorRepo: '',
   siteRepo: '',
-  issues: '',
+  issues: 'https://github.com/mim-programing-lang/meem-feedback/issues',
   discussions: '',
 };

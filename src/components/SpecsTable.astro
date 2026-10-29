@@ -23,9 +23,9 @@ const rows: { k: string; v: string; src: string; href?: string }[] = [
   { k: 'الاتصال بمكتبات C', v: 'التصريح خارجي بأنواع C صريحة. جُرّب مع libc وlibm', src: 'docs/stdlib-design.md', href: '/docs/language/ffi/' },
   { k: 'المكتبة القياسية', v: `${language.builtins.length} دالة مدمجة، ووحدة قياسية: ${mods}`, src: 'meem --list-keywords، meem --list-module', href: '/docs/stdlib/' },
   { k: 'المنصات', v: 'لينكس x86_64 وحده. ويندوز وماك غير متاحين في 1.0', src: 'docs/build.md، docs/cli.md', href: '/docs/build/#الحدود' },
-  { k: 'الإصدار', v: `التنزيل الحالي 0.9 — ${site.status}. صدرت 0.9.0، والوثائق المرجعية تصفها`, src: 'downloads.json، والكتاب المرجعي' },
+  { k: 'الإصدار', v: `التنزيل الحالي 0.9 — ${site.status}. صدرت 0.9.1 (تجريبية قبل 1.0)، والوثائق المرجعية تصفها`, src: 'downloads.json، والكتاب المرجعي' },
   { k: 'حجم الحزمة', v: `${bundleSize}`, src: 'قياس الأرشيف (make-downloads)' },
-  { k: 'حجم البرنامج المبني', v: '«مرحبا» ساكناً 28 ك.ب', src: 'docs/build.md، وقياس عند بناء الموقع', href: '/docs/build/' },
+  { k: 'حجم البرنامج المبني', v: '«مرحبا يا عالم» ساكناً نحو 31 ك.ب (30592 بايتاً)', src: 'قياس بـ meem build في 0.9.1', href: '/docs/build/' },
   { k: 'أمر البناء', v: 'meem build ملف.م', src: 'docs/build.md', href: '/docs/tools/options/' },
 ];
 ---

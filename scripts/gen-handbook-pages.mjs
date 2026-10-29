@@ -16,11 +16,6 @@ const { commit } = hbSource();
 
 // إضافات الموقع على نص الكتاب، بأمر صاحب المشروع (2026-10-18)، ومسجَّلة في docs-gaps.md.
 const CORRECTIONS = {
-  // حالة النشر: الكتاب (ab91040) كُتب قبل رفع الحزمة فيقول عن 0.9.0 «مبنية ومختبرة ولم تُنشر بعد». الموقع يكتب حالتها بعد
-  // الرفع بصيغة الكتاب نفسه لـ0.8.0 («منشورة على https://meemlang.org»). مسجَّل في docs-gaps.md.
-  'README.md': [
-    ['`meem-0.9.0-linux-x86_64.tar.xz` مبنية ومختبرة ولم تُنشر بعد.', '`meem-0.9.0-linux-x86_64.tar.xz` **منشورة على https://meemlang.org**.'],
-  ],
   // سطران يضيفهما الموقع إلى المصطلحات بأمر صاحب المشروع.
   'glossary.md': [
     ['| الملعب | playground |', '| LLVM | LLVM | مكتبة ترجمة يولّد بها المجمّع شيفرة الآلة من البرنامج (الخيار `--emit-ir` يحفظ ما يعطيه لها) |\n| IEEE-754 | IEEE-754 | معيار تمثيل الأعداد الكسرية في الحاسوب؛ `كسر` في ميم عشري مضاعف الدقة عليه (64 بتاً) |\n| الملعب | playground |'],
@@ -151,7 +146,12 @@ function convert(file, meta) {
       continue;
     }
     if (dropping) continue;
-    out.push(escapeProse(word(line)).replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, target) => rewriteLink(label, target, file)));
+    out.push(
+      escapeProse(word(line))
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, target) => rewriteLink(label, target, file))
+        // عنوان مجرد تتبعه علامة ترقيم عربية («…/issues؛»): الربط الآلي يضمّ العلامة إلى الرابط فيكسره. رابط صريح، والعلامة خارجه.
+        .replace(/(^|\s)(https?:\/\/[^\s<>\[\]()]+?)([؛،؟.]*)(?=\s|$)/g, (_, pre, url, punct) => `${pre}[${url}](${url})${punct}`),
+    );
   }
   return { title, body: out.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n' };
 }

@@ -6,12 +6,12 @@
       "name": "المجمّع meem",
       "platform": "لينكس x86_64",
       "format": "أرشيف",
-      "version": "0.9.0",
-      "build": "0.9.0+0a4bf35",
-      "fileName": "meem-0.9.0-linux-x86_64.tar.xz",
-      "bytes": 47289700,
-      "sha256": "ba6c8064afbee36f4571995b3ca9bbb6137e0afb3a9ca2cee17c22db7610ce21",
-      "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.9.0/meem-0.9.0-linux-x86_64.tar.xz",
+      "version": "0.9.1",
+      "build": "0.9.1+85cd0a7",
+      "fileName": "meem-0.9.1-linux-x86_64.tar.xz",
+      "bytes": 47284332,
+      "sha256": "10090a402a29d15c16540aa011c754d30d92aeb86b82d60500fbff440d9b7036",
+      "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.9.1/meem-0.9.1-linux-x86_64.tar.xz",
       "requires": [
         "لينكس x86_64",
         "مكتبة glibc بإصدار 2.35 أو أحدث (مقيس على ملفات الحزمة)"
@@ -27,7 +27,7 @@
       "fileName": "meem-editor_0.3.0_amd64.deb",
       "bytes": 78047442,
       "sha256": "b9f3c582127c37c8f029be570a4f962e640b3b7e0c809902ff6d5f7b8c03175e",
-      "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.9.0/meem-editor_0.3.0_amd64.deb",
+      "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.9.1/meem-editor_0.3.0_amd64.deb",
       "requires": [
         "لينكس x86_64",
         "مكتبة glibc بإصدار 2.35 أو أحدث (بحسب وثيقة الإصدار)",
@@ -44,7 +44,7 @@
       "fileName": "meem-editor_0.3.0_amd64.AppImage",
       "bytes": 146405880,
       "sha256": "61e6214cee65a5e9b2053b9ed774d9600ab0c45a8af70f84419485e478377222",
-      "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.9.0/meem-editor_0.3.0_amd64.AppImage",
+      "url": "https://github.com/mim-programing-lang/mim-programing-lang.github.io/releases/download/v0.9.1/meem-editor_0.3.0_amd64.AppImage",
       "requires": [
         "لينكس x86_64",
         "مكتبة glibc بإصدار 2.35 أو أحدث (بحسب وثيقة الإصدار)",

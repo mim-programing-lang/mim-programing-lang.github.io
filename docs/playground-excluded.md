@@ -2,7 +2,7 @@
 
 مولَّد في كل بناء (scripts/prebuild.mjs، والقواعد في scripts/lib/playground.mjs). لا يُحرَّر باليد.
 
-المتاح في الملعب: 223 مثالاً. المستبعد: 58. أمثلة ما بعد 0.9.0: مستبعدة (PUBLIC_PLAYGROUND_INCLUDE_DEV).
+المتاح في الملعب: 223 مثالاً. المستبعد: 58. أمثلة ما بعد 0.9.1: مستبعدة (PUBLIC_PLAYGROUND_INCLUDE_DEV).
 
 ## الأسباب
 

@@ -6,8 +6,13 @@ keywords: ["وحدة", "وحدات", "استورد", "مكتبة قياسية"]
 
 import HBExample from '../../../components/HBExample.astro';
 import VersionBanner from '../../../components/VersionBanner.astro';
+import LessonMeta from '../../../components/LessonMeta.astro';
+import Solution from '../../../components/Solution.astro';
+import NextLesson from '../../../components/NextLesson.astro';
 
 <VersionBanner />
+
+<LessonMeta />
 
 ## الهدف
 
@@ -28,6 +33,14 @@ import VersionBanner from '../../../components/VersionBanner.astro';
 
 <HBExample id="language/07-modules.md#2" label="يسبب الخطأ" section="الوحدات" />
 
+## تمرين
+
+اكتب دالة `مسافة` بين نقطتين بـ `رياضيات.جذر`، واطبع المسافة من (0، 0) إلى (3، 4)، ومن (1، 1) إلى (2، 2) بثلاث خانات بـ `رياضيات.نسق`.
+
+<Solution file="lessons/11_حل.م" title="الحل" />
+
 ## اقرأ أيضاً
 
 [الوحدات](/docs/language/modules/) · [المكتبة القياسية](/docs/stdlib/)
+
+<NextLesson />

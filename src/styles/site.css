@@ -94,3 +94,68 @@ main > .content-panel:has(> .sl-container:empty) + .content-panel {
   font-family: var(--sl-font);
   letter-spacing: 0;
 }
+
+/* مخططات SVG في الصفحات التفسيرية: بلون النص، فتصلح للفاتح والداكن. */
+.diagram {
+  margin-block: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  color: var(--sl-color-white);
+}
+.diagram svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  max-inline-size: 40rem;
+  margin-inline: auto;
+}
+.diagram figcaption {
+  margin-block-start: 0.6rem;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-2);
+  text-align: center;
+}
+
+/* ملاحظة داخل درس. */
+.lesson-note {
+  margin-block: 1rem;
+  padding: 0.6rem 1rem;
+  border-inline-start: 3px solid var(--sl-color-orange);
+  border-radius: 0.4rem;
+  background: var(--sl-color-gray-7, transparent);
+}
+
+/* ورقة الغش: جداول متقاربة، وطباعة بلا القوائم والترويسة. */
+.cheatsheet table {
+  font-size: var(--sl-text-sm);
+}
+@media print {
+  header.header,
+  #starlight__sidebar,
+  .right-sidebar-container,
+  mobile-starlight-toc,
+  .pagination-links,
+  .site-footer,
+  .version-banner {
+    display: none !important;
+  }
+  .main-frame {
+    padding: 0 !important;
+  }
+  .cheatsheet table {
+    break-inside: avoid;
+  }
+}
+
+/* بطاقة المخرج: سطر طويل (رسالة خطأ مثلاً) يُمرَّر داخل البطاقة، ولا يوسّع الصفحة على الجوال. */
+.meem-output pre {
+  overflow-x: auto;
+}
+
+/* مسارات وأسماء ملفات طويلة بلا مسافات (فهرس الأخطاء، التنزيل): تُكسر داخل خانتها على الجوال. */
+.catalog-item dd,
+.dl-release dd {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}

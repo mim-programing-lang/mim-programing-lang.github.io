@@ -6,12 +6,15 @@ import { Code } from '@astrojs/starlight/components';
 import examples from '../generated/examples.json';
 import version from '../generated/version.json';
 import { kb } from '../lib/size.mjs';
+import hb from '../generated/handbook.json';
 
 interface Props {
   /** مسار الملف نسبةً إلى examples/ */
   file: string;
+  /** عنوان فوق الشيفرة بدل اسم الملف */
+  title?: string;
 }
-const { file } = Astro.props;
+const { file, title } = Astro.props;
 const ex = examples.find((e) => e.id === file);
 if (!ex) throw new Error(`مثال غير معروف: «${file}». المسار نسبةً إلى examples/.`);
 // السطر كما يُكتب في الطرفية: متغيرات البيئة، ثم خيارات المجمّع، ثم الملف، ثم وسائط البرنامج بعد «--».
@@ -22,10 +25,13 @@ const command = [
   ...(((ex as { argv?: string[] }).argv ?? []).length ? ['--', ...(ex as { argv: string[] }).argv.map(quote)] : []),
 ].join(' ');
 const lines = (s: string) => s.replace(/\n$/, '').split('\n');
+// معرّفات الرسائل التي يطبعها المثال («[خطأ تشغيل E0321]»)، بروابط إلى مراسيها في فهرس الأخطاء.
+const catalogIds = new Set((hb.catalog as { id: string }[]).map((c) => c.id));
+const printedIds = [...new Set([...`${ex.stderr}${ex.stdout}`.matchAll(/\[[^\]\n]* (E\d{4})\]/g)].map((m) => m[1]))].filter((i) => catalogIds.has(i));
 ---
 
 <section class="meem-example not-content" data-example={ex.id} data-runner="recorded">
-  <Code code={ex.code} lang="meem" title={ex.file} />
+  <Code code={ex.code} lang="meem" title={title ?? ex.file} />
   <figure class="meem-output">
     <figcaption>
       <span>مخرجات مسجّلة من المجمّع</span>
@@ -43,6 +49,9 @@ const lines = (s: string) => s.replace(/\n$/, '').split('\n');
       {!ex.stdout && !ex.stderr && <p class="meem-empty">لا مخرجات.</p>}
     </output>
     {ex.exit !== 0 && <p class="meem-exit">رمز الخروج: <bdi>{ex.exit}</bdi></p>}
+    {printedIds.length > 0 && (
+      <p class="meem-ids">في فهرس الأخطاء: {printedIds.map((i, n) => <>{n ? '، ' : ''}<a href={`/docs/errors/catalog/#${i}`}><code dir="ltr">{i}</code></a></>)}</p>
+    )}
     {ex.built && (
       <p class="meem-exit">
         بُني أيضاً بـ <bdi dir="ltr">meem build</bdi> عند بناء الموقع: ملف {ex.built.static ? 'ساكن' : 'حركي'} حجمه{' '}

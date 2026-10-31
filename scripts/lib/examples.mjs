@@ -9,12 +9,13 @@
 //   اسم.warn-ok  مثال منقول من وثيقة المجمّع: الحارس عليه بلا --strict (ومعه --deny-deprecated على مجمّع قبل 0.8)
 //   اسم.frozen  مسجَّل بإصدار أقدم (رقم بنائه في الملف) لصفحة تاريخية: لا يُعاد تشغيله، ويُعرض موسوماً بإصداره
 //   اسم.in   الإدخال (اختياري)      اسم.args خيارات المجمّع، سطر واحد (اختياري)
+//   اسم.files/  ملفات بيانات تُنسخ إلى مجلد التشغيل قبل كل تشغيل (المباشر والمبني)، لأمثلة تقرأ ملفات
 // البناء يشغّل المجمّع على كل مثال ويقارن. «npm run examples:record» يسجّل من جديد (راجع الفرق قبل الإيداع).
 // ما كان في مجلد اسمه «مكتبات» أو «وحدات» ملف يُستورد لا برنامج: يُفحص ولا يُشغَّل.
 //
 // حارس الصيغ: «..» ممنوع في كل مثال (scripts/lib/forbidden.mjs). ثم كل مثال (عدا ما سُجّل له خطأ ترجمة مقصود، رمز 2) يُفحص أيضاً بخيارات الحارس،
 // فأي تحذير من المجمّع، ومنه تحذيرات الصيغ القديمة، يُفشل البناء.
-import { readFileSync, writeFileSync, existsSync, rmSync, readdirSync, statSync, mkdtempSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, rmSync, readdirSync, statSync, mkdtempSync, cpSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -62,7 +63,8 @@ function walk(dir) {
     .sort()
     .flatMap((f) => {
       const p = path.join(dir, f);
-      return statSync(p).isDirectory() ? walk(p) : p.endsWith('.م') ? [p] : [];
+      // مجلد «اسم.files» بيانات مثال لا أمثلة.
+      return statSync(p).isDirectory() ? (p.endsWith('.files') ? [] : walk(p)) : p.endsWith('.م') ? [p] : [];
     });
 }
 
@@ -107,6 +109,8 @@ export function runExamples({ record = false, guard = guardFlags(), language } =
     // يُشغَّل من مجلد عمل مؤقت فارغ (ما يكتبه البرنامج من ملفات يذهب إليه ويُحذف)، وملف المصدر رابط باسمه وحده
     // بجوار ما يستورده، فلا تظهر مسارات هذا الجهاز في المخرجات.
     const work = mkdtempSync(path.join(tmpdir(), 'meem-run-'));
+    const data = `${base}.files`;
+    if (existsSync(data)) cpSync(data, work, { recursive: true });
     const r = meem([...args, path.join(cwd, name), ...(argv.length ? ['--', ...argv] : [])], { cwd: work, input: stdin, env });
     rmSync(work, { recursive: true, force: true });
     if (record) {
@@ -130,6 +134,7 @@ export function runExamples({ record = false, guard = guardFlags(), language } =
     if (existsSync(`${base}.build`)) {
       const dir = mkdtempSync(path.join(tmpdir(), 'meem-build-'));
       try {
+        if (existsSync(data)) cpSync(data, dir, { recursive: true });
         const exe = path.join(dir, 'program');
         const b = meem(['build', name, '-o', exe, '--json'], { cwd, env });
         let info = null;

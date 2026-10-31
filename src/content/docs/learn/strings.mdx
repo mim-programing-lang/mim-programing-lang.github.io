@@ -6,8 +6,13 @@ keywords: ["نص", "نصوص", "تقسيم", "قص_الفراغات", "يحوي"
 
 import HBExample from '../../../components/HBExample.astro';
 import VersionBanner from '../../../components/VersionBanner.astro';
+import LessonMeta from '../../../components/LessonMeta.astro';
+import Solution from '../../../components/Solution.astro';
+import NextLesson from '../../../components/NextLesson.astro';
 
 <VersionBanner />
+
+<LessonMeta />
 
 ## الهدف
 
@@ -19,6 +24,12 @@ import VersionBanner from '../../../components/VersionBanner.astro';
 - `قص_الفراغات(ن)` ترجع النص بلا فراغات في أوله وآخره.
 - `يحوي(ن, جزء)` تجيب: هل يظهر الجزء في النص؟ و`يبدأ_بـ(ن, بادئة)` تجيب: هل يبدأ النص بها؟
 
+<aside class="lesson-note">
+
+**ملاحظة صادقة (ميم 0.9.1):** `جزء` و`قص_الفراغات` ترجعان «عرضاً» على النص الأصل بلا نسخ. لكن تمرير العرض بعدُ إلى `طول` أو مقارنة أو فهرسة أو `عدد()` يحجز في كل مرة نسخة صغيرة لا تُعاد. لا يضر في برنامج قصير، وفي حلقة طويلة احفظ الناتج في متغير مرة واحدة. التفصيل في [الحجز والأداء في المدمجات](/docs/stdlib/allocation/).
+
+</aside>
+
 ## المثال
 
 <HBExample id="learn/README.md#10" />
@@ -27,6 +38,14 @@ import VersionBanner from '../../../components/VersionBanner.astro';
 
 ظن أن `طول` يعدّ البايتات: إنه يعدّ نقاط الترميز، وعلامات التشكيل تُعدّ أيضاً. **نقطة الترميز** وحدة العدّ في النصوص ([المصطلحات](/docs/glossary/)).
 
+## تمرين
+
+احذف الفراغات من طرفي «  ميم لغة عربية صغيرة  »، وقسّمها كلمات، واطبع عددها والكلمات التي تبدأ بالعين.
+
+<Solution file="lessons/10_حل.م" title="الحل" />
+
 ## اقرأ أيضاً
 
 [الأنواع: النص](/docs/language/types/) · [المدمجات](/docs/stdlib/builtins/)
+
+<NextLesson />

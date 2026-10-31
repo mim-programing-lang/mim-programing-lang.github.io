@@ -1,0 +1,35 @@
+{
+  "note": "مسار التعلّم: المصدر الوحيد لصفحة المسار وبيانات كل درس (المستوى والزمن والمتطلبات والتالي). الزمن تقدير للقراءة وحل التمرين.",
+  "levels": [
+    { "id": "beginner", "name": "مبتدئ", "about": "أساسيات أي برنامج: الطباعة والمتغيرات والإدخال والشروط والحلقات والقوائم والقواميس والدوال والهياكل." },
+    { "id": "intermediate", "name": "متوسط", "about": "النصوص والوحدات والملفات، والتعداد، ومعالجة الأخطاء، وأول خطوة في الذاكرة." },
+    { "id": "systems", "name": "نظامي", "about": "المخصصات والساحات، و«خطر» واستدعاء C، وبناء ملف تنفيذي مستقل." }
+  ],
+  "lessons": [
+    { "slug": "learn/print", "title": "الطباعة والنصوص", "level": "beginner", "minutes": 10, "requires": [] },
+    { "slug": "learn/variables", "title": "المتغيرات والحساب", "level": "beginner", "minutes": 15, "requires": ["learn/print"] },
+    { "slug": "learn/input", "title": "الإدخال", "level": "beginner", "minutes": 10, "requires": ["learn/variables"] },
+    { "slug": "learn/conditions", "title": "الشروط", "level": "beginner", "minutes": 15, "requires": ["learn/variables"] },
+    { "slug": "learn/loops", "title": "الحلقات", "level": "beginner", "minutes": 20, "requires": ["learn/conditions"] },
+    { "slug": "learn/lists", "title": "القوائم", "level": "beginner", "minutes": 20, "requires": ["learn/loops"] },
+    { "slug": "learn/dictionaries", "title": "القواميس", "level": "beginner", "minutes": 20, "requires": ["learn/lists"] },
+    { "slug": "learn/functions", "title": "الدوال", "level": "beginner", "minutes": 25, "requires": ["learn/loops"] },
+    { "slug": "learn/structs", "title": "الهياكل", "level": "beginner", "minutes": 20, "requires": ["learn/functions", "learn/lists"] },
+    { "slug": "learn/strings", "title": "المزيد عن النصوص", "level": "intermediate", "minutes": 20, "requires": ["learn/lists"] },
+    { "slug": "learn/modules", "title": "الوحدات", "level": "intermediate", "minutes": 15, "requires": ["learn/functions"] },
+    { "slug": "learn/files", "title": "الملفات", "level": "intermediate", "minutes": 20, "requires": ["learn/modules", "learn/strings"] },
+    { "slug": "learn/memory", "title": "الذاكرة للمبتدئ", "level": "intermediate", "minutes": 20, "requires": ["learn/loops", "learn/strings"] },
+    { "slug": "learn/enums", "title": "التعداد", "level": "intermediate", "minutes": 15, "requires": ["learn/conditions", "learn/functions"] },
+    { "slug": "learn/errors", "title": "معالجة الأخطاء", "level": "intermediate", "minutes": 25, "requires": ["learn/functions", "learn/files"] },
+    { "slug": "learn/allocators", "title": "المخصصات والساحات", "level": "systems", "minutes": 30, "requires": ["learn/memory", "learn/errors"] },
+    { "slug": "learn/unsafe", "title": "«خطر» واستدعاء C", "level": "systems", "minutes": 25, "requires": ["learn/allocators"] },
+    { "slug": "learn/build", "title": "بناء ملف مستقل", "level": "systems", "minutes": 20, "requires": ["learn/modules"] }
+  ],
+  "projects": [
+    { "slug": "learn/projects/words", "title": "أكثر الكلمات تكراراً" },
+    { "slug": "learn/projects/sales", "title": "تلخيص ملف CSV" },
+    { "slug": "learn/projects/algorithms", "title": "دايكسترا وشجرة بحث" },
+    { "slug": "learn/projects/tictactoe", "title": "لعبة إكس-أو" },
+    { "slug": "learn/projects/linecount", "title": "عدّاد أسطر المجلدات" }
+  ]
+}

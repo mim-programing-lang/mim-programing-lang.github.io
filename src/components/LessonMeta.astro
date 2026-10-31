@@ -1,0 +1,43 @@
+---
+// رأس الدرس: المستوى والزمن التقريبي والمتطلبات، من src/data/learn-path.json (المصدر الوحيد).
+import path from '../data/learn-path.json';
+
+const slug = Astro.url.pathname.replace(/^\/|\/$/g, '');
+const lesson = path.lessons.find((l) => l.slug === slug);
+if (!lesson) throw new Error(`LessonMeta: الدرس «${slug}» غير موجود في learn-path.json`);
+const level = path.levels.find((l) => l.id === lesson.level)!;
+const byslug = new Map(path.lessons.map((l) => [l.slug, l]));
+const number = path.lessons.indexOf(lesson) + 1;
+---
+
+<aside class="lesson-meta not-content" aria-label="بطاقة الدرس">
+  <span class={`lesson-level level-${lesson.level}`}>المستوى: {level.name}</span>
+  <span>الدرس {number} من {path.lessons.length}</span>
+  <span>الزمن: نحو {lesson.minutes} دقيقة</span>
+  <span>
+    المتطلبات:{' '}
+    {lesson.requires.length
+      ? lesson.requires.map((r, i) => <>{i ? '، ' : ''}<a href={`/${r}/`}>{byslug.get(r)?.title}</a></>)
+      : 'لا شيء'}
+  </span>
+</aside>
+
+<style>
+  .lesson-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    margin-block: 0 1.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.6rem;
+    background: var(--sl-color-gray-7, var(--sl-color-black));
+    font-size: var(--sl-text-sm);
+  }
+  .lesson-level {
+    font-weight: 700;
+  }
+  .level-beginner { color: var(--sl-color-green); }
+  .level-intermediate { color: var(--sl-color-orange); }
+  .level-systems { color: var(--sl-color-red); }
+</style>

@@ -41,7 +41,7 @@ export const PAGES = {
   'language/12-enums.md': { slug: 'docs/language/enums', keywords: ['تعداد', 'تعدادات', 'عضو'] },
   'language/13-errors.md': { slug: 'docs/language/errors', keywords: ['خطأ', 'اخطاء', 'معالجة الاخطاء', 'جرب', 'والا'] },
   'stdlib/README.md': { slug: 'docs/stdlib' },
-  'stdlib/builtins.md': { slug: 'docs/stdlib/builtins', keywords: ['اطبع', 'مدمجة', 'مدمجات', 'دالة', 'دوال'] },
+  'stdlib/builtins.md': { slug: 'docs/stdlib/builtins', notes: true, keywords: ['اطبع', 'مدمجة', 'مدمجات', 'دالة', 'دوال'] },
   'stdlib/رياضيات.md': { slug: 'docs/stdlib/math' },
   'stdlib/نظام.md': { slug: 'docs/stdlib/system' },
   'stdlib/ملفات.md': { slug: 'docs/stdlib/files' },
@@ -170,6 +170,20 @@ for (const [file, meta] of Object.entries(PAGES)) {
     const json = readFileSync(path.join(hbDir, 'tools/check-json.schema.json'), 'utf8').trimEnd();
     schema = `\n## المخطط\n\nملف \`tools/check-json.schema.json\` في الكتاب المرجعي، كما هو:\n\n\`\`\`json\n${json}\n\`\`\`\n`;
   }
+  // ملاحظات الموقع في آخر قسم كل مدمجة (src/components/BuiltinNotes.astro): أخطاؤها بمعرّفاتها، والحجز والأداء.
+  let text = body;
+  if (meta.notes) {
+    const out = [];
+    let current = null;
+    for (const line of body.split('\n')) {
+      const h = /^## `([^`]+)`\s*$/.exec(line);
+      if (/^## /.test(line) && current) out.push(`<BuiltinNotes name="${current}" />`, '');
+      if (/^## /.test(line)) current = h ? h[1] : null;
+      out.push(line);
+    }
+    if (current) out.push('', `<BuiltinNotes name="${current}" />`);
+    text = out.join('\n') + '\n';
+  }
   const page = `---
 title: ${JSON.stringify(title)}
 description: ${JSON.stringify(meta.description ?? (description(body) || title))}${meta.keywords ? `\nkeywords: ${JSON.stringify(meta.keywords)}` : ''}
@@ -177,13 +191,13 @@ description: ${JSON.stringify(meta.description ?? (description(body) || title))}
 
 import HBExample from '${up}components/HBExample.astro';
 import VersionBanner from '${up}components/VersionBanner.astro';
-import HBSource from '${up}components/HBSource.astro';
+import HBSource from '${up}components/HBSource.astro';${meta.notes ? `\nimport BuiltinNotes from '${up}components/BuiltinNotes.astro';` : ''}
 
 <VersionBanner />
 
 <HBSource file="${file}" />
 
-${body}${schema}`;
+${text}${schema}`;
   const dest = path.join(root, 'src/content/docs', `${meta.slug}.mdx`);
   mkdirSync(path.dirname(dest), { recursive: true });
   writeFileSync(dest, page);

@@ -1,0 +1,62 @@
+---
+// ملفات البيانات التي يقرؤها مثال (مجلد «اسم.files» بجواره في examples/)، تُعرض كما هي وقت البناء:
+// ما تراه هنا هو ما قرأه البرنامج حين شُغّل.
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import path from 'node:path';
+
+interface Props { dir: string }
+const { dir } = Astro.props;
+const root = path.resolve('examples', dir);
+const walk = (d: string): string[] =>
+  readdirSync(d).sort().flatMap((f) => {
+    const p = path.join(d, f);
+    return statSync(p).isDirectory() ? walk(p) : [p];
+  });
+const files = walk(root).map((p) => {
+  const buf = readFileSync(p);
+  const text = buf.toString('utf8');
+  const binary = buf.includes(0) || text.includes('�');
+  return { name: path.relative(root, p), bytes: buf.length, binary, text };
+});
+---
+
+<div class="data-files not-content">
+  {files.map((f) => (
+    <figure>
+      <figcaption><bdi dir="ltr">{f.name}</bdi></figcaption>
+      {f.binary ? <p class="data-binary">ملف ثنائي ({f.bytes} بايتات): لا يُعرض.</p> : <pre dir="rtl">{f.text}</pre>}
+    </figure>
+  ))}
+</div>
+
+<style>
+  .data-files {
+    display: grid;
+    gap: 0.75rem;
+    margin-block: 1rem 1.5rem;
+  }
+  .data-files figure {
+    margin: 0;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  .data-files figcaption {
+    padding: 0.3rem 0.8rem;
+    font-size: var(--sl-text-sm);
+    background: var(--sl-color-gray-6);
+  }
+  .data-files pre {
+    margin: 0;
+    padding: 0.6rem 0.9rem;
+    font-family: var(--meem-font-code);
+    font-size: var(--sl-text-sm);
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+  .data-binary {
+    margin: 0;
+    padding: 0.5rem 0.9rem;
+    color: var(--sl-color-gray-3);
+  }
+</style>

@@ -6,8 +6,13 @@ keywords: ["ملف", "ملفات", "اكتب_ملف", "اقرأ_سطور"]
 
 import HBExample from '../../../components/HBExample.astro';
 import VersionBanner from '../../../components/VersionBanner.astro';
+import LessonMeta from '../../../components/LessonMeta.astro';
+import Solution from '../../../components/Solution.astro';
+import NextLesson from '../../../components/NextLesson.astro';
 
 <VersionBanner />
+
+<LessonMeta />
 
 ## الهدف
 
@@ -32,6 +37,14 @@ import VersionBanner from '../../../components/VersionBanner.astro';
 
 <HBExample id="errors/common.md#24" label="يصلحه" section="نتيجة دالة قد تفشل مهملة" />
 
+## تمرين
+
+اكتب ثلاث مهام في ملف «مهام.txt» سطراً لكل مهمة، ثم اقرأها واطبع عددها وأطولها.
+
+<Solution file="lessons/12_حل.م" title="الحل" />
+
 ## اقرأ أيضاً
 
 [الوحدة `ملفات`](/docs/stdlib/files/) · [معالجة الأخطاء](/docs/language/errors/)
+
+<NextLesson />

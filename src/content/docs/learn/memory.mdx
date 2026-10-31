@@ -6,8 +6,16 @@ keywords: ["ذاكرة", "ادارة الذاكرة", "حرر", "خاتمه", "�
 
 import HBExample from '../../../components/HBExample.astro';
 import VersionBanner from '../../../components/VersionBanner.astro';
+import LessonMeta from '../../../components/LessonMeta.astro';
+import VersionTag from '../../../components/VersionTag.astro';
+import Solution from '../../../components/Solution.astro';
+import NextLesson from '../../../components/NextLesson.astro';
 
 <VersionBanner />
+
+<LessonMeta />
+
+<VersionTag />
 
 ## الهدف
 
@@ -49,6 +57,14 @@ import VersionBanner from '../../../components/VersionBanner.astro';
 
 <HBExample id="errors/common.md#32" label="يصلحه" section="تحرير مرتين" />
 
+## تمرين
+
+ابنِ ألف نص في حلقة («سطر» ورقمه) واجمع أطوالها، وحرّر كل نص في آخر دورته بـ `خاتمه حرر`. شغّله بـ `--debug-mem`: إن لم يطبع تقرير ذاكرة فلا شيء باقٍ.
+
+<Solution file="lessons/13_حل.م" title="الحل" />
+
 ## اقرأ أيضاً
 
 [الذاكرة اليدوية](/docs/memory/) · [مرجع الذاكرة](/docs/memory/reference/)
+
+<NextLesson />

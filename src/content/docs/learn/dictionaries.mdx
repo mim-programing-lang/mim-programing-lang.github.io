@@ -6,8 +6,13 @@ keywords: ["قاموس", "قواميس", "مفتاح", "مفاتيح"]
 
 import HBExample from '../../../components/HBExample.astro';
 import VersionBanner from '../../../components/VersionBanner.astro';
+import LessonMeta from '../../../components/LessonMeta.astro';
+import Solution from '../../../components/Solution.astro';
+import NextLesson from '../../../components/NextLesson.astro';
 
 <VersionBanner />
+
+<LessonMeta />
 
 ## الهدف
 
@@ -31,6 +36,14 @@ import VersionBanner from '../../../components/VersionBanner.astro';
 
 <HBExample id="errors/common.md#16" label="يصلحه" section="مفتاح غائب من القاموس" />
 
+## تمرين
+
+عدّ تكرار كل حرف في «مرحبا بالعالم» دون المسافة، واطبع العدد لكل حرف بترتيب أول ظهوره.
+
+<Solution file="lessons/07_حل.م" title="الحل" />
+
 ## اقرأ أيضاً
 
 [الأنواع](/docs/language/types/) · [المدمجات: `مفاتيح` و`يحوي`](/docs/stdlib/builtins/)
+
+<NextLesson />

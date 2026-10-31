@@ -1,0 +1,42 @@
+---
+// «الدرس التالي» بحسب ترتيب المسار في src/data/learn-path.json؛ وآخر درس يحيل إلى المشاريع.
+import path from '../data/learn-path.json';
+const slug = Astro.url.pathname.replace(/^\/|\/$/g, '');
+const i = path.lessons.findIndex((l) => l.slug === slug);
+const next = path.lessons[i + 1];
+---
+
+<nav class="next-lesson not-content" aria-label="الدرس التالي">
+  {next ? (
+    <a href={`/${next.slug}/`}><span>الدرس التالي</span><strong>{i + 2}. {next.title}</strong></a>
+  ) : (
+    <a href="/learn/projects/"><span>بعد الدروس</span><strong>مشاريع صغيرة كاملة</strong></a>
+  )}
+  <a href="/learn/"><span>المسار</span><strong>كل الدروس وتقدّمك</strong></a>
+</nav>
+
+<style>
+  .next-lesson {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.75rem;
+    margin-block: 2rem 0;
+  }
+  .next-lesson a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.6rem;
+    text-decoration: none;
+    color: var(--sl-color-white);
+  }
+  .next-lesson a:hover {
+    border-color: var(--sl-color-accent);
+  }
+  .next-lesson span {
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+</style>

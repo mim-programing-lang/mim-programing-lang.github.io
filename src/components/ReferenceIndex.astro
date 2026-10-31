@@ -1,0 +1,88 @@
+---
+// فهرس المرجع: الكلمات المفتاحية والأنواع والمدمجات ووحدات المكتبة القياسية، من خرج المجمّع نفسه وقت البناء
+// (meem --list-keywords، --list-types، --list-module). كل اسم يحيل إلى صفحته في المرجع.
+import { slug } from 'github-slugger';
+import language from '../generated/language.json';
+import types from '../generated/types.json';
+import modules from '../generated/modules.json';
+import notes from '../data/builtin-notes.json';
+
+const moduleSlug: Record<string, string> = { رياضيات: 'math', عشوائي: 'random', مسارات: 'paths', ملفات: 'files', نظام: 'system' };
+const KIND: Record<string, string> = { control: 'تحكم', loop: 'تكرار', jump: 'قفز', declaration: 'تصريح', definition: 'تعريف', logic: 'منطق' };
+const builtins = [...language.builtins].sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+---
+
+<div class="ref-index">
+  <h2 id="keywords">الكلمات المفتاحية ({language.keywords.length})</h2>
+  <p>شرح كل كلمة وصيغتها في <a href="/docs/language/lexicon/#الكلمات-المفتاحية">المفردات</a>.</p>
+  <div class="ref-table">
+    <table>
+      <thead><tr><th>الكلمة</th><th>الصنف</th><th>الصيغة</th></tr></thead>
+      <tbody>
+        {language.keywords.map((k: any) => (
+          <tr><td><code>{k.word}</code></td><td>{KIND[k.kind] ?? k.kind}</td><td>{k.description}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="types">الأنواع ({types.types.length})</h2>
+  <p>التفصيل في <a href="/docs/language/types/">الأنواع</a>.</p>
+  <ul class="ref-chips">
+    {types.types.map((t: any) => <li><code>{t.word}</code>{t.description ? <span> {t.description}</span> : null}</li>)}
+  </ul>
+
+  <h2 id="builtins">الدوال المدمجة ({language.builtins.length})</h2>
+  <p>لكل دالة في <a href="/docs/stdlib/builtins/">المدمجات</a>: صيغتها، وما تفعله، ومثال مشغَّل، والأخطاء التي قد تعطيها. والعلامة «الحجز» بجانب الاسم لملاحظة عن الحجز أو الأداء في <a href="/docs/stdlib/allocation/">الحجز والأداء</a>.</p>
+  <ul class="ref-chips">
+    {builtins.map((b: any) => (
+      <li>
+        <a href={`/docs/stdlib/builtins/#${slug(b.name)}`}><code>{b.name}</code></a>
+        {(notes.notes as Record<string, string>)[b.name] ? <a class="ref-note" href={`/docs/stdlib/allocation/#${slug(b.name)}`} title="ملاحظة عن الحجز والأداء">الحجز</a> : null}
+      </li>
+    ))}
+  </ul>
+
+  <h2 id="modules">وحدات المكتبة القياسية ({modules.length})</h2>
+  {modules.map((m: any) => (
+    <section class="ref-module">
+      <h3 id={`module-${slug(m.name)}`}><a href={`/docs/stdlib/${moduleSlug[m.name] ?? ''}/`}><code>{m.name}</code></a> ({m.functions.length} دالة)</h3>
+      <ul class="ref-chips">
+        {m.functions.map((f: any) => (
+          <li><a href={`/docs/stdlib/${moduleSlug[m.name]}/#${slug(f.name)}`}><code>{m.name}.{f.name}</code></a></li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</div>
+
+<style>
+  .ref-table {
+    overflow-x: auto;
+  }
+  .ref-chips {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .ref-chips li {
+    margin: 0;
+    padding: 0.15rem 0.55rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.45rem;
+  }
+  .ref-chips li span {
+    color: var(--sl-color-gray-2);
+    font-size: var(--sl-text-sm);
+  }
+  .ref-note {
+    margin-inline-start: 0.35rem;
+    padding: 0 0.3rem;
+    font-size: var(--sl-text-xs);
+    border-radius: 0.3rem;
+    border: 1px solid var(--sl-color-orange);
+    text-decoration: none;
+  }
+</style>

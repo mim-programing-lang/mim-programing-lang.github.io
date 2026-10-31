@@ -6,8 +6,13 @@ keywords: ["متغير", "متغيرات", "نوع", "انواع", "حساب", "
 
 import HBExample from '../../../components/HBExample.astro';
 import VersionBanner from '../../../components/VersionBanner.astro';
+import LessonMeta from '../../../components/LessonMeta.astro';
+import Solution from '../../../components/Solution.astro';
+import NextLesson from '../../../components/NextLesson.astro';
 
 <VersionBanner />
+
+<LessonMeta />
 
 ## الهدف
 
@@ -34,6 +39,14 @@ import VersionBanner from '../../../components/VersionBanner.astro';
 
 ومن الأخطاء أيضاً تسمية متغير باسم دالة مدمجة، فاسمها محجوز: `طول = 7` خطأ نحوي، ورسالته «متوقع '('».
 
+## تمرين
+
+مستطيل طوله 7 وعرضه 3: اطبع مساحته ومحيطه، ثم ناتج `7 / 2` و`7 / 2.0`، ولاحظ الفرق.
+
+<Solution file="lessons/02_حل.م" title="الحل" />
+
 ## اقرأ أيضاً
 
 [الأنواع](/docs/language/types/) · [التعابير](/docs/language/expressions/)
+
+<NextLesson />

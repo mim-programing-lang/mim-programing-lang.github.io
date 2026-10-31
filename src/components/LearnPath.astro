@@ -1,0 +1,234 @@
+---
+// صفحة المسار: الدروس بمستوياتها الثلاثة، وتقدّم القارئ. التقدّم يُحفظ في localStorage في متصفحه وحده (داخل try/catch)،
+// بلا شبكة ولا تتبّع: لا يغادر جهازه. المصدر: src/data/learn-path.json.
+import path from '../data/learn-path.json';
+---
+
+<div class="learn-path not-content" data-learn-path>
+  <p class="lp-total" aria-live="polite">
+    <span data-lp-total>أتممت 0 من {path.lessons.length} دروس</span>
+    <button type="button" class="lp-reset" data-lp-reset>امسح تقدّمي</button>
+  </p>
+  <p class="lp-privacy">يُحفظ تقدّمك في متصفحك وحده، ولا يُرسل إلى أي مكان.</p>
+  {path.levels.map((level) => {
+    const lessons = path.lessons.filter((l) => l.level === level.id);
+    const minutes = lessons.reduce((s, l) => s + l.minutes, 0);
+    return (
+      <section class={`lp-level level-${level.id}`} data-lp-level={level.id}>
+        <header>
+          <h2 id={`level-${level.id}`}>{level.name}</h2>
+          <p>{level.about}</p>
+          <p class="lp-level-meta">
+            {lessons.length} دروس، نحو {Math.round(minutes / 5) * 5} دقيقة ·{' '}
+            <span data-lp-level-count>أتممت 0 من {lessons.length}</span>
+          </p>
+          <div class="lp-bar" aria-hidden="true"><span data-lp-bar></span></div>
+        </header>
+        <ol class="lp-lessons">
+          {lessons.map((l) => {
+            const n = path.lessons.indexOf(l) + 1;
+            return (
+              <li class="lp-card" data-lp-lesson={l.slug}>
+                <a href={`/${l.slug}/`}>
+                  <span class="lp-num">{n}</span>
+                  <span class="lp-title">{l.title}</span>
+                  <span class="lp-min">{l.minutes} د</span>
+                </a>
+                <label class="lp-done">
+                  <input type="checkbox" data-lp-check={l.slug} />
+                  <span>أتممته</span>
+                </label>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+    );
+  })}
+  <section class="lp-level lp-projects">
+    <header>
+      <h2 id="projects">مشاريع صغيرة كاملة</h2>
+      <p>برامج حقيقية جُرّبت بميم 0.9.1، كل منها مشروح خطوة خطوة، مع ما كان صعباً فيها وما تعلّمناه.</p>
+    </header>
+    <ol class="lp-lessons">
+      {path.projects.map((p, i) => (
+        <li class="lp-card">
+          <a href={`/${p.slug}/`}>
+            <span class="lp-num">م{i + 1}</span>
+            <span class="lp-title">{p.title}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</div>
+
+<script>
+  const KEY = 'meem-learn-progress';
+  const root = document.querySelector<HTMLElement>('[data-learn-path]');
+  const load = (): Set<string> => {
+    try {
+      const v = JSON.parse(localStorage.getItem(KEY) ?? '[]');
+      return new Set(Array.isArray(v) ? v.filter((x) => typeof x === 'string') : []);
+    } catch {
+      return new Set();
+    }
+  };
+  const save = (done: Set<string>) => {
+    try {
+      localStorage.setItem(KEY, JSON.stringify([...done]));
+    } catch {
+      // التخزين غير متاح (وضع خاص مثلاً): يبقى التقدّم لهذه الزيارة وحدها.
+    }
+  };
+  if (root) {
+    let done = load();
+    const render = () => {
+      const all = root.querySelectorAll<HTMLInputElement>('[data-lp-check]');
+      let total = 0;
+      all.forEach((c) => {
+        c.checked = done.has(c.dataset.lpCheck ?? '');
+        c.closest('.lp-card')?.classList.toggle('is-done', c.checked);
+        if (c.checked) total++;
+      });
+      const totalEl = root.querySelector('[data-lp-total]');
+      if (totalEl) totalEl.textContent = `أتممت ${total} من ${all.length} دروس`;
+      root.querySelectorAll<HTMLElement>('[data-lp-level]').forEach((lv) => {
+        const cs = lv.querySelectorAll<HTMLInputElement>('[data-lp-check]');
+        const n = [...cs].filter((c) => c.checked).length;
+        const count = lv.querySelector('[data-lp-level-count]');
+        if (count) count.textContent = `أتممت ${n} من ${cs.length}`;
+        const bar = lv.querySelector<HTMLElement>('[data-lp-bar]');
+        if (bar) bar.style.inlineSize = `${cs.length ? (100 * n) / cs.length : 0}%`;
+      });
+    };
+    root.addEventListener('change', (e) => {
+      const c = e.target as HTMLInputElement;
+      if (!c.matches('[data-lp-check]')) return;
+      const slug = c.dataset.lpCheck ?? '';
+      if (c.checked) done.add(slug);
+      else done.delete(slug);
+      save(done);
+      render();
+    });
+    root.querySelector('[data-lp-reset]')?.addEventListener('click', () => {
+      done = new Set();
+      save(done);
+      render();
+    });
+    render();
+  }
+</script>
+
+<style>
+  .learn-path {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .lp-total {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  .lp-privacy {
+    margin: -1rem 0 0;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+  .lp-reset {
+    font: inherit;
+    font-size: var(--sl-text-sm);
+    font-weight: 400;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: 0.4rem;
+    background: transparent;
+    color: var(--sl-color-gray-2);
+    cursor: pointer;
+  }
+  .lp-level {
+    border: 1px solid var(--sl-color-gray-5);
+    border-inline-start: 4px solid var(--lp-color, var(--sl-color-accent));
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem 1.25rem;
+  }
+  .level-beginner { --lp-color: var(--sl-color-green); }
+  .level-intermediate { --lp-color: var(--sl-color-orange); }
+  .level-systems { --lp-color: var(--sl-color-red); }
+  .lp-level h2 {
+    margin: 0;
+    font-size: var(--sl-text-h3);
+  }
+  .lp-level header p {
+    margin: 0.35rem 0 0;
+  }
+  .lp-level-meta {
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+  }
+  .lp-bar {
+    margin-block-start: 0.6rem;
+    block-size: 0.4rem;
+    border-radius: 999px;
+    background: var(--sl-color-gray-6);
+    overflow: hidden;
+  }
+  .lp-bar span {
+    display: block;
+    block-size: 100%;
+    inline-size: 0;
+    background: var(--lp-color, var(--sl-color-accent));
+    transition: inline-size 0.2s;
+  }
+  .lp-lessons {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: 0.6rem;
+  }
+  .lp-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.6rem;
+    margin: 0;
+  }
+  .lp-card.is-done {
+    border-color: var(--lp-color, var(--sl-color-accent));
+    background: color-mix(in srgb, var(--lp-color, var(--sl-color-accent)) 10%, transparent);
+  }
+  .lp-card a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--sl-color-white);
+  }
+  .lp-num {
+    min-inline-size: 1.8rem;
+    font-weight: 700;
+    color: var(--lp-color, var(--sl-color-accent));
+  }
+  .lp-title {
+    flex: 1;
+  }
+  .lp-min {
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-3);
+  }
+  .lp-done {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-2);
+    cursor: pointer;
+  }
+</style>

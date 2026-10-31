@@ -1,0 +1,42 @@
+---
+// ملاحظات الموقع على مدمجة في صفحة المدمجات (المولَّدة من الكتاب المرجعي): رسائل الفهرس التي تذكرها بمعرّفاتها،
+// وملاحظة الحجز والأداء من قياسات 0.9.1 (src/data/builtin-notes.json). يضيفها المولّد في آخر قسم كل مدمجة.
+import { slug } from 'github-slugger';
+import hb from '../generated/handbook.json';
+import notes from '../data/builtin-notes.json';
+
+interface Props { name: string }
+const { name } = Astro.props;
+const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const mentions = new RegExp(`'${esc}'|^${esc}[:\\s(]|[\\s(]${esc}\\(`);
+const errors = (hb.catalog as { id: string; message: string; exit: number }[]).filter((c) => /^E\d{4}$/.test(c.id) && mentions.test(c.message));
+const note = (notes.notes as Record<string, string>)[name];
+---
+
+{(errors.length > 0 || note) && (
+  <aside class="builtin-notes not-content" aria-label={`ملاحظات الموقع على ${name}`}>
+    {errors.length > 0 && (
+      <p>
+        <strong>رسائلها في الفهرس:</strong>{' '}
+        {errors.map((e, i) => <>{i ? '، ' : ''}<a href={`/docs/errors/catalog/#${e.id}`}><code dir="ltr">{e.id}</code></a></>)}
+      </p>
+    )}
+    {note && (
+      <p id={`alloc-${slug(name)}`}><strong>الحجز والأداء (0.9.1):</strong> {note}</p>
+    )}
+  </aside>
+)}
+
+<style>
+  .builtin-notes {
+    margin-block: 0.75rem 1.5rem;
+    padding: 0.6rem 0.9rem;
+    border-inline-start: 3px solid var(--sl-color-accent);
+    background: var(--sl-color-gray-7, transparent);
+    border-radius: 0.4rem;
+    font-size: var(--sl-text-sm);
+  }
+  .builtin-notes p {
+    margin: 0.2rem 0;
+  }
+</style>

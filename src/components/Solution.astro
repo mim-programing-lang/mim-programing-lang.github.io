@@ -1,0 +1,24 @@
+---
+// حل التمرين مطويّاً: مثال مشغَّل (examples/) يُفتح بالنقر.
+import Example from './Example.astro';
+interface Props { file: string; title?: string }
+const { file, title } = Astro.props;
+---
+
+<details class="solution">
+  <summary>اعرض الحل</summary>
+  <Example file={file} title={title} />
+</details>
+
+<style>
+  .solution {
+    margin-block: 1rem 1.5rem;
+    border: 1px dashed var(--sl-color-gray-4);
+    border-radius: 0.6rem;
+    padding: 0.5rem 1rem;
+  }
+  .solution summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+</style>

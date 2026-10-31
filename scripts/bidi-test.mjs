@@ -78,7 +78,8 @@ try {
             const walker = document.createTreeWalker(tk.el, NodeFilter.SHOW_TEXT);
             for (let n = walker.nextNode(); n; n = walker.nextNode()) {
               const s = n.textContent ?? '';
-              for (const m of s.matchAll(/-?\d+(?:\.\d+)?/g)) {
+              // «-» سالب ملتصق إلا إن سبقه رقم: «1-9» داخل نص عربي مدى أرقام لا عدد سالب، وعرضه بقاعدة يونيكود للعربية.
+              for (const m of s.matchAll(/(?<!\d)-?\d+(?:\.\d+)?/g)) {
                 if (m[0].length < 2) continue;
                 const xs = [...m[0]].map((_, k) => rect(n, m.index + k));
                 for (let k = 1; k < xs.length; k++)

@@ -16,6 +16,12 @@ const { commit } = hbSource();
 
 // إضافات الموقع على نص الكتاب، بأمر صاحب المشروع (2026-10-18)، ومسجَّلة في docs-gaps.md.
 const CORRECTIONS = {
+  // حالة النشر: الكتاب (7a52f6c) كُتب قبل رفع الحزمة فيقول عن 0.10.0 «لم تُنشر». الموقع يكتب حالتها بعد الرفع بصيغة الكتاب
+  // نفسه للإصدارات السابقة («منشورة على https://meemlang.org»). مسجَّل في docs-gaps.md.
+  'README.md': [
+    ['وقد صدرت (مبنية ومختبرة، **لم تُنشر بعد**)', 'وقد صدرت (منشورة على https://meemlang.org)'],
+    ['| 0.10.0 | **صدرت، ولم تُنشر**: `master` بالوسم `v0.10.0` (إيداع `b01b55f`)، والحزمة `meem-0.10.0-linux-x86_64.tar.xz` في `build/release/`.', '| 0.10.0 | **صدرت** (منشورة على https://meemlang.org): `master` بالوسم `v0.10.0` (إيداع `b01b55f`)، والحزمة `meem-0.10.0-linux-x86_64.tar.xz`.'],
+  ],
   // سطران يضيفهما الموقع إلى المصطلحات بأمر صاحب المشروع.
   'glossary.md': [
     ['| الملعب | playground |', '| LLVM | LLVM | مكتبة ترجمة يولّد بها المجمّع شيفرة الآلة من البرنامج (الخيار `--emit-ir` يحفظ ما يعطيه لها) |\n| IEEE-754 | IEEE-754 | معيار تمثيل الأعداد الكسرية في الحاسوب؛ `كسر` في ميم عشري مضاعف الدقة عليه (64 بتاً) |\n| الملعب | playground |'],
@@ -51,6 +57,7 @@ export const PAGES = {
   'tools/options.md': { slug: 'docs/tools/options' },
   'tools/check-json.md': { slug: 'docs/tools/check-json', schema: true },
   'migration/0.6-to-0.7.md': { slug: 'docs/migration' },
+  'migration/0.9-to-0.10.md': { slug: 'docs/migration/to-0-10', description: 'ما تغيّر بين ميم 0.9 و0.10: الذاكرة (أخطاء بدل السقوط، والكاشف افتراضي في التشغيل المباشر، ولا نسخ خفية)، والخياران --release و--debug.', keywords: ['ترحيل', 'ترقية', '0.10', 'كاشف', 'release', 'debug'] },
   'migration/0.7-to-0.8.md': { slug: 'docs/migration/to-0-8', description: 'ما تغيّر بين ميم 0.7 و0.8: الصيغ المهجورة صارت أخطاء ترجمة، والرسائل بمعرّفات ثابتة، وصيغ جديدة في النصوص، وما يُضاف ولا يكسر.', keywords: ['ترحيل', 'ترقية', '0.8', 'مهجورة', 'معرف'] },
   'migration/errors.md': { slug: 'docs/migration/errors', keywords: ['ترحيل', 'معالجة الاخطاء', 'جرب', 'والا'] },
   'glossary.md': { slug: 'docs/glossary' },

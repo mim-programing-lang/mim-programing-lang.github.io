@@ -1,12 +1,11 @@
 ---
-title: "15. معالجة الأخطاء"
+title: "16. معالجة الأخطاء"
 description: "دالة قد تفشل ترجع «!نوع»، وتعالج فشلها بـ«والا» في موضعه أو تمرّره بـ«جرّب»."
 keywords: ["خطأ", "اخطاء", "معالجة الاخطاء", "جرب", "والا", "خاتمه_عند_خطأ"]
 ---
 
 import Example from '../../../components/Example.astro';
 import VersionBanner from '../../../components/VersionBanner.astro';
-import VersionTag from '../../../components/VersionTag.astro';
 import LessonMeta from '../../../components/LessonMeta.astro';
 import Solution from '../../../components/Solution.astro';
 import NextLesson from '../../../components/NextLesson.astro';
@@ -14,8 +13,6 @@ import NextLesson from '../../../components/NextLesson.astro';
 <VersionBanner />
 
 <LessonMeta />
-
-<VersionTag />
 
 ## الهدف
 
@@ -35,7 +32,7 @@ import NextLesson from '../../../components/NextLesson.astro';
 
 <Example file="lessons/15_جرب.م" title="جرّب" />
 
-**الحدود اليوم (0.9.1):** الخطأ اسم فقط بلا بيانات معه (لا «أي سطر» ولا «أي ملف»)، وتوقيع الدالة لا يذكر أي الأخطاء ترجع. وأخطاء التشغيل مثل القسمة على صفر أو الفهرس خارج القائمة ليست من هذا النوع: لا تُعالَج، وتنهي البرنامج برمز 3. التفصيل في [التعامل مع الأخطاء](/docs/understand/errors/).
+**الحدود اليوم (0.10.0):** الخطأ اسم فقط بلا بيانات معه (لا «أي سطر» ولا «أي ملف»)، وتوقيع الدالة لا يذكر أي الأخطاء ترجع. وأخطاء التشغيل مثل القسمة على صفر أو الفهرس خارج القائمة ليست من هذا النوع: لا تُعالَج، وتنهي البرنامج برمز 3. التفصيل في [التعامل مع الأخطاء](/docs/understand/errors/).
 
 ## تمرين
 

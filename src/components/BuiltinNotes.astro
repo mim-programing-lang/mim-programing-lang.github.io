@@ -1,6 +1,6 @@
 ---
 // ملاحظات الموقع على مدمجة في صفحة المدمجات (المولَّدة من الكتاب المرجعي): رسائل الفهرس التي تذكرها بمعرّفاتها،
-// وملاحظة الحجز والأداء من قياسات 0.9.1 (src/data/builtin-notes.json). يضيفها المولّد في آخر قسم كل مدمجة.
+// وملاحظة الحجز والأداء من قياسات 0.10.0 (src/data/builtin-notes.json). يضيفها المولّد في آخر قسم كل مدمجة.
 import { slug } from 'github-slugger';
 import hb from '../generated/handbook.json';
 import notes from '../data/builtin-notes.json';
@@ -22,7 +22,7 @@ const note = (notes.notes as Record<string, string>)[name];
       </p>
     )}
     {note && (
-      <p id={`alloc-${slug(name)}`}><strong>الحجز والأداء (0.9.1):</strong> {note}</p>
+      <p id={`alloc-${slug(name)}`}><strong>الحجز والأداء:</strong> {note}</p>
     )}
   </aside>
 )}

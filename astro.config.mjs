@@ -29,6 +29,8 @@ export default defineConfig({
           tag: 'link',
           attrs: { rel: 'preload', href: `/fonts/${f}.woff2`, as: 'font', type: 'font/woff2', crossorigin: '' },
         })),
+        // يهيّئ البحث قبل أول استعلام (public/search-warm.js).
+        { tag: 'script', attrs: { type: 'module', src: '/search-warm.js' } },
       ],
       components: {
         PageTitle: './src/components/PageTitle.astro',

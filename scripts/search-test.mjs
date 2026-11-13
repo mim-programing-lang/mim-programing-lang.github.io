@@ -33,7 +33,8 @@ const expect = [
 const server = await serveDist();
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_BIN || (existsSync(chromium.executablePath()) ? undefined : '/bin/chromium') });
 try {
-  const page = await browser.newPage();
+  // متصفح عربي: لغة إنجليزية تُحوَّل إلى /en/ فيبحث في فهرسها.
+  const page = await browser.newPage({ locale: 'ar' });
   await page.goto(server.url + '/');
   const count = (q) =>
     page.evaluate(async (query) => {

@@ -1,0 +1,49 @@
+---
+title: "Coming from Python"
+description: "For Python programmers: what is similar (indentation, loops, lists and dictionaries) and what is different in Meem (static types, division, errors and memory)."
+keywords: ["python", "from python", "indentation", "types", "division", "exceptions"]
+---
+
+import Example from '../../../../../components/Example.astro';
+import HBExample from '../../../../../components/HBExample.astro';
+
+You will find familiar things in Meem: blocks by indentation after `:`, `لكل ... في` (for ... in), and lists and dictionaries in insertion order. The big differences: types are static and checked before the program runs, the program is compiled to an executable, errors are values rather than exceptions, and memory is manual.
+
+## What corresponds to what
+
+| In Python | In Meem |
+|---|---|
+| `if` / `elif` / `else` | `اذا` / `غير ذلك اذا` / `غير ذلك` |
+| `for x in range(1, 11):` | `لكل س في مدى(1, 11):` |
+| `while`, `break` and `continue` | `طالما`, `توقف` and `تجاوز` |
+| `def f(x: int) -> int:` | `داله ف(س عدد) عدد:` (types are mandatory) |
+| `list` and `dict` | `قائمة[نوع]` (one type) and `قاموس[مفتاح, قيمة]` |
+| a `class` with fields | a `هيكل` with fields, and functions take it as a parameter (no methods) |
+| `import math` then `math.sqrt` | `استورد رياضيات` then `رياضيات.جذر` |
+| `print(a, b)` | `اطبع(ا, ب)`: **no space** between the values; write it yourself |
+| `try` / `except` | `!نوع`, `جرّب` and `والا` |
+| `None` | `لاشيء` (for strings and pointers) |
+
+## What is different
+
+**A variable's type is fixed** by its first value:
+
+<HBExample id="errors/common.md#9" label="Causes the error" section="تغيير نوع المتغير" />
+
+**`/` between two integers is integer division**, truncating toward zero (close to Python's `//`, but different for negative numbers), and with a float it is fractional division:
+
+<Example file="lessons/02_حل.م" title="Division" />
+
+**No exceptions:** a function that can fail says so in its type, and handling it is mandatory at compile time:
+
+<Example file="lessons/15_اخطاء.م" title="An error is a value" />
+
+**Memory is manual:** there is no garbage collector. In a short program that does you no harm, because everything returns on exit. In a long loop, you free what you build with `خاتمه حرر(...)`. Start with [memory for beginners: three rules](/en/learn/memory-basics/).
+
+## Performance compared with Python (measurements on 0.9.1)
+
+In the direction report: algorithms are much faster (on a par with C), and text processing is on a par with Python in time (0.70 s against 0.74), but with about 7 times the memory, because the file is read whole and there is no line-by-line reading yet. Details in [what Meem can and cannot do](/en/docs/understand/capabilities/).
+
+## See also
+
+[Learn Meem](/en/learn/) · [Dealing with errors](/en/docs/understand/errors/) · [Cheat sheet](/en/docs/cheatsheet/)

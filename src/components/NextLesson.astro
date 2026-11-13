@@ -1,18 +1,21 @@
 ---
 // «الدرس التالي» بحسب ترتيب المسار في src/data/learn-path.json؛ وآخر درس يحيل إلى المشاريع.
 import path from '../data/learn-path.json';
-const slug = Astro.url.pathname.replace(/^\/|\/$/g, '');
+import { contentLang, localHref, pageSlug } from '../lib/i18n';
+const lang = contentLang(Astro);
+const en = lang === 'en';
+const slug = pageSlug(Astro);
 const i = path.lessons.findIndex((l) => l.slug === slug);
 const next = path.lessons[i + 1];
 ---
 
-<nav class="next-lesson not-content" aria-label="الدرس التالي">
+<nav class="next-lesson not-content" aria-label={en ? 'Next lesson' : 'الدرس التالي'}>
   {next ? (
-    <a href={`/${next.slug}/`}><span>الدرس التالي</span><strong>{i + 2}. {next.title}</strong></a>
+    <a href={localHref(lang, `/${next.slug}/`)}><span>{en ? 'Next lesson' : 'الدرس التالي'}</span><strong>{i + 2}. {en ? next.title_en : next.title}</strong></a>
   ) : (
-    <a href="/learn/projects/"><span>بعد الدروس</span><strong>مشاريع صغيرة كاملة</strong></a>
+    <a href={localHref(lang, '/learn/projects/')}><span>{en ? 'After the lessons' : 'بعد الدروس'}</span><strong>{en ? 'Small complete projects' : 'مشاريع صغيرة كاملة'}</strong></a>
   )}
-  <a href="/learn/"><span>المسار</span><strong>كل الدروس وتقدّمك</strong></a>
+  <a href={localHref(lang, '/learn/')}><span>{en ? 'The path' : 'المسار'}</span><strong>{en ? 'All lessons and your progress' : 'كل الدروس وتقدّمك'}</strong></a>
 </nav>
 
 <style>

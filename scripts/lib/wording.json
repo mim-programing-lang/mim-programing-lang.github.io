@@ -196,7 +196,8 @@
     },
     {
       "pattern": "\\b(?:Section titled|Clear|Load more results|Search this site|Directory)\\b",
-      "use": "ترجمة عربية لنص الواجهة (src/content/i18n/ar.json)"
+      "use": "ترجمة عربية لنص الواجهة (src/content/i18n/ar.json)",
+      "lang": "ar"
     },
     {
       "pattern": "(?<![\\u0600-\\u06FF])و (?=[\\u0600-\\u06FF⟦])",

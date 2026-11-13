@@ -2,64 +2,67 @@
 // الملعب: واجهة فقط. تتصل بخادم تشغيل عنوانه PUBLIC_PLAYGROUND_API وقت البناء؛ بلا عنوان تبقى للقراءة.
 // لا نص من الخادم ولا من الزائر يُدرج بـ innerHTML: كل عرض بـ textContent (src/scripts/playground.ts).
 import pg from '../generated/playground.json';
+import { contentLang } from '../lib/i18n';
 
 const api = (import.meta.env.PUBLIC_PLAYGROUND_API ?? '').trim();
 const enabled = /^https?:\/\//.test(api);
+const en = contentLang(Astro) === 'en';
+const T = (ar: string, e: string) => (en ? e : ar);
 const examples = pg.examples as { id: string; title: string; topic: string }[];
 const label = (e: { id: string; title: string }) => `${e.title} — ${e.id.replace(/\.md#/, ' #').replace(/^.*\//, '')}`;
 ---
 
-<div class="pg" data-api={enabled ? api : ''} data-timeout-ms="15000" data-min-interval-ms="3000" data-max-share-bytes="16384" data-max-code-bytes="65536" data-max-body-bytes="98304">
+<div class="pg" data-lang={en ? 'en' : 'ar'} data-api={enabled ? api : ''} data-timeout-ms="15000" data-min-interval-ms="3000" data-max-share-bytes="16384" data-max-code-bytes="65536" data-max-body-bytes="98304">
   <p class="pg-state" id="pg-state" role="status" aria-live="polite">
-    {enabled ? 'جاهز.' : 'الملعب قيد التجهيز: لا يمكن التشغيل الآن، لكن تستطيع قراءة الأمثلة ومخرجاتها المتوقعة.'}
+    {enabled ? T('جاهز.', 'Ready.') : T('الملعب قيد التجهيز: لا يمكن التشغيل الآن، لكن تستطيع قراءة الأمثلة ومخرجاتها المتوقعة.', 'The playground is being prepared: nothing can be run yet, but you can read the examples and their expected output.')}
   </p>
-  <p class="pg-from-link" id="pg-from-link" hidden>هذه الشيفرة جاءت من رابط. اقرأها قبل أن تضغط «شغّل».</p>
+  <p class="pg-from-link" id="pg-from-link" hidden>{T('هذه الشيفرة جاءت من رابط. اقرأها قبل أن تضغط «شغّل».', 'This code came from a link. Read it before you press «Run».')}</p>
 
   <div class="pg-toolbar">
     <label>
-      <span>مثال من الكتاب المرجعي:</span>
+      <span>{T('مثال من الكتاب المرجعي:', 'An example from the reference handbook:')}</span>
       <select id="pg-examples">
-        <option value="">— اختر مثالاً —</option>
+        <option value="">{T('— اختر مثالاً —', '— choose an example —')}</option>
         {examples.map((e) => <option value={e.id}>{label(e)}</option>)}
       </select>
     </label>
   </div>
 
-  <div class="pg-editor" id="pg-editor" aria-label="محرر الشيفرة"></div>
+  <div class="pg-editor" id="pg-editor" aria-label={T('محرر الشيفرة', 'Code editor')}></div>
 
   <div class="pg-actions">
-    <button type="button" id="pg-run" disabled={!enabled}>شغّل</button>
-    <button type="button" id="pg-share">انسخ رابط المشاركة</button>
+    <button type="button" id="pg-run" disabled>{T('الملعب قريباً', 'Playground coming soon')}</button>
+    <button type="button" id="pg-share">{T('انسخ رابط المشاركة', 'Copy the share link')}</button>
     <span id="pg-share-msg" class="pg-share-msg" aria-live="polite"></span>
   </div>
 
-  <section class="pg-result" aria-label="النتيجة">
-    <h2>المخرج</h2>
+  <section class="pg-result" aria-label={T('النتيجة', 'Result')}>
+    <h2>{T('المخرج', 'Output')}</h2>
     <pre id="pg-stdout" class="pg-box" dir="auto"></pre>
-    <h2>الأخطاء</h2>
+    <h2>{T('الأخطاء', 'Errors')}</h2>
     <pre id="pg-stderr" class="pg-box pg-err" dir="auto"></pre>
-    <p class="pg-exit">رمز الخروج: <bdi id="pg-exit">—</bdi> <span id="pg-duration"></span></p>
+    <p class="pg-exit">{T('رمز الخروج:', 'Exit code:')} <bdi id="pg-exit">—</bdi> <span id="pg-duration"></span></p>
   </section>
 
   <details class="pg-expected" id="pg-expected" hidden>
-    <summary>المخرج المتوقع لهذا المثال (من الكتاب المرجعي)</summary>
-    <p class="pg-note">سُجّل في اختبارات المجمّع بلا خيارات الملعب؛ مع <code dir="ltr">--debug-mem</code> قد يُضاف تقرير الذاكرة إلى الأخطاء.</p>
-    <h3>المخرج</h3>
+    <summary>{T('المخرج المتوقع لهذا المثال (من الكتاب المرجعي)', 'The expected output of this example (from the reference handbook)')}</summary>
+    {en ? <p class="pg-note">Recorded in the compiler's tests without the playground's options; with <code dir="ltr">--debug-mem</code> a memory report may be added to the errors.</p> : <p class="pg-note">سُجّل في اختبارات المجمّع بلا خيارات الملعب؛ مع <code dir="ltr">--debug-mem</code> قد يُضاف تقرير الذاكرة إلى الأخطاء.</p>}
+    <h3>{T('المخرج', 'Output')}</h3>
     <pre id="pg-exp-stdout" class="pg-box" dir="auto"></pre>
-    <h3>الأخطاء</h3>
+    <h3>{T('الأخطاء', 'Errors')}</h3>
     <pre id="pg-exp-stderr" class="pg-box pg-err" dir="auto"></pre>
-    <p class="pg-exit">رمز الخروج: <bdi id="pg-exp-exit"></bdi></p>
+    <p class="pg-exit">{T('رمز الخروج:', 'Exit code:')} <bdi id="pg-exp-exit"></bdi></p>
   </details>
 
-  <section class="pg-limits" aria-labelledby="pg-limits-title">
-    <h2 id="pg-limits-title">حدود الملعب</h2>
+  <section class="pg-limits" aria-labelledby="pg-limits-title" hidden>
+    <h2 id="pg-limits-title">{T('حدود الملعب', 'Playground limits')}</h2>
     <ul>
-      <li>زمن التشغيل: 8 ثوانٍ.</li>
-      <li>حجم الشيفرة: 64 ك.ب.</li>
-      <li>المخرج: 64 ك.ب، وما زاد عليها يُقطع.</li>
-      <li>لا ملفات، ولا شبكة، ولا وسائط سطر أوامر، ولا متغيرات بيئة، ولا إدخال. الوحدات المتاحة: <code>رياضيات</code> و<code>عشوائي</code>.</li>
-      <li>خيارات المجمّع: <code dir="ltr">--no-unsafe --no-ffi --no-system --debug-mem</code>.</li>
-      <li>تُرسل الشيفرة إلى خادم التشغيل وحده، ولا تُحفظ في أي خدمة أخرى. ولا أدوات تحليل أو تتبّع في هذه الصفحة.</li>
+      <li>{T('زمن التشغيل: 8 ثوانٍ.', 'Run time: 8 seconds.')}</li>
+      <li>{T('حجم الشيفرة: 64 ك.ب.', 'Code size: 64 kB.')}</li>
+      <li>{T('المخرج: 64 ك.ب، وما زاد عليها يُقطع.', 'Output: 64 kB, and anything beyond that is cut.')}</li>
+      {en ? <li>No files, no network, no command-line arguments, no environment variables, and no input. The available modules: <code>رياضيات</code> and <code>عشوائي</code>.</li> : <li>لا ملفات، ولا شبكة، ولا وسائط سطر أوامر، ولا متغيرات بيئة، ولا إدخال. الوحدات المتاحة: <code>رياضيات</code> و<code>عشوائي</code>.</li>}
+      <li>{T('خيارات المجمّع:', 'Compiler options:')} <code dir="ltr">--no-unsafe --no-ffi --no-system --debug-mem</code>.</li>
+      <li>{T('تُرسل الشيفرة إلى خادم التشغيل وحده، ولا تُحفظ في أي خدمة أخرى. ولا أدوات تحليل أو تتبّع في هذه الصفحة.', 'The code is sent to the run server only, and is not stored in any other service. There are no analytics or tracking tools on this page.')}</li>
     </ul>
   </section>
 </div>

@@ -31,7 +31,8 @@ const browser = await chromium.launch({ executablePath: existsSync(exe) ? exe : 
 const failures = [];
 const seen = { negative: 0, list: 0, compare: 0, lines: 0 };
 try {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  // متصفح عربي: لغة إنجليزية تُحوَّل إلى /en/، فتُفحص كل صفحة بعنوانها.
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, locale: 'ar' });
   for (const p of pages.map((x) => x.replace(/^\/\//, '/'))) {
     await page.goto(server.url + p, { waitUntil: 'load' });
     await page.evaluate(() => document.fonts.ready);

@@ -1,0 +1,52 @@
+---
+title: "19. Building a standalone executable"
+description: "Turn a Meem program into a single executable that runs on a machine without Meem, with the command meem build."
+keywords: ["build", "executable", "static", "dynamic", "distribution"]
+---
+
+import Example from '../../../../components/Example.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To build a single executable from your program that you can give to someone else, who runs it without installing Meem.
+
+## Explanation
+
+- `meem برنامج.م` compiles the program and runs it straight away, for trying things out.
+- `meem build برنامج.م -o برنامج` writes an executable: `./برنامج` runs on its own.
+- The file is **static** by default: it contains the whole C library (musl), so it needs nothing from the machine. `--dynamic` builds it dynamically against the system's C library (smaller, and sometimes faster in allocation-heavy programs, but it needs glibc on the machine).
+- The program's arguments come after `--` in a direct run (`meem برنامج.م -- سلمى`), and after the file name for a built file (`./برنامج سلمى`).
+
+```sh
+meem build عداد.م -o عداد
+./عداد
+```
+
+When this site was built, the following example really was built, the resulting file was run on its own, and its output matched the output of the direct run:
+
+<Example file="lessons/18_بناء.م" title="عداد.م" />
+
+## Exercise
+
+A program that greets the name it is given as an argument (`نظام.وسائط()`), and prints how to use it if it is given no name. Build it, then run it: `./تحية سلمى`.
+
+<Solution file="lessons/18_حل.م" title="Solution" />
+
+## Common mistakes
+
+- A program that uses `خارجي` to call a C library other than the standard C library (such as zlib) cannot be built statically: build it with `--dynamic`, and the library must be installed on the machine that runs it.
+- The built file is for Linux x86_64 only. Windows and macOS are not available in 1.0.
+
+## See also
+
+[Building: meem build](/en/docs/build/) · [Command-line options](/en/docs/tools/options/)
+
+<NextLesson />

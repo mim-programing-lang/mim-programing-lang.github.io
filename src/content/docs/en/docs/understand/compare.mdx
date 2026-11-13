@@ -1,0 +1,65 @@
+---
+title: "Meem compared with C and Zig"
+description: "A fair comparison of Meem 0.10.0 with C and Zig from measured numbers: where Meem comes close to C's performance, where it falls behind, what it does better and what it lacks."
+keywords: ["comparison", "c", "zig", "performance", "speed", "benchmark", "gcc", "clang"]
+---
+
+The numbers comparing Meem with C come from the «technical analysis of Meem 0.9.1» in the compiler repository, and what changed in 0.10.0 comes from the 0.10.0 section of `docs/performance.md` there. Every number for Meem and C was measured: the same program with the same algorithm, run five times, taking the median. **Zig was not installed** on the measuring machine, so everything about it here comes from its documentation and is **not measured**.
+
+## Measured performance: Meem against C
+
+Seconds are the median run time of the file built with Meem 0.9.1, and «best C» is the faster of `gcc -O2` and `clang -O2`:
+
+| Program | Meem (static) | Meem (dynamic) | Best C | Ratio to best C |
+|---|---|---|---|---|
+| Numeric loop (300 million rounds) | 0.771 | 0.617 | 0.696 | **×0.89 (faster)** |
+| n-body with fixed arrays | 0.244 | 0.239 | 0.226 | ×1.06 |
+| Sieve up to 20 million | 0.429 | 0.366 | 0.265 | ×1.38–1.62 |
+| Dictionary: a million keys | 0.289 | 0.318 | 0.194 | ×1.49 |
+| n-body with lists | 0.415 | 0.414 | 0.210 | **×1.98** |
+| Building a string (400 thousand pieces) and searching it | 0.291 | 0.286 | 0.118 | **×2.43** |
+| Recursive Fibonacci (n=40) | 0.925 | 0.988 | 0.298 | **×3.10** |
+
+**What changed in 0.10.0:** `meem build` now generates code with the small code model, so recursive Fibonacci on the benchmark programs in the compiler repository went from 1.014 s to 0.762 s (25% faster), and the rest stayed within ±10%. The comparison with C has not been redone on 0.10.0, so the real ratio for recursion is now below ×3.10, and we do not know its value.
+
+**How to read it:** where the data is numbers in fixed arrays, Meem is on a par with C (LLVM generates almost the same code). It falls behind in three places:
+
+- **Recursion:** an overflow check on every addition, and until 0.9.1 the call was indirect (fixed in 0.10.0, see above).
+- **Lists in loops:** every access reads the list's header and length and then checks the bound, and there is no information that would let LLVM hoist that out of the loop.
+- **Strings:** every `+` builds a whole new string, and the temporaries stay until exit: a peak of **138 MB against 10.6** for C in the string program.
+
+The numeric loop that beats gcc is an advantage of LLVM, not of Meem (clang is close to it). The measurements were made on a machine that was not idle (Intel i3, load between 1.35 and 5.2), and differences smaller than 10% are not meaningful.
+
+## Compilation
+
+| | Meem 0.9.1 | Meem 0.10.0 |
+|---|---|---|
+| «مرحبا» (hello) | check 0.34 s, build 0.40 s; the file is 30592 bytes static, 6504 dynamic | the file is 29640 bytes static, 6488 dynamic |
+| A 50-thousand-line file | between one and two minutes to build, and 1.35 GB of memory for the compiler; 9.3 MB | 57 s without optimisation (above the threshold); 6.7 MB |
+| Optimisation threshold in `meem build` | 5000 blocks (about 1400 lines) | 25 thousand blocks (about 7000 lines) |
+| Start-up time | about 0.34 s for any command (loading Python and LLVM) | |
+
+## Side by side
+
+| Aspect | Meem 0.10.0 | C | Zig (not measured) |
+|---|---|---|---|
+| Memory | Manual, with explicit allocators, arenas and `خاتمه`; the detector is on by default in a direct run and catches use after free and double free, while a built file without the detector does not catch them through another name | Manual, unchecked | Manual, with explicit allocators and `defer`; the debug allocator catches leaks and double frees |
+| Bounds and overflow | **Always checked**, except in `بلا_فحص` | Not checked | Checked in Debug and ReleaseSafe |
+| Errors | `!نوع`, `جرّب` and `والا`; an error carries no data | Return codes and `errno` | Error sets in the type, and traces |
+| Compile time | No compile-time execution | The preprocessor | Full `comptime` |
+| Generics | No generic types | Macros and `void *` | `comptime` |
+| Calling C | `خارجي` with specific types; no structs by value and no headers | Native | Imports C headers directly |
+| Platforms | Linux x86_64 only | Everything | Dozens of targets |
+| Debugging tools | The detector and `--debug-mem`, a JSON check, and `--fix`; no DWARF and no debugger | gdb, valgrind and sanitizers | DWARF and LSP |
+| Maturity | Weeks, and one developer | Decades | Years, before 1.0 |
+| Arabic | The keywords and messages are Arabic, and strings are UTF-8 | No | No |
+
+## The conclusion
+
+**Where Meem does better:** safety by default in arithmetic and indexing without a special mode, a memory detector that is on by default while you try your program, Arabic error messages with stable IDs, a static file that needs no tools on the machine, and an easy start for anyone who reads Arabic.
+
+**Where it falls behind:** performance in the general cases (lists, recursion and strings), compile time, platforms, debugging, generics, calling C, the ecosystem, maturity, and memory guarantees in the built file. Meem 0.10.0 is not a replacement for C or Zig in systems programming today.
+
+## See also
+
+[What Meem can and cannot do](/en/docs/understand/capabilities/) · [Coming from C](/en/docs/from/c/) · [Coming from Zig](/en/docs/from/zig/) · [Performance (measurements from 0.5–0.6)](/en/docs/performance/)

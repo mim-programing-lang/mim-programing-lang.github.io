@@ -1,0 +1,56 @@
+---
+title: "8. Functions"
+description: "Write a function with parameters and a return type, and call it after defining it."
+keywords: ["function", "functions", "parameter", "parameters", "return", "داله"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To write a function with parameters and a return type, and to call it after defining it.
+
+## Explanation
+
+- A **function** is a named group of instructions. It starts with a line such as `داله مساحة(ط كسر, ع كسر) كسر:`, followed by its body indented underneath.
+- Between the parentheses are the **parameters**: the name and type of each value the function takes. After the parentheses comes the **return type**: the type of what it returns. A function that returns no value has the return type `فراغ` (void).
+- `ارجع` (return) ends the function and returns the value written after it.
+- A function is called **after** its definition in the file.
+
+## Example
+
+<HBExample id="learn/README.md#8" />
+
+## Common mistakes
+
+Calling a function before defining it:
+
+<HBExample id="errors/common.md#11" label="Causes the error" section="استدعاء دالة قبل تعريفها" />
+
+<HBExample id="errors/common.md#12" label="Fixes it" section="استدعاء دالة قبل تعريفها" />
+
+And a function with a path that ends without `ارجع`:
+
+<HBExample id="errors/common.md#27" label="Causes the error" section="دالة لا ترجع في كل مسار" />
+
+<HBExample id="errors/common.md#28" label="Fixes it" section="دالة لا ترجع في كل مسار" />
+
+## Exercise
+
+Write a function `اولي(ن عدد) منطقي` that returns `صواب` (true) if `ن` is prime, and use it to print the primes up to 30.
+
+<Solution file="lessons/08_حل.م" title="Solution" />
+
+## See also
+
+[Functions](/en/docs/language/functions/)
+
+<NextLesson />

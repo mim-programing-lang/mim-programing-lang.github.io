@@ -1,0 +1,75 @@
+---
+title: "Dealing with errors"
+description: "!نوع, جرّب, والا and خاتمه_عند_خطأ in Meem, the difference between a handled error and a runtime error (code 3), and the system's limits in 0.10.0, told plainly."
+keywords: ["error", "errors", "error handling", "try", "else", "exit code", "runtime error", "جرب", "والا", "خاتمه_عند_خطأ"]
+---
+
+import Example from '../../../../../components/Example.astro';
+import HBExample from '../../../../../components/HBExample.astro';
+
+**In short:** Meem has two kinds of errors. A **handled error** is a value returned by a function that can fail (`!نوع`), and you must handle it at compile time. A **runtime error** (an index outside a list, division by zero, overflow) is a fault in the program: it cannot be handled, and it ends the program with code 3.
+
+<figure class="diagram">
+<svg viewBox="0 0 640 250" role="img" aria-label="Diagram: a function returns !نوع; either جرّب passes the error to its caller, or والا handles it on the spot; an error that reaches the top level unhandled ends the program with code 3" xmlns="http://www.w3.org/2000/svg" direction="ltr" font-family="inherit" font-size="15">
+  <rect x="400" y="20" width="220" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="510" y="44" text-anchor="middle" fill="currentColor">A function returning !عدد</text>
+  <text x="510" y="65" text-anchor="middle" fill="currentColor" font-size="12">Success: the value · failure: خطأ.اسم</text>
+  <rect x="400" y="150" width="220" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="510" y="176" text-anchor="middle" fill="currentColor" direction="rtl">ن = ف() والا 0</text>
+  <text x="510" y="200" text-anchor="middle" fill="currentColor" font-size="12">Handled here; the program goes on</text>
+  <rect x="140" y="150" width="220" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="250" y="176" text-anchor="middle" fill="currentColor" direction="rtl">ن = جرّب ف()</text>
+  <text x="250" y="200" text-anchor="middle" fill="currentColor" font-size="12">Goes up to the caller</text>
+  <rect x="20" y="20" width="220" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="130" y="44" text-anchor="middle" fill="currentColor">Top level, unhandled</text>
+  <text x="130" y="65" text-anchor="middle" fill="currentColor" font-size="12">«Unhandled error», code 3</text>
+  <line x1="510" y1="76" x2="510" y2="140" stroke="currentColor" stroke-width="2"/>
+  <polygon points="505,140 510,150 515,140" fill="currentColor"/>
+  <line x1="450" y1="76" x2="300" y2="142" stroke="currentColor" stroke-width="2"/>
+  <polygon points="303,136 290,146 307,146" fill="currentColor"/>
+  <line x1="200" y1="150" x2="150" y2="86" stroke="currentColor" stroke-width="2"/>
+  <polygon points="145,92 146,78 156,88" fill="currentColor"/>
+</svg>
+<figcaption>A handled error has two paths: it is handled on the spot with «والا», or it goes up with «جرّب». One that reaches the top level unhandled ends the program with code 3.</figcaption>
+</figure>
+
+## The four words
+
+- **`!نوع`** in a function's signature: it can fail. When it fails it returns `خطأ.اسم` (error.name), and your error names live in an `اخطاء:` (errors) block.
+- **`والا`** (else): `ف() والا 0` is a fallback value, and `ف() والا خ:` followed by a block gives `خ` as the error's name (with `حالات خ` to tell errors apart); the last line of the block is the fallback value.
+- **`جرّب`** (try): inside a `!نوع` function, it passes the failure to the caller. At the top level, it ends the program with code 3 if it fails.
+- **`خاتمه_عند_خطأ`** (defer on error): clean-up that runs only if the function exits with an error, and before the `خاتمه` declared before it:
+
+<Example file="guide/اخطاء_عند_خطأ.م" title="خاتمه and خاتمه_عند_خطأ" />
+
+Forgetting to handle a failure is a **compile error**, so no program reaches run time with a failure you have not decided what to do with:
+
+<Example file="lessons/15_غير_معالج.م" title="A !عدد result left unhandled" />
+
+And the reference handbook's full example:
+
+<HBExample id="language/13-errors.md#1" section="معالجة الأخطاء" />
+
+## A runtime error is not a handled error
+
+Division by zero, an index outside a list, and overflowing 64 bits are programming mistakes: `والا` does not catch them, and they end the program with code 3, an ID and a line. **And `خاتمه` does not run when they happen**, so a temporary file that was going to be deleted stays on disk:
+
+<Example file="guide/اخطاء_تشغيل.م" title="خاتمه does not run on a runtime error" />
+
+## Limits today (0.10.0)
+
+| Limit | What it means |
+|---|---|
+| An error is a name without data | No «which file» and no «which line» with the error; you need a global variable to carry that |
+| One error set | The signature does not say which errors the function returns, and a `حالات` on a name it never returns gives no warning |
+| No chain and no cause | Converting an error between layers loses the original error |
+| No trace | «Unhandled error» names the top-level line, not where the first failure happened, and a runtime error has no call path |
+| `خاتمه` does not accept `والا` | Clean-up that can fail needs a wrapper function |
+| A function pointer cannot return `!نوع` | No tables of handlers that can fail |
+| `errno` from C is not available | No direct bridge to the errors of C libraries |
+
+**And the strength:** handling is enforced at compile time with three short words, `خاتمه_عند_خطأ` runs in the right order across functions, and the success path costs nothing. In ease and safety it is close to Zig; in expressiveness it is weaker than Rust and Go, because an error carries no data.
+
+## See also
+
+[Lesson 16: error handling](/en/learn/errors/) · [Error handling in the reference](/en/docs/language/errors/) · [Error catalog](/en/docs/errors/catalog/) · [Migrating to error handling](/en/docs/migration/errors/)

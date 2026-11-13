@@ -1,0 +1,19 @@
+---
+title: "Small complete projects"
+description: "Five real programs in Meem, measured on 0.9.1 and running with 0.10.0: a word tool, a CSV summary, algorithms, a tic-tac-toe game and a line counter, with their measurements and what was hard in them."
+keywords: ["projects", "project", "complete programs", "real examples"]
+---
+
+After the lessons: five complete programs written to evaluate Meem 0.9.1 in the compiler repository (the «direction 0.9.1» report), each for a different kind of program. Every page has the program as it is, a step-by-step explanation, what was hard in it, and what we learned.
+
+| Project | Kind | Lines | Time in the report (built) | Peak memory | For comparison |
+|---|---|---|---|---|---|
+| [Most frequent words](/en/learn/projects/words/) | Command-line tool and text | 79 | 0.70 s for a 9 MB file | 69.6 MB | Python: 0.74 s, 10.7 MB |
+| [Summarising a CSV file](/en/learn/projects/sales/) | File processing | 83 | 0.64 s for 200 thousand lines | 76.1 MB | Python: 0.54 s, 10.9 MB |
+| [Dijkstra and a search tree](/en/learn/projects/algorithms/) | Algorithms and data structures | 133 | 0.27–0.31 s | 8.6 MB | gcc -O2: 0.29 s |
+| [Tic-tac-toe](/en/learn/projects/tictactoe/) | Teaching application | 127 | 0.24 s | 36.5 MB | — |
+| [Folder line counter](/en/learn/projects/linecount/) | Small systems program | 91 | 0.02 s for 64 files | 8.7 MB | — |
+
+The times and peaks come from the report (Meem 0.9.1, not re-measured on 0.10.0), on its large data files and its machine (Intel i3, Linux x86_64). The examples on these pages run on small data so that their whole output can be shown, and each was run with Meem 0.10.0 when the site was built, built with `meem build`, and its output matched.
+
+**The conclusion (from the 0.9.1 report):** Meem suits small terminal tools that read text files that fit in memory, algorithm exercises (with performance close to C), and teaching programming and manual memory in Arabic. Its text processing is on a par with Python in time, but with about seven times the memory. Details in [what Meem can and cannot do](/en/docs/understand/capabilities/).

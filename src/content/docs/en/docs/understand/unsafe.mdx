@@ -1,0 +1,46 @@
+---
+title: "What is «خطر»?"
+description: "«خطر» (unsafe) is a block where you write what the compiler does not check: raw memory, raw pointers, and switching checks off. When you need it, why a beginner does not, and how --no-unsafe forbids it."
+keywords: ["unsafe", "raw pointer", "no-unsafe", "unchecked", "خطر", "احجز_خام", "بلا_فحص"]
+---
+
+import Example from '../../../../../components/Example.astro';
+
+**In short:** outside `خطر`, the compiler checks bounds and overflow and forbids raw operations. Inside `خطر:` you write what is not checked: raw memory, indexing a raw pointer without a length, converting between pointer types, and `بلا_فحص` (unchecked) to switch off one particular check. A mistake there is your responsibility, but it is confined to a block you can see.
+
+## When you need it
+
+- **Raw memory:** `احجز_خام(النوع, العدد)` (allocate raw) and indexing it, for a buffer you pass to C, for example.
+- **A raw pointer** (`مؤشر_خام`) coming from C, and reading what it points to.
+- **Working with C** when it needs memory Meem does not manage: a buffer a C function fills, or a C string without a terminating zero.
+- **Switching off one particular check** with `بلا_فحص` in a loop you know is safe.
+
+`خارجي` (extern) itself, declaring a C function and calling it, does not need `خطر` when the types are ordinary:
+
+<Example file="lessons/17_خارجي.م" title="Two functions from C, without خطر" />
+
+<Example file="lessons/17_خطر.م" title="Raw memory inside خطر" />
+
+## And why a beginner does not need it
+
+Lists, dictionaries, structs and the standard modules are enough for most programs, and all of them are checked. A raw operation outside `خطر` is a compile error:
+
+<Example file="lessons/17_بلا_خطر.م" title="احجز_خام outside خطر" />
+
+## It keeps the danger in a visible place
+
+When a program crashes with a memory error, you look in the `خطر` blocks first: they are the only places where checking was switched off. `خطر داله` makes the whole function unsafe, and whoever calls it needs `خطر` too.
+
+But note: **not every memory error is inside `خطر`**. Using a list after `حرر` through another name is possible in ordinary code: the detector catches it in a direct run, and in a file built without the detector it is undefined behaviour. Details in [memory in Meem](/en/docs/understand/memory/).
+
+## `--no-unsafe` forbids it
+
+To run code you do not trust (someone else's program, or a student's exercise), the option `--no-unsafe` rejects any `خطر`, `--no-ffi` rejects `خارجي`, and `--no-system` rejects the two modules `ملفات` (files) and `نظام` (system):
+
+<Example file="guide/خطر_ممنوع.م" title="خطر with --no-unsafe" />
+
+These options restrict what can be written; they do not isolate the program: it runs with your full permissions.
+
+## See also
+
+[Lesson 18: «خطر» and calling C](/en/learn/unsafe/) · [The low-level layer](/en/docs/language/low-level/) · [Calling C](/en/docs/language/ffi/) · [What a program can do on your machine](/en/docs/language/security/)

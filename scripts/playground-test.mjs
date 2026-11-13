@@ -29,7 +29,8 @@ const mockCount = async () => (await (await fetch('http://127.0.0.1:8788/count')
 
 try {
   for (const [vname, vp] of Object.entries(viewports)) {
-    const ctx = await browser.newContext({ viewport: vp, permissions: ['clipboard-read', 'clipboard-write'] });
+    // متصفح عربي: لغة إنجليزية تُحوَّل إلى /en/ (public/lang-redirect.js)، والاختبار للصفحة العربية.
+    const ctx = await browser.newContext({ viewport: vp, locale: 'ar', permissions: ['clipboard-read', 'clipboard-write'] });
     const page = await ctx.newPage();
     const violations = [];
     await page.exposeFunction('__cspViolation', (d) => violations.push(d));

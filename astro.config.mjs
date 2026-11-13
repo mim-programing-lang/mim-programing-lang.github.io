@@ -13,17 +13,20 @@ export default defineConfig({
   devToolbar: { enabled: false },
   integrations: [
     starlight({
-      title: site.name,
+      title: { ar: site.name, en: 'Meem' },
       description: site.tagline,
-      // العربية هي الجذر. لإضافة الإنجليزية لاحقاً: أضف en هنا وضع الصفحات في src/content/docs/en/.
+      // العربية هي الجذر، والإنجليزية تحت /en/ (src/content/docs/en/). صفحة لم تُترجم تُعرض بالعربية مع تنبيه.
       defaultLocale: 'root',
       locales: {
         root: { label: 'العربية', lang: 'ar', dir: 'rtl' },
+        en: { label: 'English', lang: 'en', dir: 'ltr' },
       },
       ...(hasLogo ? { logo: { src: logo, alt: `شعار ${site.name}` } } : {}),
       favicon: '/favicon.svg',
       customCss: ['./src/styles/fonts.css', './src/styles/tokens.css', './src/styles/site.css'],
       head: [
+        // التحويل التلقائي إلى /en/ لمن لغة متصفحه إنجليزية ولم يختر لغة (public/lang-redirect.js): قبل رسم الصفحة.
+        { tag: 'script', attrs: { src: '/lang-redirect.js' } },
         // الخطوط الثلاثة تظهر في أول الشاشة (نص عربي، لاتيني، كود): تُحمَّل مبكراً فلا يتبدل الخط بعد الرسم.
         ...['noto-sans-arabic', 'noto-sans', 'cairo'].map((f) => ({
           tag: 'link',
@@ -37,6 +40,7 @@ export default defineConfig({
         SocialIcons: './src/components/SocialIcons.astro',
         Sidebar: './src/components/Sidebar.astro',
         Footer: './src/components/Footer.astro',
+        LanguageSelect: './src/components/LangButton.astro',
       },
       routeMiddleware: './src/routeData.ts',
       credits: false,

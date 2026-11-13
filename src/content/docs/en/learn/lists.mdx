@@ -1,0 +1,52 @@
+---
+title: "6. Lists"
+description: "Add to a list, sort it, and search it."
+keywords: ["list", "lists", "element", "elements", "index", "sort", "search"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To add to a list, sort it, and search it.
+
+## Explanation
+
+- A **list** holds elements of one type between square brackets, and grows as you add to it: `[70, 95, 82]`.
+- `اضف(ق, قيمة)` (add) appends the value at the end. `رتب(ق)` (sort) sorts it ascending in place. `طول(ق)` (length) is the number of its elements.
+- `بحث(ق, قيمة)` (search) returns the **index** of the first element equal to the value, or -1 if it is not found. The index is the element's position number, starting from 0.
+- A list is a **reference**: after `ب = ق`, `ب` and `ق` are two names for the same list, and nothing is copied.
+
+## Example
+
+<HBExample id="learn/README.md#6" />
+
+## Common mistakes
+
+An index outside the list:
+
+<HBExample id="errors/common.md#13" label="Causes the error" section="فهرس خارج القائمة" />
+
+<HBExample id="errors/common.md#14" label="Fixes it" section="فهرس خارج القائمة" />
+
+Another mistake is thinking that `ب = ق` copies the list: it does not, because a list is a reference.
+
+## Exercise
+
+In the list `[70, 95, 82, 64, 95]`, find the highest grade with a loop (without `رتب`), then its first position with `بحث`.
+
+<Solution file="lessons/06_حل.م" title="Solution" />
+
+## See also
+
+[Types](/en/docs/language/types/) · [Builtins](/en/docs/stdlib/builtins/)
+
+<NextLesson />

@@ -1,0 +1,54 @@
+---
+title: "Coming from C"
+description: "For C programmers: what corresponds to C's concepts in Meem 0.10.0 (types, pointers, memory, errors and struct), what will surprise you, and what you will like."
+keywords: ["c", "from c", "c programmer", "malloc", "free", "struct", "pointer", "printf"]
+---
+
+import Example from '../../../../../components/Example.astro';
+
+Like C, Meem compiles to machine code (through LLVM), and its memory is manual. But it always checks arithmetic and indexing, and it writes errors as values in the signature.
+
+## What corresponds to what
+
+| In C | In Meem |
+|---|---|
+| `int64_t`, `double`, `bool` | `عدد` (signed 64-bit), `كسر`, `منطقي` |
+| zero-terminated `char *` | `نص`: UTF-8 with its length, and `طول` counts **characters**, not bytes |
+| `struct` | `هيكل`: passed by value |
+| fixed array / growable array | `مصفوفة[نوع, حجم]` (copied on assignment) / `قائمة[نوع]` |
+| `malloc` / `free` | allocation from an allocator (usually implicit) / `حرر(س)` |
+| `T *` and `NULL` | `مؤشر[نوع]` with `جديد` and `محتوى`, and `لاشيء`; **no pointer arithmetic** |
+| `void *` from a library | `مؤشر_خام`, readable only inside `خطر` |
+| a return code and `errno` | `!نوع` and `خطأ.اسم`, and handling them is mandatory |
+| `goto cleanup` | `خاتمه` and `خاتمه_عند_خطأ` |
+| `#include` | `استورد` |
+| `printf` | `اطبع` with commas, and `رياضيات.نسق` and `نسق_عدد` for formatting |
+| undefined overflow | a runtime error with code 3 (and `--wrap-overflow` to wrap) |
+| calling a C library | `خارجي` with explicit C types |
+
+<Example file="lessons/17_خارجي.م" title="Two functions from a C library" />
+
+<Example file="guide/ذاكرة_تجاوز.م" title="Overflow is an error, not undefined behaviour" />
+
+## What will surprise you (from writing real programs with 0.9.1, reviewed on 0.10.0)
+
+- **Two modes, as in Zig:** `meem برنامج.م` runs the program with a memory detector that catches use after free and double free, naming both lines, while `meem build` builds without the detector, and in that file use after free through another name is undefined behaviour, as in C. Build with `--debug` to keep the detector.
+- **`حرر` does not follow:** freeing a list of lists leaves the inner lists, like `free` on an array of pointers.
+- **No bytes:** `طول` and `جزء` work in characters, and there is no «bytes» type.
+- **No generic types:** a heap is written for one type.
+- **A `هيكل_سي` must be defined before the declaration that uses it**, and the first error may be followed by misleading messages.
+- **An error is a name without data**, and its path is not traced.
+- **No `printf` and no variadic functions**, and no structs by value to C.
+- **The static build (musl) is slower** than `--dynamic` in allocation-heavy programs.
+
+## And what you will like
+
+- Bounds and overflow are checked by default, with a message giving the line and the ID.
+- `خاتمه` and `خاتمه_عند_خطأ` run in the right order across functions.
+- A static executable of tens of kilobytes, built in about a second.
+- Algorithmic code performs on a par with C ([Dijkstra and a search tree](/en/learn/projects/algorithms/)).
+- `خارجي` is one line per function, and the symbol is checked at compile time.
+
+## See also
+
+[Memory in Meem](/en/docs/understand/memory/) · [What is خطر?](/en/docs/understand/unsafe/) · [Meem compared with C and Zig](/en/docs/understand/compare/) · [Calling C](/en/docs/language/ffi/)

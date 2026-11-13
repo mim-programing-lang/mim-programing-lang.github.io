@@ -1,0 +1,40 @@
+---
+title: "Project: most frequent words"
+description: "A Meem command-line tool that reads a text file, counts its words and prints the most frequent ones: a dictionary, رتب_ب, and error handling."
+keywords: ["frequency", "words", "word count", "dictionary", "project", "رتب_ب"]
+---
+
+import Example from '../../../../../components/Example.astro';
+import DataFiles from '../../../../../components/DataFiles.astro';
+
+**The idea:** `تكرار <ملف> [عدد_الأوائل]` counts the words in the file, prints how many there are and how many are distinct, then the most frequent ones.
+
+## The data
+
+<DataFiles dir="projects/تكرار.files" />
+
+## The program
+
+<Example file="projects/تكرار.م" title="تكرار.م" />
+
+We changed two things from the report's version: we removed the «internal time» line because its output changes on every run, and we corrected the comment on `نظف` (clean), which said «a view, with no allocation».
+
+## Step by step
+
+1. **Arguments:** `اقرأ_الوسائط` returns `!قائمة[نص]`, and its error is `استعمال_خاطئ` (wrong usage) from the `اخطاء:` block. `رئيسي` (main) handles it with `والا خ:` and prints how to use the program.
+2. **Reading:** `جرّب ملفات.اقرأ_سطور(مسار)` reads the whole file as lines, and the `خاتمه حرر(سطور)` next to it gives the list back on exit.
+3. **Counting:** each line is split into pieces with `تقسيم`, `نظف` removes punctuation from the end of a word with `جزء`, and the dictionary `عداد` counts.
+4. **Sorting:** `رتب_ب(مدخلات, قبل)` with a comparison function: the most frequent first, then alphabetical order.
+5. **Printing:** `رياضيات.نسق_عدد` aligns the columns to a fixed width.
+
+## What was hard
+
+- **The hidden cost (in 0.9.1):** `نظف` uses `جزء` because it is a «view» with no copying. But in 0.9.1, `طول(ن)` on the view inside the loop allocated a small copy every time, never given back and not visible in the code, and that only showed up with `--debug-mem`. **In 0.10.0**, operations on a view allocate nothing.
+- **Memory:** on a 9 MB file, the built program's peak was 69.6 MB, against 10.7 for the equivalent Python program: Meem reads the whole file and its lines into memory (there is no line-by-line reading yet), and on top of that came the hidden copies in 0.9.1. This measurement has not been redone on 0.10.0.
+- **Time:** 0.70 s built statically, 0.56 s built with `--dynamic`, and Python 0.74 s.
+
+## What we learned
+
+- Errors are values: forgetting to handle `!قائمة` is a compile error, so the program never reaches run time with a neglected failure.
+- `خاتمه حرر(...)` next to the allocating line is enough in simple cases, and `--debug-mem` tells you which line did not free.
+- In a long loop over strings from `جزء`, compute `طول` once and keep it.

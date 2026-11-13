@@ -1,0 +1,17 @@
+---
+title: "Playground"
+description: "Try a small Meem program on the site: an editor, examples from the reference handbook, and a run button that connects to an isolated run server when one is available."
+template: splash
+head:
+  - tag: meta
+    attrs:
+      http-equiv: Content-Security-Policy
+      content: __PLAYGROUND_CSP__
+---
+
+import Playground from '../../../components/Playground.astro';
+import VersionBanner from '../../../components/VersionBanner.astro';
+
+<VersionBanner />
+
+<Playground />

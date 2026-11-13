@@ -5,6 +5,7 @@ import data from '../data/downloads.json';
 import { mb } from '../lib/size.mjs';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { contentLang } from '../lib/i18n';
 
 type Product = {
   id: string; name: string; platform: string; format: string; version: string; build: string;
@@ -15,43 +16,71 @@ const ready = (p: Product) => Boolean(p.fileName && p.sha256 && p.bytes);
 
 const logoPath = path.resolve('brand/editor-logo.svg');
 const editorLogo = existsSync(logoPath) ? `data:image/svg+xml;base64,${readFileSync(logoPath).toString('base64')}` : null;
-const soon = 'قريباً';
+const en = contentLang(Astro) === 'en';
+const soon = en ? 'Soon' : 'قريباً';
+// النسخة الإنجليزية: نصوص downloads.json العربية (يكتبها make-downloads) تُترجم هنا؛ وما لا يُعرف يبقى كما هو.
+const tr = (s: string) =>
+  !en
+    ? s
+    : s
+        .replace(/^المجمّع meem$/, 'The meem compiler')
+        .replace(/^محرر ميم$/, 'Meem editor')
+        .replace(/^أرشيف$/, 'archive')
+        .replace(/^لينكس x86_64$/, 'Linux x86_64')
+        .replace(/^مكتبة glibc بإصدار ([\d.]+) أو أحدث \(مقيس على ملفات الحزمة\)$/, 'glibc $1 or newer (measured on the package files)')
+        .replace(/^مكتبة glibc بإصدار ([\d.]+) أو أحدث \(بحسب وثيقة الإصدار\)$/, 'glibc $1 or newer (according to the release document)')
+        .replace(/^من مستودعات التوزيعة: (\S+) و(\S+) \(يثبّتهما apt\)$/, 'From the distribution repositories: $1 and $2 (installed by apt)')
+        .replace(/^libfuse2 \(أو التشغيل بـ --appimage-extract-and-run\)$/, 'libfuse2 (or run with --appimage-extract-and-run)');
 ---
 
 <div class="dl-products">
   <section>
-    <h2>المجمّع <bdi dir="ltr">meem</bdi></h2>
-    <p>الأمر الذي يبني برامج ميم ملفات تنفيذية مستقلة، ويشغّلها مباشرة للتجربة. لينكس x86_64.</p>
+    <h2>{en ? 'The compiler' : 'المجمّع'} <bdi dir="ltr">meem</bdi></h2>
+    <p>{en ? 'The command that builds Meem programs into standalone executables, and runs them directly for trying things out. Linux x86_64.' : 'الأمر الذي يبني برامج ميم ملفات تنفيذية مستقلة، ويشغّلها مباشرة للتجربة. لينكس x86_64.'}</p>
   </section>
   <section>
-    {editorLogo && <img class="dl-logo" src={editorLogo} alt="شعار محرر ميم" width="72" height="72" />}
-    <h2>محرر ميم</h2>
+    {editorLogo && <img class="dl-logo" src={editorLogo} alt={en ? 'The Meem editor logo' : 'شعار محرر ميم'} width="72" height="72" />}
+    <h2>{en ? 'Meem editor' : 'محرر ميم'}</h2>
+    {en ? (
+      <p>An editor in which you write Meem from right to left, with the compiler <bdi dir="ltr">0.10.0</bdi> built in, so you do not need to download the compiler separately. Linux x86_64, as deb and AppImage.</p>
+    ) : (
     <p>محرر تكتب فيه ميم من اليمين إلى اليسار، وفيه المجمّع <bdi dir="ltr">0.10.0</bdi> مضمَّناً، فلا تحتاج إلى تنزيل المجمّع وحده. لينكس x86_64، بصيغتي deb وAppImage.</p>
+    )}
   </section>
 </div>
 
-<h2 id="files">الملفات</h2>
+<h2 id="files">{en ? 'Files' : 'الملفات'}</h2>
 
-<p>لينكس x86_64 وحده. ويندوز وماك غير متاحين في 1.0.</p>
+<p>{en ? 'Linux x86_64 only. Windows and macOS are not available in 1.0.' : 'لينكس x86_64 وحده. ويندوز وماك غير متاحين في 1.0.'}</p>
 
 {products.map((p) => (
   <section class="dl-release" id={p.id}>
-    <h3>{p.name} — <bdi dir="ltr">{p.format}</bdi></h3>
+    <h3>{tr(p.name)} — <bdi dir="ltr">{tr(p.format)}</bdi></h3>
     <dl>
-      <dt>الإصدار</dt><dd>{p.version ? <bdi dir="ltr">{p.version}{p.build ? ` (${p.build})` : ''}</bdi> : soon}</dd>
-      <dt>المنصة</dt><dd>{p.platform}</dd>
-      <dt>الملف</dt>
+      <dt>{en ? 'Version' : 'الإصدار'}</dt><dd>{p.version ? <bdi dir="ltr">{p.version}{p.build ? ` (${p.build})` : ''}</bdi> : soon}</dd>
+      <dt>{en ? 'Platform' : 'المنصة'}</dt><dd>{tr(p.platform)}</dd>
+      <dt>{en ? 'File' : 'الملف'}</dt>
       <dd>{p.fileName ? (p.url ? <a href={p.url}><bdi dir="ltr">{p.fileName}</bdi></a> : <><bdi dir="ltr">{p.fileName}</bdi> — {soon}</>) : soon}</dd>
-      <dt>الحجم</dt><dd>{p.bytes ? <><bdi dir="ltr">{mb(p.bytes)}</bdi> م.ب (<bdi dir="ltr">{p.bytes}</bdi> بايتاً)</> : soon}</dd>
+      <dt>{en ? 'Size' : 'الحجم'}</dt><dd>{p.bytes ? (en ? <><bdi dir="ltr">{mb(p.bytes)}</bdi> MB (<bdi dir="ltr">{p.bytes}</bdi> bytes)</> : <><bdi dir="ltr">{mb(p.bytes)}</bdi> م.ب (<bdi dir="ltr">{p.bytes}</bdi> بايتاً)</>) : soon}</dd>
       <dt>SHA-256</dt><dd>{p.sha256 ? <code dir="ltr" class="sha">{p.sha256}</code> : soon}</dd>
-      <dt>متطلبات النظام</dt><dd>{p.requires.length ? p.requires.map((q) => <span class="req">{q}</span>) : soon}</dd>
+      <dt>{en ? 'System requirements' : 'متطلبات النظام'}</dt><dd>{p.requires.length ? p.requires.map((q) => <span class="req">{tr(q)}</span>) : soon}</dd>
     </dl>
-    {!ready(p) && <p class="dl-soon"><strong>{soon}.</strong> لم يُنشر هذا الملف بعد.</p>}
+    {!ready(p) && <p class="dl-soon"><strong>{soon}.</strong> {en ? 'This file has not been published yet.' : 'لم يُنشر هذا الملف بعد.'}</p>}
   </section>
 ))}
 
-<h2 id="verify">تحقق من التنزيل</h2>
+<h2 id="verify">{en ? 'Check the download' : 'تحقق من التنزيل'}</h2>
 
+{en ? (
+  <>
+    <p>After downloading, make sure the file did not change on the way: compute its SHA-256 fingerprint (a digital fingerprint that changes if a single byte of the file changes) and compare it with the fingerprint written here.</p>
+    <pre dir="ltr" class="verify">sha256sum file-name</pre>
+    <p>Or let the tool compare for you: put the fingerprint and the file name on one line, separated by two spaces, and pass it in:</p>
+    <pre dir="ltr" class="verify">echo "fingerprint  file-name" | sha256sum -c</pre>
+    <p>If it prints <code dir="ltr">OK</code>, the file is intact. If it prints <code dir="ltr">FAILED</code>, do not run it; download it again.</p>
+  </>
+) : (
+  <>
 <p>بعد التنزيل، تأكد أن الملف لم يتغيّر أثناء نقله: احسب بصمته SHA-256 (بصمة رقمية تتغير إن تغيّر بايت واحد من الملف) وقارنها بالبصمة المكتوبة هنا.</p>
 
 <pre dir="ltr" class="verify">sha256sum اسم-الملف</pre>
@@ -61,9 +90,11 @@ const soon = 'قريباً';
 <pre dir="ltr" class="verify">echo "البصمة  اسم-الملف" | sha256sum -c</pre>
 
 <p>إن طبعت <code dir="ltr">OK</code> فالملف سليم. وإن طبعت <code dir="ltr">FAILED</code> فلا تشغّله ونزّله من جديد.</p>
+  </>
+)}
 
 {products.filter(ready).map((p) => (
-  <p class="verify-line"><bdi>{p.name} ({p.format})</bdi>:</p>
+  <p class="verify-line"><bdi>{tr(p.name)} ({tr(p.format)})</bdi>:</p>
   <pre dir="ltr" class="verify">echo "{p.sha256}  {p.fileName}" | sha256sum -c</pre>
 ))}
 

@@ -1,0 +1,38 @@
+---
+title: "Project: summarising a CSV file"
+description: "A Meem program that reads a CSV sales file, totals the revenue per region and per month, and counts the bad lines without stopping."
+keywords: ["csv", "sales", "split", "file", "errors", "project", "مبيعات"]
+---
+
+import Example from '../../../../../components/Example.astro';
+import DataFiles from '../../../../../components/DataFiles.astro';
+
+**The idea:** `مبيعات <ملف.csv>` totals, for each region, the number of lines, the quantity and the revenue, and finds the best month. Bad lines are counted and do not stop the program.
+
+## The data
+
+The file has two deliberately bad lines: a line with missing fields (9), and a line whose quantity is a word, not a number (10).
+
+<DataFiles dir="projects/مبيعات.files" />
+
+## The program
+
+<Example file="projects/مبيعات.م" title="مبيعات.م" />
+
+## Step by step
+
+1. **Parsing a line:** `حلل` (parse) returns `!سجل`. It splits the line with `تقسيم(سطر, ",")`, and returns its error `حقول_ناقصة` (missing fields) if there are not five fields. Converting the numbers with `جرّب عدد(...)` passes on `صيغة_خاطئة` (wrong format) if a field is not a number.
+2. **A bad line does not stop the program:** `حلل(سطر) والا خ:` counts the bad line, keeps a description of the first one, then `تجاوز` (continue) moves to the next line.
+3. **Totalling:** the dictionary `مناطق` keeps each region's position in the list `جدول`, and a fixed array `اشهر` of 13 slots totals the revenue for each month.
+4. **Sorting and printing:** `رتب_ب` by revenue, and `رياضيات.نسق` to two decimal places.
+
+## What was hard
+
+- **Changing an element of a list:** the report's author wrote `ق = جدول[م]` then `جدول[م] = ق`, thinking that changing a field of a list element was not possible. Then they found that `جدول[م].كمية += س.كمية` works directly. What was missing was in the documentation, not in the language.
+- **The `--strict` warning:** the string `اول_فاسد` is built with `دمج_نصوص` inside the loop and never freed, so the compiler warns with `--strict` (warning E0270). Here it is actually built only once (at the first bad line), so the warning is a precaution, not a fault; that is why this example is shown without the strict guard.
+- **Memory and time:** on 200 thousand lines: 0.64 s built statically (0.48 dynamically) and 76.1 MB, against 0.54 s and 10.9 MB for Python.
+
+## What we learned
+
+- `والا خ:` with `تجاوز` makes «a bad line» an ordinary case that is counted, not an exception that stops everything.
+- A fixed array (`مصفوفة[كسر, 13]`) suits a known number of slots, and allocates nothing from the heap.

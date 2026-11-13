@@ -25,5 +25,31 @@
     "اطبع": "ناتج دمج نصين بـ + يُمرَّر إليها مباشرة يُحرَّر وحده بعد الطباعة. وكذلك ناتج مدمجة مثل نص(ع) داخله، أما ناتج دالة تكتبها أنت داخل ذلك الدمج فلا يُحرَّر.",
     "حاول_احجز": "حجم صالح لا تتسع له الذاكرة يرجع خطأ.لا_ذاكرة. أما حجم «غير صالح» جداً (مثل 10^14) فخطأ تشغيل E0366 لا يُلتقط.",
     "قص": "يحجز نصاً جديداً؛ تحرّره أنت."
+  },
+  "notes_en": {
+    "جزء": "Returns a view onto the original string with no copying, and using it afterwards (length, comparison, indexing, لكل, عدد(), a dictionary key) allocates nothing since 0.10.0. A view lives as long as its original string: using it after the original is freed is caught by the detector (E0430), and in a file built without the detector it is undefined behaviour.",
+    "قص_الفراغات": "Like جزء: a view with no copying, and using it allocates nothing. It lives as long as its original string.",
+    "طول": "On a string, it counts the characters by going through it, and it allocates nothing, even on a view.",
+    "تقسيم": "Allocates the list and a string for each piece (copies, not views). حرر(the list) does not free its strings, so use an arena when there are many.",
+    "مفاتيح": "Allocates a list and a copy of each string key: «لكل ك في مفاتيح(د)» copies all the keys. Going through the dictionary itself, «لكل ك في د», does not copy.",
+    "قيم": "Allocates a new list (a header and data).",
+    "نسخ": "Allocates a new copy (a list has a header and data).",
+    "اضف": "Growing the list frees its old buffer: the growth itself leaks nothing.",
+    "احذف": "On a dictionary, it frees the copy of the string key that the dictionary owns.",
+    "حرر": "Does not follow what is inside a container: freeing a list of lists leaves the inner lists, and freeing a list from تقسيم leaves its strings. It makes the variable لاشيء, so using the list or dictionary through the same name afterwards is error E0428 in every mode. Use or double free through another name is caught by the detector (E0429, E0430, E0431, E0350), and in a file built without the detector it is undefined behaviour.",
+    "عدد": "Allocates nothing, even on a view (except a temporary copy for Arabic-Indic digits, which is freed).",
+    "كسر": "Allocates nothing, even on a view.",
+    "يحوي": "Allocates nothing, even on a view.",
+    "بحث": "Allocates nothing, even on a view.",
+    "يبدأ_بـ": "Allocates nothing, even on a view.",
+    "نص": "Allocates a new string from the last allocator or the default one; you free it (حرر or an arena).",
+    "دمج_نصوص": "Allocates a new string; you free it.",
+    "استبدال": "Allocates a new string; you free it.",
+    "حروف_كبيرة": "Allocates a new string; you free it.",
+    "اقرأ": "Allocates a copy of the line read; you free it.",
+    "رتب_ب": "The temporary merge buffer is freed on its own.",
+    "اطبع": "The result of joining two strings with + passed straight to it is freed on its own after printing, and so is the result of a builtin such as نص(ع) inside it; but the result of a function you write yourself inside that join is not freed.",
+    "حاول_احجز": "A valid size that does not fit in memory returns خطأ.لا_ذاكرة. But a wildly «invalid» size (such as 10^14) is runtime error E0366, which cannot be caught.",
+    "قص": "Allocates a new string; you free it."
   }
 }

@@ -11,6 +11,9 @@ type Example = { id: string; title: string; code: string; stdout: string; stderr
 type Reply = { stdout?: unknown; stderr?: unknown; exit_code?: unknown; duration_ms?: unknown; truncated?: unknown; status?: unknown; reason?: unknown };
 
 const root = document.querySelector<HTMLElement>('.pg');
+// لغة الصفحة (العربية أو /en/): رسائل الواجهة وحدها، والشيفرة ومخرجها كما هما.
+const EN = root?.dataset.lang === 'en';
+const t = (ar: string, en: string) => (EN ? en : ar);
 if (root) init(root);
 
 function init(root: HTMLElement) {
@@ -45,7 +48,7 @@ function init(root: HTMLElement) {
         keymap.of([...defaultKeymap, ...historyKeymap]),
         meemLanguage(pg.words),
         syntaxHighlighting(meemHighlight),
-        EditorView.contentAttributes.of({ dir: 'rtl', 'aria-label': 'شيفرة ميم' }),
+        EditorView.contentAttributes.of({ dir: 'rtl', 'aria-label': t('شيفرة ميم', 'Meem code') }),
         EditorView.lineWrapping,
       ],
     }),
@@ -75,7 +78,7 @@ function init(root: HTMLElement) {
   // الرابط: #ex=<معرّف مثال> أو #code=<شيفرة مضغوطة>. لا تشغيل تلقائي.
   readFragment().then((r) => {
     if (r.kind === 'example') {
-      if (!loadExample(r.id)) setState('هذا المثال غير متاح في الملعب.');
+      if (!loadExample(r.id)) setState(t('هذا المثال غير متاح في الملعب.', 'This example is not available in the playground.'));
     } else if (r.kind === 'code') {
       setCode(r.code);
       fromLink.hidden = false;
@@ -94,7 +97,7 @@ function init(root: HTMLElement) {
     if (!api || busy) return;
     const wait = lastRun + minIntervalMs - Date.now();
     if (wait > 0) {
-      setState(`انتظر ${Math.ceil(wait / 1000)} ث قبل تشغيل آخر.`);
+      setState(t(`انتظر ${Math.ceil(wait / 1000)} ث قبل تشغيل آخر.`, `Wait ${Math.ceil(wait / 1000)} s before another run.`));
       return;
     }
     // حدود العقد: الشيفرة حتى 64 ك.ب، وجسم الطلب حتى 96 ك.ب. ما زاد لا يُرسل.
@@ -102,13 +105,13 @@ function init(root: HTMLElement) {
     const body = JSON.stringify({ code });
     const enc = new TextEncoder();
     if (enc.encode(code).length > maxCodeBytes || enc.encode(body).length > maxBodyBytes) {
-      setState(`الشيفرة أكبر من حد الملعب (${Math.round(maxCodeBytes / 1024)} ك.ب).`);
+      setState(t(`الشيفرة أكبر من حد الملعب (${Math.round(maxCodeBytes / 1024)} ك.ب).`, `The code is larger than the playground's limit (${Math.round(maxCodeBytes / 1024)} kB).`));
       return;
     }
     busy = true;
     lastRun = Date.now();
     runBtn.disabled = true;
-    setState('قيد التشغيل…');
+    setState(t('قيد التشغيل…', 'Running…'));
     show(out, '');
     show(err, '');
     exitEl.textContent = '—';
@@ -130,14 +133,14 @@ function init(root: HTMLElement) {
       show(out, typeof r.stdout === 'string' ? r.stdout : '');
       show(err, typeof r.stderr === 'string' ? r.stderr : typeof r.reason === 'string' ? r.reason : '');
       exitEl.textContent = typeof r.exit_code === 'number' ? String(r.exit_code) : '—';
-      if (typeof r.duration_ms === 'number') duration.textContent = `· ${Math.round(r.duration_ms)} م.ث`;
-      if (r.status === 'timeout') setState('تجاوز الزمن: أُوقف البرنامج عند الحد (8 ثوانٍ).');
-      else if (r.status === 'rejected') setState('رُفض البرنامج قبل التشغيل.');
-      else if (r.truncated === true || r.status === 'output_limit') setState('انتهى، والمخرج مقطوع عند 64 ك.ب.');
-      else setState('انتهى.');
+      if (typeof r.duration_ms === 'number') duration.textContent = t(`· ${Math.round(r.duration_ms)} م.ث`, `· ${Math.round(r.duration_ms)} ms`);
+      if (r.status === 'timeout') setState(t('تجاوز الزمن: أُوقف البرنامج عند الحد (8 ثوانٍ).', 'Time limit exceeded: the program was stopped at the limit (8 seconds).'));
+      else if (r.status === 'rejected') setState(t('رُفض البرنامج قبل التشغيل.', 'The program was rejected before running.'));
+      else if (r.truncated === true || r.status === 'output_limit') setState(t('انتهى، والمخرج مقطوع عند 64 ك.ب.', 'Finished, and the output was cut at 64 kB.'));
+      else setState(t('انتهى.', 'Finished.'));
     } catch (e) {
       const aborted = (e as Error).name === 'AbortError';
-      setState(aborted ? 'الملعب غير متاح: لم يرد الخادم في المهلة.' : 'الملعب غير متاح: تعذّر الاتصال بالخادم.');
+      setState(aborted ? t('الملعب غير متاح: لم يرد الخادم في المهلة.', 'The playground is unavailable: the server did not answer in time.') : t('الملعب غير متاح: تعذّر الاتصال بالخادم.', 'The playground is unavailable: could not reach the server.'));
     } finally {
       clearTimeout(timer);
       busy = false;
@@ -152,16 +155,16 @@ function init(root: HTMLElement) {
   shareBtn.addEventListener('click', async () => {
     const encoded = await compress(view.state.doc.toString());
     if (encoded.length > maxShareBytes) {
-      shareMsg.textContent = `الشيفرة أطول من حد المشاركة (${maxShareBytes} بايت بعد الضغط).`;
+      shareMsg.textContent = t(`الشيفرة أطول من حد المشاركة (${maxShareBytes} بايت بعد الضغط).`, `The code is longer than the sharing limit (${maxShareBytes} bytes after compression).`);
       return;
     }
     const url = `${location.origin}${location.pathname}#code=${encoded}`;
     window.history.replaceState(null, '', `#code=${encoded}`);
     try {
       await navigator.clipboard.writeText(url);
-      shareMsg.textContent = 'نُسخ الرابط.';
+      shareMsg.textContent = t('نُسخ الرابط.', 'Link copied.');
     } catch {
-      shareMsg.textContent = 'الرابط في شريط العنوان: انسخه من هناك.';
+      shareMsg.textContent = t('الرابط في شريط العنوان: انسخه من هناك.', 'The link is in the address bar: copy it from there.');
     }
   });
 
@@ -170,11 +173,11 @@ function init(root: HTMLElement) {
     if (hash.startsWith('ex=')) return { kind: 'example', id: decodeURIComponent(hash.slice(3)) };
     if (!hash.startsWith('code=')) return { kind: 'none' };
     const data = hash.slice(5);
-    if (data.length > maxShareBytes) return { kind: 'invalid', message: 'رابط المشاركة أطول من الحد المسموح.' };
+    if (data.length > maxShareBytes) return { kind: 'invalid', message: t('رابط المشاركة أطول من الحد المسموح.', 'The share link is longer than the allowed limit.') };
     try {
       return { kind: 'code', code: await decompress(data, 64 * 1024) };
     } catch {
-      return { kind: 'invalid', message: 'رابط المشاركة تالف.' };
+      return { kind: 'invalid', message: t('رابط المشاركة تالف.', 'The share link is damaged.') };
     }
   }
 }

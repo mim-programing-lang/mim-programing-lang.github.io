@@ -1,0 +1,133 @@
+---
+title: "Try 0.10 with us"
+description: "Meem 0.10 is a beta release before 1.0: what changed in 0.10.0, what we ask you to test, how to report a bug with one template, what is already known, and when 1.0 comes."
+keywords: ["beta", "testing", "bug report", "reports", "bug", "test", "0.9", "0.10", "detector", "1.0"]
+template: splash
+---
+
+import IssuesLink from '../../../components/IssuesLink.astro';
+
+Meem **0.10.0** is **the beta before 1.0**, together with the Meem editor 0.4.0. The aim is for many people to write real programs in Meem on their own machines, so that what automated testing misses comes to light before the language is frozen in 1.0. Release 0.10 brings no new language feature since 0.8.0; its aim is for Meem to keep its promises about memory. Download it from the [download](/en/download/) page.
+
+## What changed in 0.10.0
+
+- **The crash hole is closed:** a list or dictionary used through the same name after `حرر` used to crash the program (SIGSEGV); it is now runtime error [E0428](/en/docs/errors/catalog/#E0428) with code 3, in every mode.
+- **The detector is on by default in a direct run:** `meem برنامج.م` runs with the memory detector, so use after free through another name, or after `اعد` on its arena, is now error [E0429](/en/docs/errors/catalog/#E0429) for a list or dictionary and [E0430](/en/docs/errors/catalog/#E0430) for a string or a view, naming the line of creation and the line of freeing. A double free of a string is [E0431](/en/docs/errors/catalog/#E0431). All of this used to be silent wrong output with code 0.
+- **`--release` and `--debug`:** `--release` runs without the detector (faster), `meem build` has no detector by default, and `meem build --debug` builds the detector into the file. `--debug-mem` adds the report of what was not freed, as before.
+- **No hidden copies:** `طول`, comparison, indexing, `لكل`, `عدد()` and a dictionary key on a «view» (the result of `جزء`, `قص_الفراغات`...) used to allocate a copy that was never given back, every time; they no longer allocate anything.
+- **The built file is faster at recursion:** Fibonacci on the benchmark programs went from 1.014 s to 0.762 s.
+
+The details of the change and what may break are in [migrating from 0.9 to 0.10](/en/docs/migration/to-0-10/), and all the guarantees are in [memory in Meem](/en/docs/understand/memory/).
+
+## What we ask you to test
+
+In order, most important first:
+
+1. **Installing and running on your machine:** unpack the archive, then `meem --version`, the self-test (`meem --self-test`), and `meem build`, on any Linux x86_64 with glibc 2.35 or newer. The package was tested on Debian 12 and Ubuntu 22.04 only, so every other distribution (Fedora, Arch, openSUSE, Mint…) is a new trial.
+2. **Real programs:** a small tool you need (processing a text file, a calculation, a terminal game), not the handbook's examples. What matters: can it be written in Meem as you expect, and where did you have to work around something.
+3. **Error messages:** when the compiler rejects your program, does the message say what the error is and where, and does the hint fix it? An unclear message deserves its own report.
+4. **The newest parts of the language:** [error handling](/en/docs/language/errors/) (`!نوع`, `جرّب`, `والا` and `خاتمه_عند_خطأ`), [enums](/en/docs/language/enums/), and [manual memory](/en/docs/memory/) (`حرر`, `خاتمه` and arenas) with the new detector: does it catch your mistake, and does its message point you to the line? Does the output of `meem برنامج.م` differ from `--release`?
+5. **The standard modules:** `ملفات`, `نظام`, `مسارات`, `رياضيات` and `عشوائي`, on Arabic and large files and paths.
+6. **`meem build`:** does the built file run on another machine that has no Meem?
+7. **The tools:** `--check --json` and `--fix`, for anyone writing a tool or an editor plugin ([the tools contract](/en/docs/tools/check-json/)).
+
+Not needed: precise performance, and behaviour inside `خطر` (which is undefined anyway).
+
+## How to report a bug
+
+Reports go in the [meem-feedback](https://github.com/mim-programing-lang/meem-feedback) repository on GitHub (you need a GitHub account), one report per bug. It has a «بلاغ خلل» (bug report) form with the same fields as the template below, and a «اقتراح» (suggestion) form; the forms are in Arabic. Before you write: search the open reports, and «what is already known» at the bottom of this page.
+
+<IssuesLink />
+
+### The report template
+
+Copy it as it is into the body of the report, and fill in every section (write «not applicable» rather than deleting a section):
+
+````markdown
+**Title:** [category] a short description (example: [سقوط] meem build crashes on a list of dictionaries)
+
+### Version and system
+- `meem --version`:
+- System (`grep PRETTY_NAME /etc/os-release`):
+- glibc (`ldd --version | head -1`):
+
+### The program
+The smallest program that shows the bug (and the files it reads, if any):
+
+```ميم
+اطبع("...")
+```
+
+### The command
+```sh
+meem برنامج.م
+```
+
+### What happened
+The whole of stderr as it is, and the exit code (`echo $?`):
+
+```
+```
+
+### What you expected
+One line.
+
+### For compile errors (code 2)
+The output of `meem --check --json برنامج.م`:
+
+```json
+```
+````
+
+| What you attach | Why |
+|---|---|
+| `meem --version` | It holds the commit (such as `0.10.0+abcdef0`), which identifies the exact package |
+| The system and glibc | The package was tested on Debian 12 and Ubuntu 22.04 only |
+| The program as text (the `.م` file, not a screenshot) | To reproduce the bug; a smaller program is fixed faster |
+| stderr and the exit code | The most important part is the message's ID (`E0123` in `[خطأ دلالي E0123]`), explained in the [error catalog](/en/docs/errors/catalog/) |
+| `--check --json` | The full diagnosis with its position and ID |
+
+**Report categories**, by what you see (the category tag goes in the title, in Arabic):
+
+| What you see | Category (in the title) | Priority |
+|---|---|---|
+| «خطأ داخلي في المجمّع» (internal compiler error) or a Python traceback | [داخلي] (internal) | Top |
+| The program crashes with a signal (SIGSEGV, code 139) outside `خطر` | [سقوط] (crash) | Top |
+| Output that contradicts the handbook, or a correct program rejected | [ناتج] (output) | High |
+| `meem build` gives output different from a direct run | [بناء] (build) | High |
+| A message that cannot be understood, or a hint that leads to another error | [رسالة] (message) | Medium |
+| Something hard to write in Meem | [لغة] (language) | Collected for the 1.0 decision |
+
+**Privacy:** the compiler sends nothing anywhere. But a report on GitHub is **public**, so remove from the program and the output whatever you do not want published: paths with your name in them, secrets in environment variables, and real data.
+
+## What is already known (no report needed)
+
+| Known | Details |
+|---|---|
+| Linux x86_64 only, and glibc 2.35 or newer | No macOS, Windows, ARM or musl distributions, and not in 1.0 either |
+| The licence | The [Meem License](/en/license/) (version 1.0), and its text is inside the package: in the compiler's folder since 0.9.1 (`LICENSE` and `LICENSE.en`), and in both editor packages since 0.4.0 (`/usr/share/doc/meem-editor/`) and the «About» window |
+| Double-clicking `.م` files does not work in GNOME | A limitation in the GLib library: it does not match a non-Latin file-name suffix, so it treats a `.م` file as plain text with no icon. Open the file from the editor, or with the command `meem-editor ملف.م` |
+| The AppImage does not register the file type with the system | No icon for `.م` files and no association with the editor, except with the deb package |
+| Strings are sorted by code point | No Arabic dictionary order |
+| No generic types, no tagged union, no `اتحاد` (union), and no pointer arithmetic | After 1.0 |
+| No JSON, networking or running commands in the library | Not before 1.0, and `خارجي` to C is available |
+| Temporary strings in loops stay until exit | `--strict` gives an advisory warning about them, and `خاتمه حرر(ن)` gives them back ([memory in long loops](/en/learn/memory/)) |
+| A built file without the detector | Use after free through another name is undefined behaviour in it (old output or garbage), and a double free through another name crashes it. A direct run and `meem build --debug` catch both |
+| Growing with `ن += ذيل` leaves the old buffer behind | A documented, bounded leak: about the base-2 logarithm of the length in buffers, totalling about twice the final length |
+| `حرر` does not follow what is inside a container | A list of lists, or a list of strings from `تقسيم`: use an arena for nested structures |
+| The detector is slower | A direct run is 0% to 32% slower than `--release` on the benchmark programs, and memory freed in its mode is not returned to the system |
+| A call chain deeper than 2000 to 3000 consecutive functions | Compile error `E0385` «أعقد مما يدعمه المجمّع» (more complex than the compiler supports), not a crash; a documented limit that stays |
+| A huge file is slow to compile | 50 thousand lines (5000 functions): `--check` in 8 s, and running or building in 66 s with 1.4 GB of memory |
+| A file is read whole | The `ملفات` module has no line-by-line reading and no binary files, and reading a 1 GB file has not been tested |
+| No CPU or memory limit in the compiler | A program runs with the user's full permissions ([what a program can do on your machine](/en/docs/language/security/)); the options `--no-system`, `--no-ffi` and `--no-unsafe` restrict it |
+| Fixed in 0.10.0 | The crash from using a list or dictionary after `حرر` (now `E0428`), and the hidden copies from views |
+| Fixed after 0.8.0 | A string too big for memory used to crash the program (now «نفدت الذاكرة», out of memory, `E0427`), and a very deep call chain used to be an «internal error» |
+
+## When 1.0 comes
+
+1.0 comes when all of these hold:
+
+1. **At least four weeks** after the next beta release.
+2. **At least five testers** besides the project's owner.
+3. **At least three distributions** on which the package was tried.
+4. **No open report of top or high priority** (`[داخلي]`, `[سقوط]`, `[ناتج]` and `[بناء]`).

@@ -169,12 +169,13 @@ if (reallyMissing.length) {
 // 9) الصياغة: صيغ محظورة في نثر الصفحات (scripts/lib/wording.json)، بلا شيفرة ولا مخرجات.
 let wordingChecked = 0;
 for (const [file, { html }] of pages) {
-  for (const { use, text } of checkWording(proseOf(html))) errors.push(`${rel(file)}: صياغة محظورة (استعمل: ${use}): «${text}»`);
+  const lang = /<html[^>]*\blang="en"/.test(html) ? 'en' : 'ar';
+  for (const { use, text } of checkWording(proseOf(html), lang)) errors.push(`${rel(file)}: صياغة محظورة (استعمل: ${use}): «${text}»`);
   wordingChecked++;
 }
 console.log(`[postbuild] الصياغة: ${wordingChecked} صفحة فُحص نثرها بـ wording.json.`);
 // 10) الخصوصية وPayPal: لا بريد ولا اسم شخصي (تجزئات scripts/lib/private-tokens.json) في الصفحات وأصولنا، ولا مورد من
-//     PayPal (سكربت أو صورة أو إطار أو نموذج). رابط التبرع وحده، في /support/، ومضبوط كما يجب؛ وبلا المتغير لا رابط PayPal.
+//     PayPal (سكربت أو صورة أو إطار أو نموذج). رابط التبرع وحده، في /support/ و/en/support/، ومضبوط كما يجب؛ وبلا المتغير لا رابط PayPal.
 {
   const privateHashes = new Set(JSON.parse(readFileSync(path.join(root, 'scripts/lib/private-tokens.json'), 'utf8')).sha256);
   const sha = (t) => createHash('sha256').update(t.normalize('NFC').toLowerCase()).digest('hex');
@@ -197,7 +198,9 @@ console.log(`[postbuild] الصياغة: ${wordingChecked} صفحة فُحص ن�
   };
   const assets = readdirSync(path.join(dist, '_astro')).filter((f) => /\.(js|css)$/.test(f));
   for (const f of assets) scan(`/_astro/${f}`, readFileSync(path.join(dist, '_astro', f), 'utf8'), false);
-  let donateLinks = 0;
+  // صفحتا الدعم (العربية والإنجليزية) ونص «قريباً» في كل منهما حين لا رابط.
+  const SUPPORT = { '/support/': 'قريباً', '/en/support/': 'Soon' };
+  const donateLinks = new Map();
   for (const [file, { html }] of pages) {
     const page = rel(file);
     scan(page, html);
@@ -207,19 +210,23 @@ console.log(`[postbuild] الصياغة: ${wordingChecked} صفحة فُحص ن�
     for (const m of html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)) if (/paypal/i.test(m[1])) errors.push(`${page}: سكربت يذكر PayPal`);
     if (/http-equiv="Content-Security-Policy" content="[^"]*paypal/i.test(html)) errors.push(`${page}: سياسة الأمان تذكر PayPal`);
     for (const m of html.matchAll(/<a\b[^>]*href="([^"]*paypal[^"]*)"[^>]*>/gi)) {
-      donateLinks++;
-      const ok = donateUrl && page === '/support/' && decode(m[1]) === donateUrl && /\btarget="_blank"/.test(m[0]) && /\brel="noopener noreferrer"/.test(m[0]);
+      donateLinks.set(page, (donateLinks.get(page) ?? 0) + 1);
+      const ok = donateUrl && SUPPORT[page] && decode(m[1]) === donateUrl && /\btarget="_blank"/.test(m[0]) && /\brel="noopener noreferrer"/.test(m[0]);
       if (!ok) errors.push(`${page}: رابط PayPal غير متوقع «${m[0].slice(0, 120)}»`);
     }
   }
-  const support = pages.get(path.join(dist, 'support/index.html'))?.html ?? '';
-  if (!support) errors.push('/support/: الصفحة غائبة');
-  else if (donateUrl) {
-    if (donateLinks !== 1 || !support.includes('data-donate="ready"')) errors.push(`/support/: رابط التبرع يجب أن يظهر مرة واحدة (وُجد ${donateLinks})`);
-  } else if (donateLinks || !/data-donate="soon"/.test(support) || !/<button[^>]*donate-button[^>]*disabled/.test(support) || !support.includes('قريباً')) {
-    errors.push('/support/: بلا PUBLIC_PAYPAL_DONATE_URL يجب «قريباً» وزر معطّل وبلا رابط PayPal');
+  // صفحة الدعم بلغتيها: رابط واحد في كل منهما، أو «قريباً» وزر معطّل بلا رابط.
+  for (const [page, soon] of Object.entries(SUPPORT)) {
+    const support = pages.get(path.join(dist, page, 'index.html'))?.html ?? '';
+    const n = donateLinks.get(page) ?? 0;
+    if (!support) errors.push(`${page}: الصفحة غائبة`);
+    else if (donateUrl) {
+      if (n !== 1 || !support.includes('data-donate="ready"')) errors.push(`${page}: رابط التبرع يجب أن يظهر مرة واحدة (وُجد ${n})`);
+    } else if (n || !/data-donate="soon"/.test(support) || !/<button[^>]*donate-button[^>]*disabled/.test(support) || !support.includes(soon)) {
+      errors.push(`${page}: بلا PUBLIC_PAYPAL_DONATE_URL يجب «${soon}» وزر معطّل وبلا رابط PayPal`);
+    }
   }
-  console.log(`[postbuild] الخصوصية: ${pages.size} صفحة و${assets.length} أصلاً بلا اسم شخصي، والصفحات بلا بريد غير بريد المشروع؛ PayPal: ${donateUrl ? `رابط واحد في /support/` : 'بلا رابط («قريباً»)'}، ولا مورد منه.`);
+  console.log(`[postbuild] الخصوصية: ${pages.size} صفحة و${assets.length} أصلاً بلا اسم شخصي، والصفحات بلا بريد غير بريد المشروع؛ PayPal: ${donateUrl ? `رابط واحد في كل من ${Object.keys(SUPPORT).join(' و')}` : 'بلا رابط («قريباً»)'}، ولا مورد منه.`);
 }
 console.log(`[postbuild] أمثلة الكتاب المرجعي المعروضة: ${seenHb.size} من ${Object.values(hb).filter((e) => e.code != null).length}`);
 if (errors.length) {

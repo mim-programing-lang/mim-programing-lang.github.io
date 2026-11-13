@@ -4,6 +4,7 @@
 import { Code } from '@astrojs/starlight/components';
 import hb from '../generated/handbook.json';
 import pg from '../generated/playground.json';
+import { contentLang, localHref, pageSlug } from '../lib/i18n';
 
 interface Props {
   id: string;
@@ -13,6 +14,8 @@ interface Props {
   section?: string;
 }
 const { id, label, section } = Astro.props;
+const lang = contentLang(Astro);
+const en = lang === 'en';
 const ex = (hb.examples as Record<string, any>)[id];
 if (!ex || ex.code == null) throw new Error(`مثال غير موجود في الكتاب المرجعي: «${id}»`);
 if (section && ex.section !== section) throw new Error(`المثال «${id}» صار تحت «${ex.section}» لا «${section}»: صحّح رقمه.`);
@@ -23,25 +26,25 @@ const printedIds = [...new Set([...`${ex.stderr}${ex.stdout}`.matchAll(/\[[^\]\n
 const lines = (s: string) => s.replace(/\n$/, '').split('\n');
 const command = ['meem', ...ex.flags, 'برنامج.م'].join(' ');
 // «جرّب هذا المثال» في صفحات التعلم وحدها، وللأمثلة الآمنة في الملعب وحدها (scripts/lib/playground.mjs).
-const tryable = Astro.url.pathname.startsWith('/learn/') && (pg.examples as { id: string }[]).some((e) => e.id === id);
+const tryable = pageSlug(Astro).startsWith('learn/') && (pg.examples as { id: string }[]).some((e) => e.id === id);
 ---
 
 <section class="meem-example hb-example not-content" data-hb-example={id} data-runner="manifest">
-  <Code code={ex.code} lang="meem" title={label ?? 'مثال'} />
+  <Code code={ex.code} lang="meem" title={label ?? (en ? 'Example' : 'مثال')} />
   <figure class="meem-output">
     <figcaption>
-      <span>المخرج المسجَّل في الكتاب المرجعي{dev ? ` · بعد ${hb.release} (فرع التطوير)` : ''}</span>
+      <span>{en ? 'Output recorded in the reference handbook' : 'المخرج المسجَّل في الكتاب المرجعي'}{dev ? (en ? ` · after ${hb.release} (development branch)` : ` · بعد ${hb.release} (فرع التطوير)`) : ''}</span>
       <span class="meem-output-meta"><bdi dir="ltr">{command}</bdi> · <bdi dir="ltr">{ex.version}</bdi></span>
     </figcaption>
     <output>
       {ex.stdout && <pre dir="rtl" class="meem-stdout" data-stream="stdout">{lines(ex.stdout).map((l: string) => <span class="line">{l || '​'}</span>)}</pre>}
       {ex.stderr && <pre dir="rtl" class="meem-stderr" data-stream="stderr">{lines(ex.stderr).map((l: string) => <span class="line">{l || '​'}</span>)}</pre>}
-      {!ex.stdout && !ex.stderr && <p class="meem-empty">لا مخرجات.</p>}
+      {!ex.stdout && !ex.stderr && <p class="meem-empty">{en ? 'No output.' : 'لا مخرجات.'}</p>}
     </output>
-    {ex.exit !== 0 && <p class="meem-exit" data-exit={ex.exit}>رمز الخروج: <bdi>{ex.exit}</bdi></p>}
+    {ex.exit !== 0 && <p class="meem-exit" data-exit={ex.exit}>{en ? 'Exit code:' : 'رمز الخروج:'} <bdi>{ex.exit}</bdi></p>}
     {printedIds.length > 0 && (
-      <p class="meem-ids">في فهرس الأخطاء: {printedIds.map((i, n) => <>{n ? '، ' : ''}<a href={`/docs/errors/catalog/#${i}`}><code dir="ltr">{i}</code></a></>)}</p>
+      <p class="meem-ids">{en ? 'In the error catalog:' : 'في فهرس الأخطاء:'} {printedIds.map((i, n) => <>{n ? (en ? ', ' : '، ') : ''}<a href={localHref(lang, `/docs/errors/catalog/#${i}`)}><code dir="ltr">{i}</code></a></>)}</p>
     )}
-    {tryable && <p class="hb-try"><a href={`/playground/#ex=${encodeURIComponent(id)}`} data-try-example={id}>جرّب هذا المثال في الملعب</a></p>}
+    {tryable && <p class="hb-try"><a href={localHref(lang, `/playground/#ex=${encodeURIComponent(id)}`)} data-try-example={id}>{en ? 'Try this example in the playground' : 'جرّب هذا المثال في الملعب'}</a></p>}
   </figure>
 </section>

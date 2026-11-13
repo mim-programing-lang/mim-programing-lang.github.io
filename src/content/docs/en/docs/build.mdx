@@ -1,0 +1,93 @@
+---
+title: "Building: meem build"
+description: "The standalone executable: options, static and dynamic linking, the linking chain, and the limits."
+keywords: ["build", "executable", "linking", "static", "dynamic", "linker"]
+---
+
+import Example from '../../../../components/Example.astro';
+
+Source: `docs/build.md` in the compiler repository (in Arabic); this page is its English translation as kept on the site.
+
+```sh
+meem build برنامجي.م -o برنامجي
+./برنامجي
+```
+
+`meem build` compiles the program (and everything it imports) into **a single executable** that runs on a machine without Meem, Python or LLVM. It behaves exactly like `meem برنامجي.م`: the output, input from stdin, exit codes (0, and 3 for a runtime error), runtime error messages, `خطا_قاتل` (fatal error), and `خارجي`.
+
+**Platforms:** Linux x86_64 only, which is what it was built and tested on. Windows and macOS are not available in 1.0, neither for running nor for building.
+
+<Example file="learn/16-build/عدّاد.م" />
+
+## Options
+
+| Option | Meaning |
+|---|---|
+| `-o output` | The name of the output file. Default: the source name without its extension, next to it |
+| `--static` | Static linking: one file with no dependencies at all. **The default** when the program uses no external C library |
+| `--dynamic` | Dynamic linking against the system's C library. **Chosen automatically** for a program that uses, through `خارجي`, a C library other than `libc` and `libm` |
+| `--emit-obj` | Stop at the object file (`output.o`) without linking |
+| `--target target` | `x86_64-linux-musl` (static) or `x86_64-linux-gnu` (dynamic) |
+| `--link-arg argument` | An extra argument for the linker; can be repeated |
+| (default) | **Optimised**: LLVM's O2 pipeline, including function inlining (since 0.6.0) |
+| `-O0` | Without the O2 pipeline: the light optimisation used for a direct run. Faster to build, slower to run |
+| `--cpu=native` | This machine's processor instructions and features. The file **may not run on an older processor**: for local builds |
+| `-O` | Accepted for compatibility and has no effect (in 0.5.2 it ran the O1 pipeline) |
+| `--json` | The build result and diagnostics as JSON |
+| `--emit-ir=file` | Save the LLVM IR of the built program |
+
+Plus the usual compile options: `--strict`, `--deny-deprecated`, `--debug-mem`, `--wrap-overflow`, `--no-ffi`, `--full-buffered`, `--overlay`.
+
+Exit codes: 0 the file was built, 2 a compile or link error (no file), 1 a usage error.
+
+## Static and dynamic
+
+**Static (the default).** The file contains the program and the whole C library (musl), so it depends neither on the system's C library nor on its version. In the words of the compiler's document (`docs/build.md`), not from this site's own testing: «tried on Debian 12, Ubuntu 22.04 and Alpine 3.20 (x86_64), and in a container holding no other file at all. All it needs from the machine is a Linux x86_64 kernel; it has not been tried on other distributions or kernels». «مرحبا» (hello) is 28 kB (in 0.6; with 0.10.0 it measured 29640 bytes).
+
+**Dynamic.** At run time the file depends on the system's C library (glibc) and on every C library the program asks for. «مرحبا» is 5 kB (in 0.6; with 0.10.0 it measured 6488 bytes).
+
+A program that uses a C library outside `libc` and `libm` (such as `خارجي "z"`) is linked dynamically against the system's libraries. The resulting file needs that library installed on the machine it runs on, and needs glibc (so it does not run on Alpine) at a version no older than the version of the functions the program used on the build machine. `--static` with it is a compile error.
+
+Dynamic linking needs neither `gcc` nor development files: the linker links against the shared libraries themselves. A library in an unusual place: `--link-arg -L<folder>`.
+
+## How it works
+
+1. The compiler generates **an object file** holding the whole program, with a generated `main` function that does what the compiler does before a direct run: UTF-8 character classification, flushing stdout at every line when it is not a terminal, and running the program in a thread with a 256 MB stack. The first thing the program's function does is the **stack guard**: unbounded recursion fills the stack until it reaches the guard page below it, and the signal handler (on an alternate stack) prints «تجاوز عمق العودية» (recursion depth exceeded) and exits with code 3. The same guard exists in a direct run (since 0.6.0; before that it was a counter of nested calls with a limit of 100000).
+2. **The linker** adds the C library. Meem has no runtime library: all the runtime functions (strings, lists, dictionaries, reference counting, the memory detector) are generated into the object file, and they are the same ones used in a direct run.
+
+Differences from a direct run:
+
+- `MEEM_RC_REPORT` is read **at build time**, not when the file runs.
+- `Ctrl+C`: the signal ends the process, and the shell reports 130.
+- `خارجي` symbols are checked at build time (a compile error at their position), then the linker links them.
+
+## The linking chain
+
+In order: whatever `MEEM_CC` names (a C compiler used as the linker); then the chain bundled with the package (or `MEEM_TOOLCHAIN`); then the system's C compiler (`cc`, `gcc`, `clang`), which links dynamically unless `--static` is given.
+
+The bundled chain: the mold 2.34.1 linker and the static musl 1.2.5 library, both under the MIT licence, with the `libatomic` library alongside mold. So building works with no other tool on the machine.
+
+## The detector in a built file: `--debug` and `--debug-mem`
+
+A built file has **no memory detector** by default (since 0.10.0, while a direct run `meem ب.م` has it). So use after free or a double free through another name in it is undefined behaviour: old output, garbage, or a crash. `meem build ب.م --debug` builds the detector into the file: use after free and double free become runtime errors with the same messages ([E0429](/en/docs/errors/catalog/#E0429), [E0430](/en/docs/errors/catalog/#E0430), [E0431](/en/docs/errors/catalog/#E0431)...). `--debug-mem` does the same and adds a report of what was not freed, at the end, on stderr. A file with the detector is slower and larger.
+
+## The `--json` output
+
+The same output as `--check --json` ([the tools contract](/en/docs/tools/check-json/)) with a `build` field: `null` if the build failed, otherwise a description of the result:
+
+| Field | Meaning |
+|---|---|
+| `build.output` | The full path of the output file |
+| `build.object` | true with `--emit-obj` |
+| `build.static` | true: a static file with no dependencies. false: it depends on the system's C library and on `libraries` |
+| `build.linker` | The path of the linker that was used |
+| `build.optimized` | true if built with the O2 pipeline (the default since 0.6.0), and false with `-O0` |
+
+## Limits
+
+- **Linux x86_64 only.** No ARM, no Windows and no macOS.
+- **A dynamic file is tied to the build machine**: it asks for glibc at the version of the functions it used there. A static file has no such restriction.
+- **musl is not glibc**: a C function that exists only in glibc passes the symbol check, then the static linker rejects it with an «undefined symbol» message; the fix is `--dynamic`. And musl's memory allocation is slower than glibc's in allocation-heavy programs.
+- **The compiler package itself** needs glibc 2.35 or newer. The distributions tried: Ubuntu 22.04 and Debian 12. It does not run on musl distributions (Alpine); the static file it builds is what runs there.
+- **No command-line arguments for the program**: the language does not read them yet; the file ignores what it is given.
+- **The musl licence (MIT)** requires keeping its copyright notice when distributing a static file; its text is in `licenses/toolchain-musl-COPYRIGHT` inside the package.

@@ -1,3 +1,5 @@
+import { betaLabel, betaLabelEn } from '../site.config.mjs';
+
 // أقسام الموقع وأشرطتها الجانبية. المصدر الواحد للشريط العلوي وللشريط الجانبي.
 // كل قسم مجموعة عليا في sidebar؛ src/routeData.ts يُبقي في كل صفحة مجموعة قسمها وحدها.
 
@@ -77,8 +79,46 @@ export const topNav = [
 export const footerNav = [
   { label: 'حول المشروع', href: '/about/' },
   { label: 'التنزيل', href: '/download/' },
-  { label: 'جرّب 0.9 معنا', href: '/beta/' },
+  { label: betaLabel, href: '/beta/' },
   { label: 'دعم ميم', href: '/support/' },
 ];
 
-export const sidebar = sections.map(({ label, items }) => ({ label, items }));
+// تسميات الواجهة الإنجليزية (تحت /en/) لكل تسمية عربية أعلاه. الصفحات نفسها تأخذ عنوانها من نسختها الإنجليزية،
+// وما لم يُترجم منها يبقى بعنوانه العربي.
+const en = {
+  'تعلّم ميم': 'Learn Meem',
+  'المسار وتقدّمك': 'The path and your progress',
+  'المستوى الأول: مبتدئ': 'Level 1: Beginner',
+  'المستوى الثاني: متوسط': 'Level 2: Intermediate',
+  'المستوى الثالث: نظامي': 'Level 3: Systems',
+  'مشاريع صغيرة': 'Small projects',
+  'المرجع': 'Reference',
+  'نظرة عامة': 'Overview',
+  'افهم ميم': 'Understand Meem',
+  'من لغة أخرى': 'Coming from another language',
+  'مراجع سريعة': 'Quick references',
+  'اللغة': 'The language',
+  'الذاكرة اليدوية': 'Manual memory',
+  'المكتبة القياسية': 'Standard library',
+  'الأخطاء': 'Errors',
+  'الأدوات': 'Tools',
+  'الترحيل': 'Migration',
+  'من خارج الكتاب (0.6)': 'Outside the handbook (0.6)',
+  'أمثلة': 'Examples',
+  'الملعب': 'Playground',
+  'التنزيل': 'Download',
+  'دعم': 'Support',
+  'حول المشروع': 'About',
+  'دعم ميم': 'Support Meem',
+  [betaLabel]: betaLabelEn,
+};
+
+/** التسمية بلغة الواجهة. */
+export const navLabel = (label, lang) => (lang === 'en' ? (en[label] ?? label) : label);
+
+const translate = (item) =>
+  typeof item === 'string'
+    ? item
+    : { ...item, ...(en[item.label] ? { translations: { en: en[item.label] } } : {}), ...(item.items ? { items: item.items.map(translate) } : {}) };
+
+export const sidebar = sections.map(({ label, items }) => translate({ label, items }));

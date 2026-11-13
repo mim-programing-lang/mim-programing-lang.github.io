@@ -6,18 +6,26 @@ import language from '../generated/language.json';
 import types from '../generated/types.json';
 import modules from '../generated/modules.json';
 import notes from '../data/builtin-notes.json';
+import { contentLang, localHref } from '../lib/i18n';
+
+// الأسماء والأوصاف من خرج المجمّع، عربية في اللغتين؛ وما حولها بلغة الصفحة.
+const lang = contentLang(Astro);
+const en = lang === 'en';
+const L = (href: string) => localHref(lang, href);
 
 const moduleSlug: Record<string, string> = { رياضيات: 'math', عشوائي: 'random', مسارات: 'paths', ملفات: 'files', نظام: 'system' };
-const KIND: Record<string, string> = { control: 'تحكم', loop: 'تكرار', jump: 'قفز', declaration: 'تصريح', definition: 'تعريف', logic: 'منطق' };
+const KIND: Record<string, string> = en
+  ? { control: 'control', loop: 'loop', jump: 'jump', declaration: 'declaration', definition: 'definition', logic: 'logic' }
+  : { control: 'تحكم', loop: 'تكرار', jump: 'قفز', declaration: 'تصريح', definition: 'تعريف', logic: 'منطق' };
 const builtins = [...language.builtins].sort((a, b) => a.name.localeCompare(b.name, 'ar'));
 ---
 
 <div class="ref-index">
-  <h2 id="keywords">الكلمات المفتاحية ({language.keywords.length})</h2>
-  <p>شرح كل كلمة وصيغتها في <a href="/docs/language/lexicon/#الكلمات-المفتاحية">المفردات</a>.</p>
+  <h2 id="keywords">{en ? 'Keywords' : 'الكلمات المفتاحية'} ({language.keywords.length})</h2>
+  <p>{en ? 'Each word and its form are explained in' : 'شرح كل كلمة وصيغتها في'} <a href={L('/docs/language/lexicon/#الكلمات-المفتاحية')}>{en ? 'the lexicon' : 'المفردات'}</a>.</p>
   <div class="ref-table">
     <table>
-      <thead><tr><th>الكلمة</th><th>الصنف</th><th>الصيغة</th></tr></thead>
+      <thead><tr><th>{en ? 'Word' : 'الكلمة'}</th><th>{en ? 'Kind' : 'الصنف'}</th><th>{en ? 'Form (from the compiler)' : 'الصيغة'}</th></tr></thead>
       <tbody>
         {language.keywords.map((k: any) => (
           <tr><td><code>{k.word}</code></td><td>{KIND[k.kind] ?? k.kind}</td><td>{k.description}</td></tr>
@@ -26,30 +34,34 @@ const builtins = [...language.builtins].sort((a, b) => a.name.localeCompare(b.na
     </table>
   </div>
 
-  <h2 id="types">الأنواع ({types.types.length})</h2>
-  <p>التفصيل في <a href="/docs/language/types/">الأنواع</a>.</p>
+  <h2 id="types">{en ? 'Types' : 'الأنواع'} ({types.types.length})</h2>
+  <p>{en ? 'Details in' : 'التفصيل في'} <a href={L('/docs/language/types/')}>{en ? 'types' : 'الأنواع'}</a>.</p>
   <ul class="ref-chips">
     {types.types.map((t: any) => <li><code>{t.word}</code>{t.description ? <span> {t.description}</span> : null}</li>)}
   </ul>
 
-  <h2 id="builtins">الدوال المدمجة ({language.builtins.length})</h2>
+  <h2 id="builtins">{en ? 'Builtin functions' : 'الدوال المدمجة'} ({language.builtins.length})</h2>
+  {en ? (
+    <p>For each function, <a href={L('/docs/stdlib/builtins/')}>the builtins page</a> has its form, what it does, a run example, and the errors it may give. The «allocation» mark next to a name points to a note on allocation or performance in <a href={L('/docs/stdlib/allocation/')}>allocation and performance</a>.</p>
+  ) : (
   <p>لكل دالة في <a href="/docs/stdlib/builtins/">المدمجات</a>: صيغتها، وما تفعله، ومثال مشغَّل، والأخطاء التي قد تعطيها. والعلامة «الحجز» بجانب الاسم لملاحظة عن الحجز أو الأداء في <a href="/docs/stdlib/allocation/">الحجز والأداء</a>.</p>
+  )}
   <ul class="ref-chips">
     {builtins.map((b: any) => (
       <li>
-        <a href={`/docs/stdlib/builtins/#${slug(b.name)}`}><code>{b.name}</code></a>
-        {(notes.notes as Record<string, string>)[b.name] ? <a class="ref-note" href={`/docs/stdlib/allocation/#${slug(b.name)}`} title="ملاحظة عن الحجز والأداء">الحجز</a> : null}
+        <a href={L(`/docs/stdlib/builtins/#${slug(b.name)}`)}><code>{b.name}</code></a>
+        {(notes.notes as Record<string, string>)[b.name] ? <a class="ref-note" href={L(`/docs/stdlib/allocation/#${slug(b.name)}`)} title={en ? 'A note on allocation and performance' : 'ملاحظة عن الحجز والأداء'}>{en ? 'allocation' : 'الحجز'}</a> : null}
       </li>
     ))}
   </ul>
 
-  <h2 id="modules">وحدات المكتبة القياسية ({modules.length})</h2>
+  <h2 id="modules">{en ? 'Standard library modules' : 'وحدات المكتبة القياسية'} ({modules.length})</h2>
   {modules.map((m: any) => (
     <section class="ref-module">
-      <h3 id={`module-${slug(m.name)}`}><a href={`/docs/stdlib/${moduleSlug[m.name] ?? ''}/`}><code>{m.name}</code></a> ({m.functions.length} دالة)</h3>
+      <h3 id={`module-${slug(m.name)}`}><a href={L(`/docs/stdlib/${moduleSlug[m.name] ?? ''}/`)}><code>{m.name}</code></a> ({m.functions.length} {en ? 'functions' : 'دالة'})</h3>
       <ul class="ref-chips">
         {m.functions.map((f: any) => (
-          <li><a href={`/docs/stdlib/${moduleSlug[m.name]}/#${slug(f.name)}`}><code>{m.name}.{f.name}</code></a></li>
+          <li><a href={L(`/docs/stdlib/${moduleSlug[m.name]}/#${slug(f.name)}`)}><code>{m.name}.{f.name}</code></a></li>
         ))}
       </ul>
     </section>

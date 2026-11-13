@@ -1,0 +1,45 @@
+---
+title: "Allocation and performance of builtins"
+description: "What each kind of operation allocates in Meem 0.10.0, who frees it, what is left with nobody to free it (growing with +=), and notes on performance, from measurements in the compiler repository."
+keywords: ["allocation", "memory", "performance", "view", "split", "keys", "free", "جزء", "تقسيم"]
+---
+
+import AllocationNotes from '../../../../../components/AllocationNotes.astro';
+
+This page comes from the «allocation without naming an allocator» table in the direction 0.9.1 report in the compiler repository, which we measured again on 0.10.0 in the same way: each operation in its own program, a hundred times, under `--debug-mem`. The rule in 0.10.0: nothing is allocated except what you see in the code (a builtin that builds something, `+`, or a literal), and the only exception is growing with `+=`.
+
+## Who allocates, and who frees
+
+| Operation | Blocks | Who frees |
+|---|---|---|
+| `س = "ا" + نص(ع)` | 1 | You (`حرر(س)` or an arena). Forbidden in a `بلا_افتراضي` module |
+| Joining two strings passed straight to `اطبع` or a comparison | 0 | Freed on its own |
+| `نص(ع)`, `دمج_نصوص`, `قص`, `استبدال`, `حروف_كبيرة`, `رياضيات.نسق`, `اقرأ()`, `اقرأ_ملف` | 1 | You |
+| A literal list `[ع, ع]`, and `نسخ(ق)` | 2 (header and data) | You |
+| A literal dictionary `{"ك": ع}` | 4 | You |
+| A list of lists `[[ع], [ع]]` | 6, and `حرر` on the outer list leaves 4 | You, deeply, by hand |
+| `تقسيم("ا,ب,ج", ",")` | 5 (the list and 3 strings) | You, and `حرر(the list)` does not free its strings |
+| `مفاتيح(د)` | a list and a copy of each key | You |
+| `قيم(د)`, `نظام.وسائط()` | 2 | You |
+| Inserting a new string key into a dictionary | a copy of the key | The dictionary, on `احذف` or `حرر` |
+| Repeated `ن += "ب"` | grows by doubling | **Nobody:** the old buffer stays (a hundred appends left 4 buffers) |
+| `د["ا"] = [ع]` over an earlier list | 2 | You, before the assignment (otherwise the earlier one leaks) |
+| A view passed to `طول`, `==`, `<`, indexing, `لكل`, a dictionary key, `يوجد`, `عدد()`, `كسر()`, `يحوي`, `بحث`, `يبدأ_بـ` | 0 | — |
+
+A «view» is the result of `جزء`, `قص_الفراغات`, `مسارات.الامتداد`, `مسارات.المجلد` and `مسارات.اسم_الملف`: a string on the bytes of another string, with no copying, living as long as its original string. **In 0.9.1**, passing a view to the operations in the last row allocated a copy that was never given back, every time (one line in [tic-tac-toe](/en/learn/projects/tictactoe/) kept 1.1 million blocks until exit). That was removed in 0.10.0: the same measurement gives 0 blocks.
+
+**How to tell:** `--debug-mem` names the line and the number of blocks, not the operation.
+
+## Notes on performance
+
+- **Indexing a string by character, `ن[ف]`,** goes through the string from its start on every call: 20 thousand indexings took 2.2 s on one string. `لكل ح في ن` goes through it once.
+- **The default static build (musl)** is slower than `--dynamic` (glibc) by 1.2 to 1.6 times in allocation-heavy programs.
+- **The detector**, which has been on by default in a direct run since 0.10.0, is 0% to 32% slower than `--release` on the benchmark programs in the compiler repository, and memory freed in its mode is not returned to the system. So a long-running program that frees a lot is run with `--release` or built with `meem build`.
+
+## For each builtin
+
+<AllocationNotes />
+
+## See also
+
+[Memory in Meem](/en/docs/understand/memory/) · [Builtins](/en/docs/stdlib/builtins/) · [Reference index](/en/docs/reference/)

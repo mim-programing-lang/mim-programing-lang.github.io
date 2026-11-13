@@ -1,0 +1,52 @@
+---
+title: "1. Printing and strings"
+description: "Lesson one: print text and numbers, and learn that «اطبع» accepts more than one value."
+keywords: ["print", "printing", "string", "strings", "اطبع"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To print text and numbers, and to know that `اطبع` (print) accepts more than one value.
+
+## Explanation
+
+- A **program** is a text file with the extension `.م` that holds instructions. The **compiler** `meem` reads it and runs it ([glossary](/en/docs/glossary/)).
+- `اطبع(...)` writes what is between the parentheses to the screen, then moves to a new line.
+- A **string** is text between double quotes: `"مرحبا"`.
+- `اطبع` accepts several values separated by commas, and prints them next to each other with no space. If you want a space between the values, write it yourself inside the string.
+
+## Example
+
+<HBExample id="learn/README.md#1" />
+
+## Common mistakes
+
+Two common mistakes: a string without quotes, and `+` between a string and a number. The `+` sign joins a string to a string only; a string with a number is an error the compiler catches before the program runs:
+
+<HBExample id="errors/common.md#1" label="Causes the error" section="نص مع عدد بـ`+`" />
+
+The fix: convert the number to a string, or separate the values with commas inside `اطبع`:
+
+<HBExample id="errors/common.md#2" label="Fixes it" section="نص مع عدد بـ`+`" />
+
+## Exercise
+
+Print your name and your age on one line using several values in `اطبع`, then your age in five years.
+
+<Solution file="lessons/01_حل.م" title="Solution" />
+
+## See also
+
+[Expressions](/en/docs/language/expressions/) · [The builtin `اطبع`](/en/docs/stdlib/builtins/) · [Common errors](/en/docs/errors/common/)
+
+<NextLesson />

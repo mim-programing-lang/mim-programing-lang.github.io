@@ -1,0 +1,107 @@
+---
+title: "Cheat sheet"
+description: "Meem 0.10.0 on one printable page: types, control flow, functions, structs, enums, errors, memory, modules and commands."
+keywords: ["cheat sheet", "summary", "quick reference", "cheatsheet", "print", "syntax"]
+tableOfContents: false
+---
+
+import Example from '../../../../components/Example.astro';
+
+<div class="cheatsheet">
+
+A summary of the syntax without explanations; the explanations are in [Learn Meem](/en/learn/) and the [reference index](/en/docs/reference/). Print it from your browser: it prints without the menus. The code is Meem's own, so it is in Arabic.
+
+## The basics
+
+| Purpose | Syntax |
+|---|---|
+| Print | `اطبع("س = ", س)` (no separator between the values) |
+| Comment | `# to the end of the line` |
+| Variable and its type | `س = 5` · `س عدد = 5` (the type is fixed by the first value) |
+| Constant | `ثابت حد = 100` |
+| Types | `عدد` (integer) · `كسر` (float) · `نص` (string) · `رمز` (character) · `منطقي` (boolean: `صواب`/`خطاء`) · `لاشيء` (nothing) |
+| Conversion | `نص(5)` · `عدد("5") والا 0` · `كسر(7)` |
+| Division | `7 / 2` = 3 (integer) · `7 / 2.0` = 3.5 · `7 % 2` = 1 |
+| Input | `س = اقرأ("رسالة: ")` |
+
+## Control flow
+
+| Purpose | Syntax |
+|---|---|
+| Condition | `اذا ...:` (if) · `غير ذلك اذا ...:` (else if) · `غير ذلك:` (else) |
+| Logic | `و` (and) · `او` (or) · `!` (not) |
+| Counting loop | `لكل ع في مدى(1, 11):` (does not include 11) |
+| Over a list, dictionary or string | `لكل ع في ق:` |
+| While | `طالما شرط:` |
+| Break / continue | `توقف` · `تجاوز` |
+| Match | `حالات س:` then `حاله قيمة:` and `حاله _:` |
+
+## Collections
+
+| Purpose | Syntax |
+|---|---|
+| List | `ق = [1, 2, 3]` · `ق قائمة[نص] = []` |
+| Add / length / search | `اضف(ق, 4)` · `طول(ق)` · `بحث(ق, 2)` (-1 if not found) |
+| Sort | `رتب(ق)` · `رتب_ب(ق, دالة_قبل)` |
+| Dictionary | `د = {"ا": 1}` · `د["ب"] = 2` · `يوجد(د, "ا")` · `احذف(د, "ا")` |
+| Fixed array | `م مصفوفة[عدد, 4] = [0, 0, 0, 0]` |
+| Strings | `تقسيم(ن, " ")` · `قص_الفراغات(ن)` · `جزء(ن, 0, 3)` · `يحوي(ن, "س")` · `دمج_نصوص(ا, ب)` |
+
+## Functions, structs and enums
+
+| Purpose | Syntax |
+|---|---|
+| Function | `داله اسم(س عدد, ص نص) عدد:` then `ارجع ...` |
+| No return value | `داله اسم() فراغ:` |
+| Struct | `هيكل نقطة:` then one field per line: `س عدد` |
+| Create and access | `ن = نقطة(1, 2)` · `ن.س` · `ق[0].س += 1` |
+| Enum | `تعداد لون:` then one member per line · `لون.احمر` · `عدد(لون.احمر)` = 0 |
+
+## Errors
+
+| Purpose | Syntax |
+|---|---|
+| Your error names | `اخطاء:` then one name per line |
+| A function that can fail | `داله ف() !عدد:` · `ارجع خطأ.اسم` |
+| Fallback value | `ن = ف() والا 0` |
+| Handling with a block | `ن = ف() والا خ:` then `حالات خ:`, and the last line is the value |
+| Passing the failure on | `ن = جرّب ف()` |
+| Clean-up on failure only | `خاتمه_عند_خطأ ...` |
+| Runtime errors | Index outside a list, division by zero, overflowing 64 bits: code 3, cannot be handled |
+
+## Memory
+
+| Purpose | Syntax |
+|---|---|
+| Free | `حرر(س)` |
+| On leaving the block | `خاتمه حرر(س)` (in reverse order, on every exit) |
+| Arena | `س_ = ساحة(الافتراضي)` · `خاتمه اعد(س_)` · `تقسيم(ن, " ", س_)` |
+| Pointer | `م = جديد(نقطة(1, 2))` · `محتوى(م).س` · `حرر(م)` |
+| Find what was not freed | `meem برنامج.م --debug-mem` |
+
+## Modules and C
+
+| Purpose | Syntax |
+|---|---|
+| Standard module | `استورد رياضيات` then `رياضيات.جذر(2.0)` |
+| A file next to yours | `استورد مساعد` (loads `مساعد.م`) |
+| A function from C | `خارجي داله طول_c(ن نص) حجم باسم "strlen"` |
+| Raw memory | `خطر:` then `احجز_خام(عدد32, 4)` |
+
+## Commands
+
+| Purpose | Command |
+|---|---|
+| Run | `meem برنامج.م` · with arguments: `meem برنامج.م -- ا ب` |
+| Build a standalone file | `meem build برنامج.م -o برنامج` · dynamically: `--dynamic` |
+| Check without running | `meem --check برنامج.م` · for tools: `--check --json` |
+| Strict | `--strict` (warnings become errors) |
+| Memory detector | on by default in `meem برنامج.م` · without it: `--release` · in a built file: `build --debug` · with the leak report: `--debug-mem` |
+| Forbid the unsafe | `--no-unsafe` · `--no-ffi` · `--no-system` |
+| Version and self-test | `meem --version` · `meem --self-test` |
+
+## All of the above in one program
+
+</div>
+
+<Example file="guide/ورقة_غش.م" title="ورقة_غش.م" />

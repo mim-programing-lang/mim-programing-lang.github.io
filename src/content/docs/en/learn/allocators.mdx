@@ -1,0 +1,56 @@
+---
+title: "17. Allocators and arenas"
+description: "Where memory comes from in Meem: the default allocator, the arena that gives everything back at once, and finding what was not freed with --debug-mem."
+keywords: ["allocator", "allocators", "arena", "leak", "debug-mem", "ساحة", "اعد", "خاتمه", "حرر"]
+---
+
+import Example from '../../../../components/Example.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To know where your program's memory is allocated from, and to give it back yourself: string by string with `حرر`, or all at once with an arena; and to find what you forgot with `--debug-mem`, and what you used after giving it back with the detector.
+
+## Explanation
+
+- Every string you build, and every list and dictionary, is allocated from an **allocator**. If you name no allocator, it comes from `الافتراضي` (the default).
+- Meem has no garbage collector and no reference counting (reference counting was removed in 0.7.0). What you do not free stays until the program exits, then it all returns to the system.
+- An **arena** (`ساحة(الافتراضي)`) is an allocator that collects everything allocated from it, and `اعد(الساحة)` (reset) gives it all back at once. Builtins that build something take the allocator as their last argument.
+- `خاتمه اعد(ساحه)` right after creating the arena guarantees it is given back when the block exits, whatever the exit.
+
+<Example file="lessons/16_ساحة.م" title="An arena for each round" />
+
+**How to find what you forgot:** run the program with the `--debug-mem` option. At the end it prints every line that allocated and did not free, with its number of blocks and their size:
+
+<Example file="lessons/16_تسرب.م" title="A string built in a loop and never freed" />
+
+**Safety limits today (0.10.0):** indexing and arithmetic are always protected, and a list or dictionary used through the same name after `حرر` is error [E0428](/en/docs/errors/catalog/#E0428) in every mode. Use after free through another name, or after `اعد` on its arena, is caught by the detector, which is on by default in a direct run ([E0429](/en/docs/errors/catalog/#E0429)); in a file built without `--debug` it is undefined behaviour. Here is a list from an arena used after `اعد`, in a direct run with no options:
+
+<Example file="guide/ذاكرة_ساحة_بعد_اعد.م" title="An arena after اعد" />
+
+Details in [memory in Meem](/en/docs/understand/memory/).
+
+## Exercise
+
+Fix the program above so that `--debug-mem` prints no report, and add up the lengths of the three strings.
+
+<Solution file="lessons/16_حل.م" title="Solution" />
+
+## Common mistakes
+
+- Forgetting to free in a long loop: no error, but memory grows until exit. `--debug-mem` reveals it by line, and `--strict` warns about it with warning E0270 for a temporary string in a loop.
+- Freeing the same thing twice through two names: a «double free» caught by the detector ([E0350](/en/docs/errors/catalog/#E0350) for a list or dictionary, [E0431](/en/docs/errors/catalog/#E0431) for a string, and [E0421](/en/docs/errors/catalog/#E0421) for a slot). In a file built without the detector, it crashes the program.
+- Using a list or dictionary after `حرر`, or after `اعد` on its arena: a runtime error with the detector, and undefined behaviour in a file built without it. Do not touch what you have freed.
+
+## See also
+
+[Memory in Meem](/en/docs/understand/memory/) · [Memory reference](/en/docs/memory/reference/) · [Allocation and performance of builtins](/en/docs/stdlib/allocation/)
+
+<NextLesson />

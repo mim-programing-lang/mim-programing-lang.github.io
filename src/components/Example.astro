@@ -7,6 +7,7 @@ import examples from '../generated/examples.json';
 import version from '../generated/version.json';
 import { kb } from '../lib/size.mjs';
 import hb from '../generated/handbook.json';
+import { contentLang, localHref } from '../lib/i18n';
 
 interface Props {
   /** مسار الملف نسبةً إلى examples/ */
@@ -15,6 +16,8 @@ interface Props {
   title?: string;
 }
 const { file, title } = Astro.props;
+const lang = contentLang(Astro);
+const en = lang === 'en';
 const ex = examples.find((e) => e.id === file);
 if (!ex) throw new Error(`مثال غير معروف: «${file}». المسار نسبةً إلى examples/.`);
 // السطر كما يُكتب في الطرفية: متغيرات البيئة، ثم خيارات المجمّع، ثم الملف، ثم وسائط البرنامج بعد «--».
@@ -34,29 +37,36 @@ const printedIds = [...new Set([...`${ex.stderr}${ex.stdout}`.matchAll(/\[[^\]\n
   <Code code={ex.code} lang="meem" title={title ?? ex.file} />
   <figure class="meem-output">
     <figcaption>
-      <span>مخرجات مسجّلة من المجمّع</span>
-      <span class="meem-output-meta"><bdi dir="ltr">{command}</bdi> · <bdi dir="ltr">meem {(ex as { frozen?: string }).frozen ?? version.build}</bdi>{(ex as { frozen?: string }).frozen && ' · مسجَّل بإصدار أقدم، لا يُعاد تشغيله (صفحة تاريخية)'}</span>
+      <span>{en ? 'Output recorded from the compiler' : 'مخرجات مسجّلة من المجمّع'}</span>
+      <span class="meem-output-meta"><bdi dir="ltr">{command}</bdi> · <bdi dir="ltr">meem {(ex as { frozen?: string }).frozen ?? version.build}</bdi>{(ex as { frozen?: string }).frozen && (en ? ' · recorded with an older release, not re-run (historical page)' : ' · مسجَّل بإصدار أقدم، لا يُعاد تشغيله (صفحة تاريخية)')}</span>
     </figcaption>
     {ex.stdin && (
       <div class="meem-stdin">
-        <span class="meem-label">الإدخال</span>
+        <span class="meem-label">{en ? 'Input' : 'الإدخال'}</span>
         <pre dir="rtl">{lines(ex.stdin).map((l) => <span class="line">{l || '​'}</span>)}</pre>
       </div>
     )}
     <output>
       {ex.stdout && <pre dir="rtl" class="meem-stdout">{lines(ex.stdout).map((l) => <span class="line">{l || '​'}</span>)}</pre>}
       {ex.stderr && <pre dir="rtl" class="meem-stderr">{lines(ex.stderr).map((l) => <span class="line">{l || '​'}</span>)}</pre>}
-      {!ex.stdout && !ex.stderr && <p class="meem-empty">لا مخرجات.</p>}
+      {!ex.stdout && !ex.stderr && <p class="meem-empty">{en ? 'No output.' : 'لا مخرجات.'}</p>}
     </output>
-    {ex.exit !== 0 && <p class="meem-exit">رمز الخروج: <bdi>{ex.exit}</bdi></p>}
+    {ex.exit !== 0 && <p class="meem-exit">{en ? 'Exit code:' : 'رمز الخروج:'} <bdi>{ex.exit}</bdi></p>}
     {printedIds.length > 0 && (
-      <p class="meem-ids">في فهرس الأخطاء: {printedIds.map((i, n) => <>{n ? '، ' : ''}<a href={`/docs/errors/catalog/#${i}`}><code dir="ltr">{i}</code></a></>)}</p>
+      <p class="meem-ids">{en ? 'In the error catalog:' : 'في فهرس الأخطاء:'} {printedIds.map((i, n) => <>{n ? (en ? ', ' : '، ') : ''}<a href={localHref(lang, `/docs/errors/catalog/#${i}`)}><code dir="ltr">{i}</code></a></>)}</p>
     )}
     {ex.built && (
+      en ? (
+        <p class="meem-exit">
+          Also built with <bdi dir="ltr">meem build</bdi> when the site was built: a {ex.built.static ? 'static' : 'dynamic'} file of{' '}
+          <bdi dir="ltr">{kb(ex.built.bytes)}</bdi> kB, run on its own, and its output matched the output above.
+        </p>
+      ) : (
       <p class="meem-exit">
         بُني أيضاً بـ <bdi dir="ltr">meem build</bdi> عند بناء الموقع: ملف {ex.built.static ? 'ساكن' : 'حركي'} حجمه{' '}
         <bdi dir="ltr">{kb(ex.built.bytes)}</bdi> ك.ب، شُغّل وحده وطابق مخرجه المخرج أعلاه.
       </p>
+      )
     )}
   </figure>
 </section>

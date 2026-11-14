@@ -1,6 +1,6 @@
 ---
 title: "Cheat sheet"
-description: "Meem 0.10.0 on one printable page: types, control flow, functions, structs, enums, errors, memory, modules and commands."
+description: "Meem 0.17.1 on one printable page: types, control flow, functions, structs, enums, errors, memory, modules and commands."
 keywords: ["cheat sheet", "summary", "quick reference", "cheatsheet", "print", "syntax"]
 tableOfContents: false
 ---
@@ -17,12 +17,14 @@ A summary of the syntax without explanations; the explanations are in [Learn Mee
 |---|---|
 | Print | `اطبع("س = ", س)` (no separator between the values) |
 | Comment | `# to the end of the line` |
-| Variable and its type | `س = 5` · `س عدد = 5` (the type is fixed by the first value) |
+| Variable and its type | `س = 5` · `س عدد64 = 5` (the type is fixed by the first value) |
 | Constant | `ثابت حد = 100` |
-| Types | `عدد` (integer) · `كسر` (float) · `نص` (string) · `رمز` (character) · `منطقي` (boolean: `صواب`/`خطاء`) · `لاشيء` (nothing) |
-| Conversion | `نص(5)` · `عدد("5") والا 0` · `كسر(7)` |
-| Division | `7 / 2` = 3 (integer) · `7 / 2.0` = 3.5 · `7 % 2` = 1 |
-| Input | `س = اقرأ("رسالة: ")` |
+| Types | `عدد64` (64-bit integer; also `عدد8` `عدد16` `عدد32`) · `طبيعي8` .. `طبيعي64` and `بايت` (unsigned) · `كسر64` (64-bit float; also `كسر32`) · `نص` (string) · `رمز` (character) · `منطقي` (boolean: `صواب`/`خطاء`) |
+| Optional | `ن؟`: a value or `لاشيء` (nothing) · `اذا س != لاشيء:` · `س والا بديل` |
+| Tuple | `داله قسم(ا عدد64, ب عدد64) (خارج عدد64, باقي عدد64):` · `خ, ب = قسم(17, 5)` · `ن.خارج` |
+| Conversion | `نص(5)` · `حلل("5", عدد64) والا 0` (parse) · `كسر64(7)` · checked narrowing: `عدد8(ن)` |
+| Division | `7 / 2` = 3 (integer) · `كسر64(ن) / 2` (an integer and a float do not mix without a conversion) · `7 % 2` = 1 |
+| Input | `س = اقرأ("رسالة: ") والا ""` (`لاشيء` at the end of input) |
 
 ## Control flow
 
@@ -41,33 +43,36 @@ A summary of the syntax without explanations; the explanations are in [Learn Mee
 | Purpose | Syntax |
 |---|---|
 | List | `ق = [1, 2, 3]` · `ق قائمة[نص] = []` |
-| Add / length / search | `اضف(ق, 4)` · `طول(ق)` · `بحث(ق, 2)` (-1 if not found) |
+| Add / length / search | `اضف(ق, 4)` · `طول(ق)` · `بحث(ق, 2) والا -1` (`لاشيء` if not found) |
 | Sort | `رتب(ق)` · `رتب_ب(ق, دالة_قبل)` |
-| Dictionary | `د = {"ا": 1}` · `د["ب"] = 2` · `يوجد(د, "ا")` · `احذف(د, "ا")` |
-| Fixed array | `م مصفوفة[عدد, 4] = [0, 0, 0, 0]` |
+| Dictionary | `د = {"ا": 1}` · `د["ب"] = 2` · `يوجد(د, "ا")` · `احذف(د, "ا")` (returns what it removed) |
+| Fixed array | `م مصفوفة[عدد64, 4] = [0, 0, 0, 0]` |
 | Strings | `تقسيم(ن, " ")` · `قص_الفراغات(ن)` · `جزء(ن, 0, 3)` · `يحوي(ن, "س")` · `دمج_نصوص(ا, ب)` |
 
 ## Functions, structs and enums
 
 | Purpose | Syntax |
 |---|---|
-| Function | `داله اسم(س عدد, ص نص) عدد:` then `ارجع ...` |
+| Function | `داله اسم(س عدد64, ص نص) عدد64:` then `ارجع ...` |
 | No return value | `داله اسم() فراغ:` |
-| Struct | `هيكل نقطة:` then one field per line: `س عدد` |
+| Struct | `هيكل نقطة:` then one field per line: `س عدد64` |
 | Create and access | `ن = نقطة(1, 2)` · `ن.س` · `ق[0].س += 1` |
-| Enum | `تعداد لون:` then one member per line · `لون.احمر` · `عدد(لون.احمر)` = 0 |
+| Enum | `تعداد لون:` then one member per line · `لون.احمر` · `عدد64(لون.احمر)` = 0 |
+| Enum with a payload | `دائرة(نق كسر64)` as a member · `شكل.دائرة(1.0)` · `حاله شكل.دائرة(نق):` |
+| Generic | `داله اكبر[ن](ا ن, ب ن) ن:` · `هيكل زوج[ا, ب]:` · explicitly: `زوج[نص, عدد64](...)` |
+| Trait and constraint | `هيكل نقطة يحقق قابل_للمقارنة:` · `داله اصغر[ن يحقق قابل_للمقارنة](ا ن, ب ن) ن:` |
 
 ## Errors
 
 | Purpose | Syntax |
 |---|---|
 | Your error names | `اخطاء:` then one name per line |
-| A function that can fail | `داله ف() !عدد:` · `ارجع خطأ.اسم` |
+| A function that can fail | `داله ف() !عدد64:` · `ارجع خطأ.اسم` |
 | Fallback value | `ن = ف() والا 0` |
 | Handling with a block | `ن = ف() والا خ:` then `حالات خ:`, and the last line is the value |
 | Passing the failure on | `ن = جرّب ف()` |
 | Clean-up on failure only | `خاتمه_عند_خطأ ...` |
-| Runtime errors | Index outside a list, division by zero, overflowing 64 bits: code 3, cannot be handled |
+| Runtime errors | Index outside a list, division by zero, overflowing the type's width: code 3, cannot be handled |
 
 ## Memory
 
@@ -78,14 +83,16 @@ A summary of the syntax without explanations; the explanations are in [Learn Mee
 | Arena | `س_ = ساحة(الافتراضي)` · `خاتمه اعد(س_)` · `تقسيم(ن, " ", س_)` |
 | Pointer | `م = جديد(نقطة(1, 2))` · `محتوى(م).س` · `حرر(م)` |
 | Find what was not freed | `meem برنامج.م --debug-mem` |
+| A forgotten local allocation in a function | compile error `E0472`: `خاتمه حرر(ن)` or `ارجع ن` |
 
 ## Modules and C
 
 | Purpose | Syntax |
 |---|---|
 | Standard module | `استورد رياضيات` then `رياضيات.جذر(2.0)` |
+| Collections library | `استورد مجموعات` · `كومة_من([3, 1])` (heap) · `طابور_من(...)` (queue) · `مجموعة_من(...)` (set) |
 | A file next to yours | `استورد مساعد` (loads `مساعد.م`) |
-| A function from C | `خارجي داله طول_c(ن نص) حجم باسم "strlen"` |
+| A function from C | `خارجي داله طول_c(ن نص) طبيعي64 باسم "strlen"` |
 | Raw memory | `خطر:` then `احجز_خام(عدد32, 4)` |
 
 ## Commands
@@ -95,7 +102,8 @@ A summary of the syntax without explanations; the explanations are in [Learn Mee
 | Run | `meem برنامج.م` · with arguments: `meem برنامج.م -- ا ب` |
 | Build a standalone file | `meem build برنامج.م -o برنامج` · dynamically: `--dynamic` |
 | Check without running | `meem --check برنامج.م` · for tools: `--check --json` |
-| Strict | `--strict` (warnings become errors) |
+| Strict | `--strict` (warnings become errors) · `--strict-memory` (whatever is not proven freed is an error) |
+| What the compiler cannot prove | `--warn-unproven` (out of the default mode since 0.17) |
 | Memory detector | on by default in `meem برنامج.م` · without it: `--release` · in a built file: `build --debug` · with the leak report: `--debug-mem` |
 | Forbid the unsafe | `--no-unsafe` · `--no-ffi` · `--no-system` |
 | Version and self-test | `meem --version` · `meem --self-test` |

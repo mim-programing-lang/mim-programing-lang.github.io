@@ -1,0 +1,52 @@
+---
+title: "2. Variables and arithmetic"
+description: "Store a value under a name and calculate with it, and tell integer division from fractional division."
+keywords: ["variable", "variables", "type", "types", "arithmetic", "division"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To store a value under a name and calculate with it, and to tell integer division from fractional division.
+
+## Explanation
+
+- A **variable** is a name you give to a value: `الطول = 7`.
+- Every value has a **type**: `عدد` (integer) for whole numbers, `كسر` (float) for numbers with a decimal point (such as `3.5`), and `نص` (string) for text.
+- A variable's type is set by the first value you give it, or you write it after the name: `س عدد = 3`.
+- Division `/` between two integers gives an integer: it drops what comes after the decimal point (rounding toward zero). If either side is a float, the result is a float: `7 / 2.0` gives `3.5`.
+
+## Example
+
+<HBExample id="learn/README.md#2" />
+
+## Common mistakes
+
+Changing a variable's type after its first assignment:
+
+<HBExample id="errors/common.md#9" label="Causes the error" section="تغيير نوع المتغير" />
+
+<HBExample id="errors/common.md#10" label="Fixes it" section="تغيير نوع المتغير" />
+
+Another mistake is naming a variable after a builtin function, because that name is reserved: `طول = 7` is a syntax error, and its message is «متوقع '('» (expected '(').
+
+## Exercise
+
+A rectangle is 7 long and 3 wide: print its area and perimeter, then the results of `7 / 2` and `7 / 2.0`, and notice the difference.
+
+<Solution file="lessons/02_حل.م" title="Solution" />
+
+## See also
+
+[Types](/en/docs/language/types/) · [Expressions](/en/docs/language/expressions/)
+
+<NextLesson />

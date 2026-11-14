@@ -1,0 +1,50 @@
+---
+title: "3. Input"
+description: "Read a line the user types and convert it to a number."
+keywords: ["input", "read", "reading", "conversion", "اقرأ"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To read a line the user types, and convert it to a number.
+
+## Explanation
+
+- `اقرأ("رسالة")` (read) shows the message, then reads a line the user types.
+- `عدد(...)` converts a string to an integer. Its result has the type `!عدد`, meaning the conversion may fail, so you handle the failure where it happens.
+
+## Example
+
+The handbook's examples run with empty input, so `اقرأ` returned an empty string here:
+
+<HBExample id="learn/README.md#3" />
+
+## Common mistakes
+
+`عدد(اقرأ())` has the type `!عدد`, because what the user types may not be a number. So give a fallback value for the failure: `عدد(اقرأ()) والا 0`.
+
+<HBExample id="errors/common.md#21" label="Causes the error" section="تحويل نص إلى عدد بلا معالجة الفشل" />
+
+<HBExample id="errors/common.md#22" label="Fixes it" section="تحويل نص إلى عدد بلا معالجة الفشل" />
+
+## Exercise
+
+Read a number from the user and print twice its value; if what they typed is not a number, treat it as 0 with `والا` (else). (In the solution, the user typed 21.)
+
+<Solution file="lessons/03_حل.م" title="Solution" />
+
+## See also
+
+[Builtins: `اقرأ` and `عدد`](/en/docs/stdlib/builtins/) · [Error handling](/en/docs/language/errors/)
+
+<NextLesson />

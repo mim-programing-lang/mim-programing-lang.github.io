@@ -1,0 +1,49 @@
+---
+title: "7. Dictionaries"
+description: "Map a key to a value, and go through the keys in the order they were inserted."
+keywords: ["dictionary", "dictionaries", "key", "keys", "map"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To map a key to a value, and to go through the keys in the order they were inserted.
+
+## Explanation
+
+- A **dictionary** maps each **key** to a value: `{"سارة": 30}`. You reach the value through its key: `اعمار["سارة"]`.
+- Assigning a value to a new key adds it to the dictionary.
+- `لكل اسم في اعمار:` goes through the keys in insertion order. `مفاتيح(ق)` (keys) returns them as a list in the same order.
+
+## Example
+
+<HBExample id="learn/README.md#7" />
+
+## Common mistakes
+
+Reading a key that does not exist is a runtime error. Check it with `يحوي` (contains) first:
+
+<HBExample id="errors/common.md#15" label="Causes the error" section="مفتاح غائب من القاموس" />
+
+<HBExample id="errors/common.md#16" label="Fixes it" section="مفتاح غائب من القاموس" />
+
+## Exercise
+
+Count how often each letter appears in «مرحبا بالعالم», ignoring the space, and print the count for each letter in the order it first appears.
+
+<Solution file="lessons/07_حل.م" title="Solution" />
+
+## See also
+
+[Types](/en/docs/language/types/) · [Builtins: `مفاتيح` and `يحوي`](/en/docs/stdlib/builtins/)
+
+<NextLesson />

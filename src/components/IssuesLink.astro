@@ -1,10 +1,12 @@
 ---
 // رابط البلاغات (GitHub Issues) من links.issues في site.config.mjs. فارغاً: «قريباً» بلا رابط. لا يُخترع عنوان.
 import { links } from '../../site.config.mjs';
+import { contentLang } from '../lib/i18n';
+const en = contentLang(Astro) === 'en';
 ---
 
 {links.issues ? (
-  <p class="issues-link"><a href={`${links.issues}/new/choose`}>افتح بلاغاً أو اقتراحاً</a> · <a href={links.issues}>البلاغات المفتوحة</a></p>
+  <p class="issues-link"><a href={`${links.issues}/new/choose`}>{en ? 'Open a report or a suggestion' : 'افتح بلاغاً أو اقتراحاً'}</a> · <a href={links.issues}>{en ? 'Open reports' : 'البلاغات المفتوحة'}</a></p>
 ) : (
-  <p class="issues-link"><strong>قريباً.</strong> رابط صفحة البلاغات يُنشر هنا حين تُتاح.</p>
+  <p class="issues-link">{en ? <><strong>Soon.</strong> The link to the issues page will be published here once it is available.</> : <><strong>قريباً.</strong> رابط صفحة البلاغات يُنشر هنا حين تُتاح.</>}</p>
 )}

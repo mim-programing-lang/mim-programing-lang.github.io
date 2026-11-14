@@ -1,0 +1,51 @@
+---
+title: "18. «خطر» (unsafe) and calling C"
+description: "When you need «خطر» (unsafe), how to call a function from a C library with «خارجي» (extern), and why «خطر» keeps the danger in a visible place."
+keywords: ["unsafe", "extern", "C library", "raw pointer", "no-unsafe", "خطر", "خارجي", "C"]
+---
+
+import Example from '../../../../components/Example.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To call a function from a C library, and to know what can only be written inside a `خطر` block, and why.
+
+## Explanation
+
+- `خارجي` (extern) declares a function from a C library with explicit C types; then you call it like any function. At compile time, the compiler checks that the symbol exists.
+- `طول("ميم")` counts characters (3), while `strlen` from C counts bytes (6): an Arabic letter is two bytes in UTF-8.
+
+<Example file="lessons/17_خارجي.م" title="Two functions from C" />
+
+- Raw memory (`احجز_خام`), raw pointer indexing, and switching checks off (`بلا_فحص`) can only be written inside `خطر:`. There the compiler does not check bounds, and mistakes are your responsibility.
+
+<Example file="lessons/17_خطر.م" title="Raw memory inside خطر" />
+
+- **A beginner does not need it:** lists, dictionaries and the standard modules are enough for most programs. And `خطر` keeps whatever might corrupt memory in blocks you can see and review.
+- The `--no-unsafe` option forbids `خطر` entirely, and `--no-ffi` forbids `خارجي`.
+
+## Exercise
+
+Declare the function `abs` from the C library (it takes and returns `عدد32`), and print its absolute value for -7, 0 and 12.
+
+<Solution file="lessons/17_حل.م" title="Solution" />
+
+## Common mistakes
+
+A raw operation outside `خطر`:
+
+<Example file="lessons/17_بلا_خطر.م" title="Causes the error" />
+
+## See also
+
+[What is خطر?](/en/docs/understand/unsafe/) · [The low-level layer](/en/docs/language/low-level/) · [Calling C](/en/docs/language/ffi/)
+
+<NextLesson />

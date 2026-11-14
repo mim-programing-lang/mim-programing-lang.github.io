@@ -1,0 +1,77 @@
+---
+title: "10. Memory for beginners: three rules"
+description: "Three rules are enough for a beginner in Meem's memory: what you build is allocated, free it once when you are done with it, and «خاتمه» frees it on exit. And how the detector tells you the line."
+keywords: ["memory", "free", "allocation", "detector", "beginner", "debug-mem", "حرر", "خاتمه"]
+---
+
+import Example from '../../../../components/Example.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To know three rules for memory in Meem, and to read the detector's message when you break one: which line, and what happened.
+
+## Explanation
+
+Meem has no garbage collector: the memory your program takes, you give back, or it all returns when the program exits. Three rules are enough for now:
+
+1. **Allocate:** what you build takes a place in memory: a list `[...]`, a dictionary `{...}`, and a string you build with `+` or `نص(...)`. A string written between quotes as it is is not allocated.
+2. **Free:** when you are done with something you built, give it back with `حرر(الاسم)` (free), **once**, and **do not use it afterwards**.
+3. **خاتمه:** you write `خاتمه حرر(الاسم)` (defer free) next to the allocating line, and the thing is freed on its own when the block exits (the end of the program, or the end of each round of a loop). That way you do not forget it.
+
+<Example file="lessons/10ب_قواعد.م" title="The three rules" />
+
+The example was run with the `--debug-mem` option, which prints at the end of the program everything that was allocated and not freed. It printed nothing, so everything allocated came back.
+
+## How the detector tells you
+
+`meem برنامج.م` runs your program with the **memory detector**: it watches what you allocate and what you free. If you break the second rule, it stops the program with a message that names the line.
+
+Using a list after freeing it:
+
+<Example file="lessons/10ب_بعد_حرر.م" title="Use after free" />
+
+`سطر 3:10` means line 3, character 10. `E0428` is the error's ID, explained in the [error catalog](/en/docs/errors/catalog/#E0428).
+
+If you reach the same list through another name, the detector also says where it was created and where it was freed:
+
+<Example file="lessons/10ب_اسم_آخر.م" title="The other name sees the freed list" />
+
+`نسخة = درجات` does not copy the list: the two names are for one list, so when it was freed on line 3, nothing was left for `نسخة`. ([E0429](/en/docs/errors/catalog/#E0429))
+
+If you forget to free, there is no error: everything returns on exit. But `--debug-mem` tells you what was left and its line:
+
+<Example file="lessons/10ب_نسيان.م" title="Forgetting to free" />
+
+Line 1 allocated the list (two blocks: its header and its data), and line 2 allocated the string.
+
+<aside class="lesson-note">
+
+**Note:** the detector works when you run the program with `meem برنامج.م`. A file you build with `meem build` (lesson [building a standalone executable](/en/learn/build/)) has no detector so that it is faster, and in it, use after free through another name is **undefined behaviour**: it may print something you do not expect, or crash the program. Try your program with a direct run first.
+
+</aside>
+
+## Exercise
+
+Fix the program «forgetting to free» above so that `--debug-mem` prints nothing, using the third rule.
+
+<Solution file="lessons/10ب_حل.م" title="Solution" />
+
+## Common mistakes
+
+- Using something after `حرر`: runtime error [E0428](/en/docs/errors/catalog/#E0428) through the same name, and [E0429](/en/docs/errors/catalog/#E0429) through another name. Move `حرر` after the last use, or use `خاتمه حرر`.
+- Freeing the same thing twice: through the same name, [E0347](/en/docs/errors/catalog/#E0347) «تحرير حاوية قيمتها لاشيء» (freeing a container whose value is nothing), and through two names a «تحرير مزدوج» (double free) ([E0350](/en/docs/errors/catalog/#E0350) for a list or dictionary, and [E0431](/en/docs/errors/catalog/#E0431) for a string).
+- Thinking that `ب = ا` copies the list: for an independent copy use `نسخ(ا)` (copy), and free each of them.
+
+## See also
+
+[Memory in Meem](/en/docs/understand/memory/) · [Memory in long loops](/en/learn/memory/)
+
+<NextLesson />

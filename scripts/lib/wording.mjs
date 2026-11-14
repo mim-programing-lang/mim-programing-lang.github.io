@@ -24,11 +24,13 @@ export function applyWording(line, stats = {}) {
   return [out.join(''), count];
 }
 
-/** يفحص نثر صفحة مبنية (من scripts/lib/prose.mjs) ويعيد المخالفات: [{use, text}]. */
-export function checkWording(prose) {
+/** يفحص نثر صفحة مبنية (من scripts/lib/prose.mjs) ويعيد المخالفات: [{use, text}].
+ *  القاعدة ذات lang تُطبَّق على صفحات تلك اللغة وحدها (نص الواجهة الإنجليزي محظور في الصفحة العربية لا الإنجليزية). */
+export function checkWording(prose, lang = 'ar') {
   const found = [];
   for (const line of prose.split('\n')) {
     for (const rule of wording.forbidden) {
+      if (rule.lang && rule.lang !== lang) continue;
       let text = line;
       if (rule.outsideQuotes) text = text.replace(/«[^»]*»/g, '«»');
       for (const e of rule.except ?? []) text = text.split(e).join('');

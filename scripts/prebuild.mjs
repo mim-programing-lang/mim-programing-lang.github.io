@@ -9,24 +9,11 @@ import { checkFences } from './lib/fences.mjs';
 import { assertHandbook, hbSource, hbDir, parseExamples } from './lib/handbook.mjs';
 import { exclusionReasons } from './lib/playground.mjs';
 import { readFileSync } from 'node:fs';
+import { requiredFiles, generatedDir } from './lib/generated.mjs';
 
 const record = process.argv.includes('--record');
-const outDir = path.join(root, 'src/generated');
+const outDir = generatedDir;
 const write = (name, data) => writeFileSync(path.join(outDir, name), JSON.stringify(data, null, 2) + '\n');
-
-const requiredFiles = [
-  'meem.tmLanguage.json',
-  'language.json',
-  'types.json',
-  'modules.json',
-  'deprecated.json',
-  'options.json',
-  'version.json',
-  'examples.json',
-  'handbook.json',
-  'playground.json',
-  'help.txt',
-];
 
 function ensureFavicon() {
   const logo = path.join(root, 'brand/language-logo.svg');

@@ -1,7 +1,11 @@
 ---
 // روابط المشروع من site.config.mjs. ما كان فارغاً لا يظهر.
 import { links } from '../../site.config.mjs';
-const labels: Record<string, string> = {
+import { contentLang } from '../lib/i18n';
+const en = contentLang(Astro) === 'en';
+const labels: Record<string, string> = en
+  ? { compilerRepo: 'Compiler repository', editorRepo: 'Editor repository', siteRepo: 'Website repository', issues: 'Issues', discussions: 'Discussions' }
+  : {
   compilerRepo: 'مستودع المجمّع', editorRepo: 'مستودع المحرر', siteRepo: 'مستودع الموقع',
   issues: 'البلاغات', discussions: 'النقاشات',
 };
@@ -12,6 +16,6 @@ const shown = Object.entries(links).filter(([, url]) => url);
   shown.length ? (
     <ul>{shown.map(([k, url]) => <li><a href={url}>{labels[k] ?? k}</a></li>)}</ul>
   ) : (
-    <p>روابط المستودعات وقنوات المساهمة تُنشر هنا قريباً.</p>
+    <p>{en ? 'Links to the repositories and ways to contribute will be published here soon.' : 'روابط المستودعات وقنوات المساهمة تُنشر هنا قريباً.'}</p>
   )
 }

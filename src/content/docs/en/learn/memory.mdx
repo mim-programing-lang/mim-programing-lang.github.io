@@ -1,0 +1,69 @@
+---
+title: "14. Memory in long loops"
+description: "Memory in long loops: «خاتمه حرر» gives back what you build in each round, a temporary string you do not assign returns on its own, and --debug-mem reveals what was left."
+keywords: ["memory", "memory management", "free", "loop", "حرر", "خاتمه"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To apply the [three rules](/en/learn/memory-basics/) in long loops: what is built in each round is freed at its end.
+
+## Explanation
+
+Every string you build, and every list and dictionary, takes a place in memory from an **allocator**, which is where memory is taken from and given back to. In loops:
+
+1. What you build (a string with `+` or `نص(...)`, a list, a dictionary) stays until the end of the program if you do not free it, then it all returns on exit. In a short program that does no harm.
+2. A string you build **and assign to a variable inside a long loop**: free it with `خاتمه حرر(الاسم)` right after creating it, and it returns at the end of each round. (`حرر(س)` gives the space back immediately, and `خاتمه جملة` defers the statement until the block exits.)
+3. A string you build **and do not assign** to a variable, but pass straight to `اطبع`, `طول` or a comparison, returns on its own after use (since 0.8.0): `اطبع("سطر " + نص(ع))` needs no `حرر`.
+
+To see what was left, run the program with the `--debug-mem` option: at the end it prints every line that allocated and did not free, with its number of blocks and their size, largest first. This program builds a thousand strings in a loop without `حرر`:
+
+```ميم nocheck
+ا = "س"
+لكل ع في مدى(0, 1000):
+    ن = "سطر " + نص(ع)
+```
+
+And what `meem برنامج.م --debug-mem` prints at its end (from the reference handbook):
+
+```text
+[ذاكرة] معلومة: كتل لم تُحرَّر من الافتراضي: 1000 (26890 بايت)، تعود للنظام عند الخروج
+  سطر 3: 1000 كتلة، 26890 بايت
+  تلميح: الحجز المتكرر في سطر واحد (حلقة في الغالب) يُعاد بـ خاتمه حرر(...) بعد إنشائه، أو بساحة للمرحلة
+```
+
+The report says, in Arabic: 1000 blocks (26890 bytes) were not freed from the default allocator and return to the system on exit; all of them come from line 3; and a hint that allocation repeated on one line (usually a loop) is given back with `خاتمه حرر(...)` after creation, or with an arena for the phase.
+
+## Example
+
+<HBExample id="learn/README.md#13" />
+
+## Common mistakes
+
+Forgetting to free in a long loop raises the program's peak memory use, and the `--debug-mem` option reveals it by line. Using a string after freeing it is caught by the detector (on by default when you run `meem برنامج.م`) as a runtime error with its line. And freeing the same value twice is an error:
+
+<HBExample id="errors/common.md#31" label="Causes the error" section="تحرير مرتين" />
+
+<HBExample id="errors/common.md#32" label="Fixes it" section="تحرير مرتين" />
+
+## Exercise
+
+Build a thousand strings in a loop («سطر» and its number) and add up their lengths, freeing each string at the end of its round with `خاتمه حرر`. Run it with `--debug-mem`: if it prints no memory report, nothing was left.
+
+<Solution file="lessons/13_حل.م" title="Solution" />
+
+## See also
+
+[Lesson 10: three rules](/en/learn/memory-basics/) · [Manual memory](/en/docs/memory/) · [Memory reference](/en/docs/memory/reference/)
+
+<NextLesson />

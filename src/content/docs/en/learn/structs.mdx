@@ -1,0 +1,47 @@
+---
+title: "9. Structs"
+description: "Gather the data of one thing in a struct."
+keywords: ["struct", "structs", "field", "fields", "هيكل"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To gather the data of one thing in a struct.
+
+## Explanation
+
+- A **struct** is a type you define yourself, made of **fields**: each field has a name and a type, one field per line.
+- You create a value of it by writing its name, then the values in field order: `طالب("ليلى", 91)`.
+- `ط.اسم` reads the field `اسم` from the value `ط`.
+
+## Example
+
+<HBExample id="learn/README.md#9" />
+
+## Common mistakes
+
+The number of values does not match the number of fields:
+
+<HBExample id="language/06-structs.md#2" label="Causes the error" section="الهياكل" />
+
+## Exercise
+
+Define a struct `كتاب` (book) with a title and a page count, make a list of three books, and print the total number of pages and the longest book.
+
+<Solution file="lessons/09_حل.م" title="Solution" />
+
+## See also
+
+[Structs](/en/docs/language/structs/)
+
+<NextLesson />

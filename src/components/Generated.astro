@@ -1,14 +1,16 @@
 ---
 // شارة توضّح أن المحتوى تحتها مولَّد من خرج المجمّع وقت البناء.
 import version from '../generated/version.json';
+import { contentLang } from '../lib/i18n';
 interface Props {
   command: string;
 }
 const { command } = Astro.props;
+const en = contentLang(Astro) === 'en';
 ---
 
 <p class="generated-note">
-  مولَّد وقت البناء من <code class="meem-inline-code">{command}</code> · <bdi dir="ltr">meem {version.build}</bdi>
+  {en ? 'Generated at build time from' : 'مولَّد وقت البناء من'} <code class="meem-inline-code">{command}</code> · <bdi dir="ltr">meem {version.build}</bdi>
 </p>
 
 <style>

@@ -1,0 +1,55 @@
+---
+title: "4. Conditions"
+description: "Choose between two paths with the keywords «اذا» (if) and «غير ذلك» (else)."
+keywords: ["condition", "conditions", "if", "else", "اذا"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To choose between two paths with `اذا` (if) and `غير ذلك` (else).
+
+## Explanation
+
+- A **condition** is a question whose answer is `صواب` (true) or `خطاء` (false).
+- An `اذا` line ends with a colon `:`. The lines indented under it form the **block**, which runs if the condition holds. Each indentation level is 4 spaces.
+- `غير ذلك اذا` (else if) is an alternative condition, and `غير ذلك` covers everything left.
+
+## Example
+
+<HBExample id="learn/README.md#4" />
+
+## Common mistakes
+
+Forgetting the `:`:
+
+<HBExample id="errors/common.md#3" label="Causes the error" section="نسيان `:` بعد الشرط" />
+
+<HBExample id="errors/common.md#4" label="Fixes it" section="نسيان `:` بعد الشرط" />
+
+Or uneven indentation:
+
+<HBExample id="errors/common.md#5" label="Causes the error" section="مسافة بادئة لا تطابق" />
+
+<HBExample id="errors/common.md#6" label="Fixes it" section="مسافة بادئة لا تطابق" />
+
+## Exercise
+
+Turn a grade (85) into a rating: 90 or more is «ممتاز» (excellent), 75 or more «جيد جداً» (very good), 50 or more «ناجح» (pass), and anything below «راسب» (fail).
+
+<Solution file="lessons/04_حل.م" title="Solution" />
+
+## See also
+
+[Statements](/en/docs/language/statements/)
+
+<NextLesson />

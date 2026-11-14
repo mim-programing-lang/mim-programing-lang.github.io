@@ -2,25 +2,29 @@
 // صفحة المسار: الدروس بمستوياتها الثلاثة، وتقدّم القارئ. التقدّم يُحفظ في localStorage في متصفحه وحده (داخل try/catch)،
 // بلا شبكة ولا تتبّع: لا يغادر جهازه. المصدر: src/data/learn-path.json.
 import path from '../data/learn-path.json';
+import { contentLang, localHref } from '../lib/i18n';
+// التقدّم واحد للغتين: المفتاح مسار الدرس بلا بادئة اللغة.
+const lang = contentLang(Astro);
+const en = lang === 'en';
 ---
 
-<div class="learn-path not-content" data-learn-path>
+<div class="learn-path not-content" data-learn-path data-lang={lang}>
   <p class="lp-total" aria-live="polite">
-    <span data-lp-total>أتممت 0 من {path.lessons.length} دروس</span>
-    <button type="button" class="lp-reset" data-lp-reset>امسح تقدّمي</button>
+    <span data-lp-total>{en ? `Completed 0 of ${path.lessons.length} lessons` : `أتممت 0 من ${path.lessons.length} دروس`}</span>
+    <button type="button" class="lp-reset" data-lp-reset>{en ? 'Clear my progress' : 'امسح تقدّمي'}</button>
   </p>
-  <p class="lp-privacy">يُحفظ تقدّمك في متصفحك وحده، ولا يُرسل إلى أي مكان.</p>
+  <p class="lp-privacy">{en ? 'Your progress is saved in your browser only, and is never sent anywhere.' : 'يُحفظ تقدّمك في متصفحك وحده، ولا يُرسل إلى أي مكان.'}</p>
   {path.levels.map((level) => {
     const lessons = path.lessons.filter((l) => l.level === level.id);
     const minutes = lessons.reduce((s, l) => s + l.minutes, 0);
     return (
       <section class={`lp-level level-${level.id}`} data-lp-level={level.id}>
         <header>
-          <h2 id={`level-${level.id}`}>{level.name}</h2>
-          <p>{level.about}</p>
+          <h2 id={`level-${level.id}`}>{en ? level.name_en : level.name}</h2>
+          <p>{en ? level.about_en : level.about}</p>
           <p class="lp-level-meta">
-            {lessons.length} دروس، نحو {Math.round(minutes / 5) * 5} دقيقة ·{' '}
-            <span data-lp-level-count>أتممت 0 من {lessons.length}</span>
+            {en ? `${lessons.length} lessons, about ${Math.round(minutes / 5) * 5} minutes` : `${lessons.length} دروس، نحو ${Math.round(minutes / 5) * 5} دقيقة`} ·{' '}
+            <span data-lp-level-count>{en ? `Completed 0 of ${lessons.length}` : `أتممت 0 من ${lessons.length}`}</span>
           </p>
           <div class="lp-bar" aria-hidden="true"><span data-lp-bar></span></div>
         </header>
@@ -29,14 +33,14 @@ import path from '../data/learn-path.json';
             const n = path.lessons.indexOf(l) + 1;
             return (
               <li class="lp-card" data-lp-lesson={l.slug}>
-                <a href={`/${l.slug}/`}>
+                <a href={localHref(lang, `/${l.slug}/`)}>
                   <span class="lp-num">{n}</span>
-                  <span class="lp-title">{l.title}</span>
-                  <span class="lp-min">{l.minutes} د</span>
+                  <span class="lp-title">{en ? l.title_en : l.title}</span>
+                  <span class="lp-min">{l.minutes} {en ? 'min' : 'د'}</span>
                 </a>
                 <label class="lp-done">
                   <input type="checkbox" data-lp-check={l.slug} />
-                  <span>أتممته</span>
+                  <span>{en ? 'Done' : 'أتممته'}</span>
                 </label>
               </li>
             );
@@ -47,15 +51,15 @@ import path from '../data/learn-path.json';
   })}
   <section class="lp-level lp-projects">
     <header>
-      <h2 id="projects">مشاريع صغيرة كاملة</h2>
-      <p>برامج حقيقية قيست على ميم 0.9.1 وتعمل بـ 0.10.0، كل منها مشروح خطوة خطوة، مع ما كان صعباً فيها وما تعلّمناه.</p>
+      <h2 id="projects">{en ? 'Small complete projects' : 'مشاريع صغيرة كاملة'}</h2>
+      <p>{en ? 'Real programs measured on Meem 0.9.1 that run with 0.10.0, each explained step by step, with what was hard in them and what we learned.' : 'برامج حقيقية قيست على ميم 0.9.1 وتعمل بـ 0.10.0، كل منها مشروح خطوة خطوة، مع ما كان صعباً فيها وما تعلّمناه.'}</p>
     </header>
     <ol class="lp-lessons">
       {path.projects.map((p, i) => (
         <li class="lp-card">
-          <a href={`/${p.slug}/`}>
-            <span class="lp-num">م{i + 1}</span>
-            <span class="lp-title">{p.title}</span>
+          <a href={localHref(lang, `/${p.slug}/`)}>
+            <span class="lp-num">{en ? 'P' : 'م'}{i + 1}</span>
+            <span class="lp-title">{en ? p.title_en : p.title}</span>
           </a>
         </li>
       ))}
@@ -81,6 +85,7 @@ import path from '../data/learn-path.json';
       // التخزين غير متاح (وضع خاص مثلاً): يبقى التقدّم لهذه الزيارة وحدها.
     }
   };
+  const en = root?.dataset.lang === 'en';
   if (root) {
     let done = load();
     const render = () => {
@@ -92,12 +97,12 @@ import path from '../data/learn-path.json';
         if (c.checked) total++;
       });
       const totalEl = root.querySelector('[data-lp-total]');
-      if (totalEl) totalEl.textContent = `أتممت ${total} من ${all.length} دروس`;
+      if (totalEl) totalEl.textContent = en ? `Completed ${total} of ${all.length} lessons` : `أتممت ${total} من ${all.length} دروس`;
       root.querySelectorAll<HTMLElement>('[data-lp-level]').forEach((lv) => {
         const cs = lv.querySelectorAll<HTMLInputElement>('[data-lp-check]');
         const n = [...cs].filter((c) => c.checked).length;
         const count = lv.querySelector('[data-lp-level-count]');
-        if (count) count.textContent = `أتممت ${n} من ${cs.length}`;
+        if (count) count.textContent = en ? `Completed ${n} of ${cs.length}` : `أتممت ${n} من ${cs.length}`;
         const bar = lv.querySelector<HTMLElement>('[data-lp-bar]');
         if (bar) bar.style.inlineSize = `${cs.length ? (100 * n) / cs.length : 0}%`;
       });

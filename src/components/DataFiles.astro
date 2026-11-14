@@ -3,9 +3,11 @@
 // ما تراه هنا هو ما قرأه البرنامج حين شُغّل.
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
+import { contentLang } from '../lib/i18n';
 
 interface Props { dir: string }
 const { dir } = Astro.props;
+const en = contentLang(Astro) === 'en';
 const root = path.resolve('examples', dir);
 const walk = (d: string): string[] =>
   readdirSync(d).sort().flatMap((f) => {
@@ -24,7 +26,7 @@ const files = walk(root).map((p) => {
   {files.map((f) => (
     <figure>
       <figcaption><bdi dir="ltr">{f.name}</bdi></figcaption>
-      {f.binary ? <p class="data-binary">ملف ثنائي ({f.bytes} بايتات): لا يُعرض.</p> : <pre dir="rtl">{f.text}</pre>}
+      {f.binary ? <p class="data-binary">{en ? `Binary file (${f.bytes} bytes): not shown.` : `ملف ثنائي (${f.bytes} بايتات): لا يُعرض.`}</p> : <pre dir="rtl">{f.text}</pre>}
     </figure>
   ))}
 </div>

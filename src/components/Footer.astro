@@ -1,14 +1,21 @@
 ---
 import Default from '@astrojs/starlight/components/Footer.astro';
-import { footerNav } from '../nav.mjs';
+import { footerNav, navLabel } from '../nav.mjs';
 import { site } from '../../site.config.mjs';
+import { uiLang, localHref } from '../lib/i18n';
+const lang = uiLang(Astro);
+const en = lang === 'en';
 ---
 
 <Default><slot /></Default>
-<nav class="site-footer" aria-label="روابط الموقع">
-  {footerNav.map((l) => <a href={l.href}>{l.label}</a>)}
-  <span>جميع الحقوق محفوظة إلا ما تمنحه <a href="/license/">رخصة ميم</a>.</span>
-  <span>{site.name} — {site.status}</span>
+<nav class="site-footer" aria-label={en ? 'Site links' : 'روابط الموقع'}>
+  {footerNav.map((l) => <a href={localHref(lang, l.href)}>{navLabel(l.label, lang)}</a>)}
+  {en ? (
+    <span>All rights reserved, except as granted by the <a href="/en/license/">Meem License</a>.</span>
+  ) : (
+    <span>جميع الحقوق محفوظة إلا ما تمنحه <a href="/license/">رخصة ميم</a>.</span>
+  )}
+  <span>{en ? 'Meem — beta' : `${site.name} — ${site.status}`}</span>
 </nav>
 
 <style>

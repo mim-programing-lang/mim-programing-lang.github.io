@@ -1,0 +1,33 @@
+---
+title: "Project: tic-tac-toe"
+description: "Tic-tac-toe in the terminal against the computer with a full minimax search: an enum, a board as a fixed array, and reading and validating input."
+keywords: ["tic-tac-toe", "game", "minimax", "enum", "array", "project", "اكس او"]
+---
+
+import Example from '../../../../../components/Example.astro';
+
+**The idea:** you are X and the computer is O. The program reads your moves from the input (a square number from 1 to 9 on each line), and the computer searches every possibility (minimax), so it never loses.
+
+## The program
+
+In this run, the moves were written into the input in advance, including «س» and occupied squares, so you can see the validation messages:
+
+<Example file="projects/اكس_او.م" title="اكس_او.م" />
+
+## Step by step
+
+1. **The enum `خانة` (square):** empty, me, or computer. A `حالات` on the enum is checked at compile time: forgetting a case is an error.
+2. **The board is a struct with a fixed array:** `مصفوفة[خانة, 9]`. A struct is passed by value, so each call to `قيمة` works on its own copy.
+3. **minimax:** `قيمة` (value) tries every empty square and calls itself for the other player, preferring the nearest win (`10 - عمق`).
+4. **Input:** `اقرأ_حركة` reads until the input ends (`انتهى_الدخل()`), `عدد(سطر) والا خ:` rejects anything that is not a number, and it checks the range and that the square is empty.
+
+## What was hard
+
+- **Hidden copies in the hot function (in 0.9.1):** `رقم_في` writes `عدد(جزء(ن, موضع, موضع + 1))`. In 0.9.1, `عدد()` on a view allocated a copy that was never given back on every call, and minimax calls it tens of thousands of times, so in the report this one line alone kept 1.1 million blocks (20 MB) until exit, and `--debug-mem` revealed it by line. **In 0.10.0** these copies are gone: the same program with `--debug-mem` does not mention this line in its report.
+- **The workaround** (not run here): compute the winning lines as numbers once, in a list, instead of converting characters on every call.
+
+## What we learned
+
+- An enum with a complete `حالات` makes the game's logic clear and checked.
+- A struct passed by value saves manual undoing in a search like this.
+- 56490 nodes were counted in this game, and the time in the report was 0.24 s built.

@@ -1,0 +1,32 @@
+---
+title: "Project: Dijkstra and a search tree"
+description: "Shortest path with Dijkstra's algorithm and a binary heap on a 400×400 grid, and a binary search tree with pointers and manual deep freeing, with performance close to C."
+keywords: ["dijkstra", "heap", "search tree", "pointer", "algorithms", "project"]
+---
+
+import Example from '../../../../../components/Example.astro';
+
+**The idea:** a 400×400 grid with random weights (fixed seed 42): the shortest path from corner to corner with Dijkstra and a min-heap. Then a binary search tree with 200 thousand insertions, its height, and freeing all of it.
+
+## The program
+
+<Example file="projects/خوارزميات.م" title="خوارزميات.م" />
+
+## Step by step
+
+1. **A min-heap on top of a list:** `ادفع` (push) adds at the end then raises the element until it settles, and `اسحب` (pop) takes the smallest and moves the last one down in its place. The elements are `عنصر_كومة` structs, by value.
+2. **Dijkstra:** a list `بعد` of distances, a heap of candidates, and the four neighbours in a fixed `مصفوفة[عدد, 4]` (-1 for a missing one).
+3. **The tree:** a node holds `مؤشر[عقدة_شجرة]` pointers to the left and right. `جديد(...)` (new) allocates a node, `محتوى(م)` (content) reaches it, and `لاشيء` (nothing) for an empty one.
+4. **Deep freeing:** `حرر` does not follow pointers, so `احرق` walks the tree and frees each node by hand.
+5. **Time:** it prints «صواب» (true), not the seconds, so that the output stays the same.
+
+## What was hard
+
+- **No generic types:** the heap works for `عنصر_كومة` only; for another type the code is copied (or the list holds indices into another list). Generic types come after 1.0.
+- **Deep freeing is manual:** nothing frees the tree except `احرق`.
+- **The `--debug-mem` report** attributed a list's growth to a line in the standard library (`عشوائي.م`), not to a line of the program.
+
+## What we learned
+
+- **Performance on a par with C:** in the report, 0.27–0.31 s for the built file, against 0.29 s for a C version built with `gcc -O2`, and a peak of 8.6 MB.
+- Pointers in Meem are simple and need no `خطر`: `جديد`, `محتوى` and `حرر`, and a check for `لاشيء` before access.

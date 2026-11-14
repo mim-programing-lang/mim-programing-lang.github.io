@@ -1,0 +1,46 @@
+---
+title: "12. Modules"
+description: "Import a standard module and use its functions."
+keywords: ["module", "modules", "import", "standard library", "استورد"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To import a standard module and use its functions.
+
+## Explanation
+
+- A **module** is a `.م` file you import into your program. The **standard library** is the set of modules that come with the compiler.
+- Write `استورد رياضيات` (import math) at the top of the file, then call its functions like this: `رياضيات.جذر(81.0)`, that is, the module name, a dot, then the function name.
+
+## Example
+
+<HBExample id="learn/README.md#11" />
+
+## Common mistakes
+
+Importing a module that does not exist:
+
+<HBExample id="language/07-modules.md#2" label="Causes the error" section="الوحدات" />
+
+## Exercise
+
+Write a function `مسافة` (distance) between two points using `رياضيات.جذر` (square root), and print the distance from (0, 0) to (3, 4), and from (1, 1) to (2, 2) to three decimal places with `رياضيات.نسق`.
+
+<Solution file="lessons/11_حل.م" title="Solution" />
+
+## See also
+
+[Modules](/en/docs/language/modules/) · [Standard library](/en/docs/stdlib/)
+
+<NextLesson />

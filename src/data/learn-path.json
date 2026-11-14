@@ -1,36 +1,36 @@
 {
-  "note": "مسار التعلّم: المصدر الوحيد لصفحة المسار وبيانات كل درس (المستوى والزمن والمتطلبات والتالي). الزمن تقدير للقراءة وحل التمرين.",
+  "note": "مسار التعلّم: المصدر الوحيد لصفحة المسار وبيانات كل درس (المستوى والزمن والمتطلبات والتالي). الزمن تقدير للقراءة وحل التمرين. والحقول المنتهية بـ _en للنسخة الإنجليزية تحت /en/.",
   "levels": [
-    { "id": "beginner", "name": "مبتدئ", "about": "أساسيات أي برنامج: الطباعة والمتغيرات والإدخال والشروط والحلقات والقوائم والقواميس والدوال والهياكل، وثلاث قواعد للذاكرة." },
-    { "id": "intermediate", "name": "متوسط", "about": "النصوص والوحدات والملفات، والتعداد، ومعالجة الأخطاء، والذاكرة في الحلقات الطويلة." },
-    { "id": "systems", "name": "نظامي", "about": "المخصصات والساحات، و«خطر» واستدعاء C، وبناء ملف تنفيذي مستقل." }
+    { "id": "beginner", "name": "مبتدئ", "about": "أساسيات أي برنامج: الطباعة والمتغيرات والإدخال والشروط والحلقات والقوائم والقواميس والدوال والهياكل، وثلاث قواعد للذاكرة.", "name_en": "Beginner", "about_en": "The basics of any program: printing, variables, input, conditions, loops, lists, dictionaries, functions and structs, and three rules for memory." },
+    { "id": "intermediate", "name": "متوسط", "about": "النصوص والوحدات والملفات، والتعداد، ومعالجة الأخطاء، والذاكرة في الحلقات الطويلة.", "name_en": "Intermediate", "about_en": "Strings, modules and files, enums, error handling, and memory in long loops." },
+    { "id": "systems", "name": "نظامي", "about": "المخصصات والساحات، و«خطر» واستدعاء C، وبناء ملف تنفيذي مستقل.", "name_en": "Systems", "about_en": "Allocators and arenas, «خطر» (unsafe) and calling C, and building a standalone executable." }
   ],
   "lessons": [
-    { "slug": "learn/print", "title": "الطباعة والنصوص", "level": "beginner", "minutes": 10, "requires": [] },
-    { "slug": "learn/variables", "title": "المتغيرات والحساب", "level": "beginner", "minutes": 15, "requires": ["learn/print"] },
-    { "slug": "learn/input", "title": "الإدخال", "level": "beginner", "minutes": 10, "requires": ["learn/variables"] },
-    { "slug": "learn/conditions", "title": "الشروط", "level": "beginner", "minutes": 15, "requires": ["learn/variables"] },
-    { "slug": "learn/loops", "title": "الحلقات", "level": "beginner", "minutes": 20, "requires": ["learn/conditions"] },
-    { "slug": "learn/lists", "title": "القوائم", "level": "beginner", "minutes": 20, "requires": ["learn/loops"] },
-    { "slug": "learn/dictionaries", "title": "القواميس", "level": "beginner", "minutes": 20, "requires": ["learn/lists"] },
-    { "slug": "learn/functions", "title": "الدوال", "level": "beginner", "minutes": 25, "requires": ["learn/loops"] },
-    { "slug": "learn/structs", "title": "الهياكل", "level": "beginner", "minutes": 20, "requires": ["learn/functions", "learn/lists"] },
-    { "slug": "learn/memory-basics", "title": "الذاكرة للمبتدئ: ثلاث قواعد", "level": "beginner", "minutes": 15, "requires": ["learn/lists", "learn/loops"] },
-    { "slug": "learn/strings", "title": "المزيد عن النصوص", "level": "intermediate", "minutes": 20, "requires": ["learn/lists"] },
-    { "slug": "learn/modules", "title": "الوحدات", "level": "intermediate", "minutes": 15, "requires": ["learn/functions"] },
-    { "slug": "learn/files", "title": "الملفات", "level": "intermediate", "minutes": 20, "requires": ["learn/modules", "learn/strings"] },
-    { "slug": "learn/memory", "title": "الذاكرة في الحلقات الطويلة", "level": "intermediate", "minutes": 20, "requires": ["learn/memory-basics", "learn/strings"] },
-    { "slug": "learn/enums", "title": "التعداد", "level": "intermediate", "minutes": 15, "requires": ["learn/conditions", "learn/functions"] },
-    { "slug": "learn/errors", "title": "معالجة الأخطاء", "level": "intermediate", "minutes": 25, "requires": ["learn/functions", "learn/files"] },
-    { "slug": "learn/allocators", "title": "المخصصات والساحات", "level": "systems", "minutes": 30, "requires": ["learn/memory", "learn/errors"] },
-    { "slug": "learn/unsafe", "title": "«خطر» واستدعاء C", "level": "systems", "minutes": 25, "requires": ["learn/allocators"] },
-    { "slug": "learn/build", "title": "بناء ملف مستقل", "level": "systems", "minutes": 20, "requires": ["learn/modules"] }
+    { "slug": "learn/print", "title": "الطباعة والنصوص", "level": "beginner", "minutes": 10, "requires": [], "title_en": "Printing and strings" },
+    { "slug": "learn/variables", "title": "المتغيرات والحساب", "level": "beginner", "minutes": 15, "requires": ["learn/print"], "title_en": "Variables and arithmetic" },
+    { "slug": "learn/input", "title": "الإدخال", "level": "beginner", "minutes": 10, "requires": ["learn/variables"], "title_en": "Input" },
+    { "slug": "learn/conditions", "title": "الشروط", "level": "beginner", "minutes": 15, "requires": ["learn/variables"], "title_en": "Conditions" },
+    { "slug": "learn/loops", "title": "الحلقات", "level": "beginner", "minutes": 20, "requires": ["learn/conditions"], "title_en": "Loops" },
+    { "slug": "learn/lists", "title": "القوائم", "level": "beginner", "minutes": 20, "requires": ["learn/loops"], "title_en": "Lists" },
+    { "slug": "learn/dictionaries", "title": "القواميس", "level": "beginner", "minutes": 20, "requires": ["learn/lists"], "title_en": "Dictionaries" },
+    { "slug": "learn/functions", "title": "الدوال", "level": "beginner", "minutes": 25, "requires": ["learn/loops"], "title_en": "Functions" },
+    { "slug": "learn/structs", "title": "الهياكل", "level": "beginner", "minutes": 20, "requires": ["learn/functions", "learn/lists"], "title_en": "Structs" },
+    { "slug": "learn/memory-basics", "title": "الذاكرة للمبتدئ: ثلاث قواعد", "level": "beginner", "minutes": 15, "requires": ["learn/lists", "learn/loops"], "title_en": "Memory for beginners: three rules" },
+    { "slug": "learn/strings", "title": "المزيد عن النصوص", "level": "intermediate", "minutes": 20, "requires": ["learn/lists"], "title_en": "More about strings" },
+    { "slug": "learn/modules", "title": "الوحدات", "level": "intermediate", "minutes": 15, "requires": ["learn/functions"], "title_en": "Modules" },
+    { "slug": "learn/files", "title": "الملفات", "level": "intermediate", "minutes": 20, "requires": ["learn/modules", "learn/strings"], "title_en": "Files" },
+    { "slug": "learn/memory", "title": "الذاكرة في الحلقات الطويلة", "level": "intermediate", "minutes": 20, "requires": ["learn/memory-basics", "learn/strings"], "title_en": "Memory in long loops" },
+    { "slug": "learn/enums", "title": "التعداد", "level": "intermediate", "minutes": 15, "requires": ["learn/conditions", "learn/functions"], "title_en": "Enums" },
+    { "slug": "learn/errors", "title": "معالجة الأخطاء", "level": "intermediate", "minutes": 25, "requires": ["learn/functions", "learn/files"], "title_en": "Error handling" },
+    { "slug": "learn/allocators", "title": "المخصصات والساحات", "level": "systems", "minutes": 30, "requires": ["learn/memory", "learn/errors"], "title_en": "Allocators and arenas" },
+    { "slug": "learn/unsafe", "title": "«خطر» واستدعاء C", "level": "systems", "minutes": 25, "requires": ["learn/allocators"], "title_en": "«خطر» (unsafe) and calling C" },
+    { "slug": "learn/build", "title": "بناء ملف مستقل", "level": "systems", "minutes": 20, "requires": ["learn/modules"], "title_en": "Building a standalone executable" }
   ],
   "projects": [
-    { "slug": "learn/projects/words", "title": "أكثر الكلمات تكراراً" },
-    { "slug": "learn/projects/sales", "title": "تلخيص ملف CSV" },
-    { "slug": "learn/projects/algorithms", "title": "دايكسترا وشجرة بحث" },
-    { "slug": "learn/projects/tictactoe", "title": "لعبة إكس-أو" },
-    { "slug": "learn/projects/linecount", "title": "عدّاد أسطر المجلدات" }
+    { "slug": "learn/projects/words", "title": "أكثر الكلمات تكراراً", "title_en": "Most frequent words" },
+    { "slug": "learn/projects/sales", "title": "تلخيص ملف CSV", "title_en": "Summarising a CSV file" },
+    { "slug": "learn/projects/algorithms", "title": "دايكسترا وشجرة بحث", "title_en": "Dijkstra and a search tree" },
+    { "slug": "learn/projects/tictactoe", "title": "لعبة إكس-أو", "title_en": "Tic-tac-toe" },
+    { "slug": "learn/projects/linecount", "title": "عدّاد أسطر المجلدات", "title_en": "Folder line counter" }
   ]
 }

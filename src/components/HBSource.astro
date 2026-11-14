@@ -1,13 +1,15 @@
 ---
 // سطر المصدر: الملف في الكتاب المرجعي وإيداعه.
 import hb from '../generated/handbook.json';
+import { contentLang } from '../lib/i18n';
 interface Props {
   file: string;
 }
 const { file } = Astro.props;
+const en = contentLang(Astro) === 'en';
 ---
 
-<p class="hb-source">منقول من الكتاب المرجعي: <code dir="ltr">docs/handbook/{file}</code> · الإيداع <code dir="ltr">{hb.source.commit.slice(0, 7)}</code></p>
+<p class="hb-source">{en ? 'From the reference handbook:' : 'منقول من الكتاب المرجعي:'} <code dir="ltr">docs/handbook/{file}</code> · {en ? 'commit' : 'الإيداع'} <code dir="ltr">{hb.source.commit.slice(0, 7)}</code></p>
 
 <style>
   .hb-source {

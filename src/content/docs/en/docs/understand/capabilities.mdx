@@ -1,0 +1,66 @@
+---
+title: "What Meem can and cannot do"
+description: "What Meem 0.10.0 is good for today, what it is not good for yet, and the workarounds that were tried, from the direction report in the compiler repository."
+keywords: ["capabilities", "limits", "what it can do", "cannot", "workarounds", "network", "json", "binary files"]
+---
+
+import { betaLabelEn } from '../../../../../../site.config.mjs';
+
+This page comes from part one of the «direction 0.9.1 report» in the compiler repository: a real program was written for each kind of program, run, and measured on 0.9.1; what changed in 0.10.0 comes from `docs/memory-safety.md` and `docs/release-0.10.0.md` there. The five projects were rerun with 0.10.0 and their output did not change. It promises nothing beyond 0.10.0.
+
+## What it is good for today
+
+| Kind | The example that was tried | Result |
+|---|---|---|
+| Command-line tools that process text | [Most frequent words](/en/learn/projects/words/) | Works; time on a par with Python (0.70 s against 0.74), with about 7 times the memory |
+| Processing CSV and text files that fit in memory | [Summarising a CSV file](/en/learn/projects/sales/) | Works; 0.64 s against 0.54 for Python |
+| Algorithms and data structures | [Dijkstra and a search tree](/en/learn/projects/algorithms/) | **On a par with C**: 0.27–0.31 s against 0.29 for gcc -O2 |
+| Teaching applications in the terminal | [Tic-tac-toe](/en/learn/projects/tictactoe/) | Works; 0.24 s |
+| Small systems programs on files | [Folder line counter](/en/learn/projects/linecount/) | Works; 0.02 s for 64 files |
+| A thin wrapper around a C library | Pattern search with regcomp, and CRC-32 with zlib, through `خارجي` | Works, provided its writer takes care of `خطر` and the bytes, and it must be built dynamically |
+
+What makes writing easier: a small language, Arabic error messages with a stable ID and a hint, mandatory error handling with three words, a single executable of tens of kilobytes with no dependencies, a memory detector that is on by default in a direct run and names the line of creation and the line of freeing, and `--debug-mem`, which says which line did not free.
+
+## What it cannot do yet, and the workarounds
+
+Ordered by how hard it hits a real program:
+
+| What it cannot do | A workaround today? |
+|---|---|
+| Read a file line by line or in chunks (the `ملفات` module reads the whole file) | **Yes:** `fopen` and `fgets` from C through `خارجي` with a raw buffer in `خطر`, or redirect the file to standard input and read it with `اقرأ()` |
+| Binary files and bytes (`اقرأ_ملف` rejects anything that is not UTF-8, and `طول` counts characters, not bytes) | **Partly:** `fread` from C into a raw buffer |
+| Networking | **At a cost:** sockets from libc through `خارجي` |
+| Generic types (a heap or tree for any type) | **No:** the code is copied for each type |
+| Running commands and processes | **Yes:** `system()` from C |
+| Threads and parallelism | **Dangerous:** pthread works for computation without allocation, and allocating from two threads is undefined |
+| JSON | **By hand only**, and not tried |
+| Regular expressions | **Yes:** regcomp and regexec from libc |
+| A library callable from C | **No**, officially |
+| Closures and nested functions | **No:** a top-level function with its state in a struct |
+| An optional value for anything but a string | A sentinel value (`-1`), a struct with a `موجود` (present) field, or `!عدد` |
+| Returning more than one value | A struct |
+| A dictionary key made of a struct, and sets | A compound string key, and `قاموس[نص, منطقي]` as a set |
+| Variadic functions, and `printf` from C | `اطبع` with commas, and `رياضيات.نسق` and `نسق_عدد` |
+| Methods (`س.دالة()`) and interfaces | Functions that take the struct |
+| A struct by value to or from C | A pointer to a `هيكل_سي` |
+| Graphical interfaces | Not tried |
+
+And what was thought to be missing but turned out to exist: `مدى` with a step, changing a field of a list element directly (`ق[0].ك += 10`), deep iteration, and `خطأ.لا_ذاكرة` (out of memory) from `حاول_احجز`.
+
+## What works but hurts
+
+- **The default static build is slower** than `--dynamic` by 1.2 to 1.6 times in allocation-heavy programs.
+- **Indexing a string by character, `ن[ف]`,** goes through the string from its start every time: 20 thousand indexings in 2.2 s, while `لكل ح في ن` over the same string takes a fraction of a millisecond. Walk the string with `لكل` when you can.
+- **Memory:** `حرر` does not follow what is inside a container, growing with `+=` leaves old buffers behind (a bounded leak), and a built file without the detector does not catch use after free through another name. The detector that is on by default in a direct run is 0% to 32% slower. Details in [memory in Meem](/en/docs/understand/memory/).
+- **Errors carry no data and no trace.** Details in [dealing with errors](/en/docs/understand/errors/).
+- **A direct run** (`meem برنامج.م`) loads the whole compiler: no less than about 95 MB for any program. A built file was between 8 and 76 MB in the examples.
+
+## Where it fits today
+
+**Suitable:** terminal tools on text files that fit in memory, algorithm and data-structure exercises, teaching programming and manual memory in Arabic, and a thin wrapper around a C library.
+
+**Not suitable yet:** a server or a long-running program (not tried, and `حرر` does not follow nested structures), anything binary, networked or parallel without C, any library called from another language, and any platform other than Linux x86_64.
+
+## See also
+
+[Meem compared with C and Zig](/en/docs/understand/compare/) · [The five projects](/en/learn/projects/) · [{betaLabelEn}](/en/beta/)

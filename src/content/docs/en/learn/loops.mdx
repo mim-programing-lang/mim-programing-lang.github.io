@@ -1,0 +1,47 @@
+---
+title: "5. Loops"
+description: "Repeat with «لكل» (for), «مدى» (range) and «طالما» (while), and stop a loop with «توقف» (break)."
+keywords: ["loop", "loops", "repeat", "for", "while", "range", "break", "لكل"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To repeat with `لكل` (for), `مدى` (range) and `طالما` (while), and to stop a loop with `توقف` (break).
+
+## Explanation
+
+- A **loop** repeats a block of lines.
+- `لكل ع في مدى(1, 11):` goes through the numbers from 1 up to, but not including, 11.
+- `طالما شرط:` repeats as long as the condition is true.
+- `توقف` (break) leaves the loop, and `تجاوز` (continue) moves to the next round.
+- `مج += ع` is short for `مج = مج + ع`.
+
+## Example
+
+<HBExample id="learn/README.md#5" />
+
+## Common mistakes
+
+`مدى(1, 10)` does not include 10: its last number is 9.
+
+## Exercise
+
+Print the sum of the even numbers from 1 to 20, then the 3 times table from 1 to 5.
+
+<Solution file="lessons/05_حل.م" title="Solution" />
+
+## See also
+
+[Statements](/en/docs/language/statements/) · [The builtin `مدى`](/en/docs/stdlib/builtins/)
+
+<NextLesson />

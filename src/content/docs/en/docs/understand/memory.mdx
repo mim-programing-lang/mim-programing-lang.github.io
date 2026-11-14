@@ -1,0 +1,117 @@
+---
+title: "Memory in Meem"
+description: "Memory in Meem is manual, in the style of Zig: no reference counting and no garbage collector, but allocators, arenas and خاتمه. What the compiler guarantees and what it does not in 0.10.0, and the detector that is on by default in a direct run, with examples that were run."
+keywords: ["memory", "memory management", "allocator", "arena", "defer", "free", "leak", "debug-mem", "release", "detector", "zig", "garbage collector"]
+---
+
+import Example from '../../../../../components/Example.astro';
+
+**In short:** memory in Meem is manual, close to Zig's model. There is no reference counting and no garbage collector (reference counting was removed in 0.7.0). Memory is allocated from an **allocator**; you give it back with `حرر` (free), or all at once with an **arena**, and `خاتمه` (defer) postpones giving it back until the block exits. Whatever you do not give back returns to the system when the program exits.
+
+<figure class="diagram">
+<svg viewBox="0 0 640 230" role="img" aria-label="Diagram: the program allocates from the default allocator and frees each block with حرر, or allocates from an arena that gives all its blocks back at once with اعد" xmlns="http://www.w3.org/2000/svg" direction="ltr" font-family="inherit" font-size="15">
+  <rect x="440" y="20" width="180" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="530" y="54" text-anchor="middle" fill="currentColor">Your program</text>
+  <rect x="240" y="20" width="170" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="325" y="45" text-anchor="middle" fill="currentColor">Default allocator</text>
+  <text x="325" y="66" text-anchor="middle" fill="currentColor" font-size="12">Block by block: حرر(س)</text>
+  <rect x="240" y="140" width="170" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="325" y="165" text-anchor="middle" fill="currentColor">Arena</text>
+  <text x="325" y="186" text-anchor="middle" fill="currentColor" font-size="12">All at once: اعد(ساحه)</text>
+  <line x1="440" y1="48" x2="414" y2="48" stroke="currentColor" stroke-width="2"/>
+  <polygon points="414,43 404,48 414,53" fill="currentColor"/>
+  <line x1="470" y1="76" x2="410" y2="150" stroke="currentColor" stroke-width="2"/>
+  <polygon points="416,150 404,158 412,144" fill="currentColor"/>
+  <g fill="currentColor" opacity="0.75">
+    <rect x="30" y="30" width="34" height="34" rx="4"/><rect x="74" y="30" width="34" height="34" rx="4"/><rect x="118" y="30" width="34" height="34" rx="4"/><rect x="162" y="30" width="34" height="34" rx="4"/>
+    <rect x="30" y="150" width="34" height="34" rx="4"/><rect x="74" y="150" width="34" height="34" rx="4"/><rect x="118" y="150" width="34" height="34" rx="4"/><rect x="162" y="150" width="34" height="34" rx="4"/>
+  </g>
+  <rect x="20" y="140" width="186" height="54" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="240" y1="48" x2="206" y2="48" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="240" y1="168" x2="206" y2="168" stroke="currentColor" stroke-width="1.5"/>
+  <text x="113" y="102" text-anchor="middle" fill="currentColor" font-size="12">What you do not give back stays until exit</text>
+</svg>
+<figcaption>Every allocation comes from an allocator: from the default one you give back block by block, and an arena gives back everything in it at once.</figcaption>
+</figure>
+
+## The tools, in order
+
+1. **The allocator.** Every string you build and every list and dictionary is allocated from an allocator. Builtins that build something take it as their last argument; if you leave it out, it comes from `الافتراضي` (the default). The built-in allocators include `النظام` (the system), `الافتراضي`, `ساحة` (arena), `كاشف` (detector) and `مخزن_ثابت` (fixed buffer). `بلا_افتراضي` (no default) at the top of a module forbids allocating from the default allocator in it.
+2. **`حرر(س)`** gives back what was allocated for `س` immediately, and makes `س` `لاشيء` (nothing). It does not follow what is inside: freeing a list of lists leaves the inner lists.
+3. **`خاتمه جملة`** defers the statement until the block exits, **on every exit**: the last line, an early `ارجع` (return), or a failing `جرّب` (try). Deferred statements run in the reverse order of writing:
+
+<Example file="guide/ذاكرة_خاتمه.م" title="خاتمه on every exit, in reverse order" />
+
+4. **An arena** collects what is allocated from it, and `اعد` (reset) gives it all back at once. It suits a phase in which you build a lot and then finish with all of it:
+
+<Example file="lessons/16_ساحة.م" title="An arena for each round" />
+
+5. **The detector** is an allocator that watches what is allocated and freed. It is on by default in a direct run (`meem برنامج.م`) since 0.10.0, and `--debug-mem` adds a report at the end of the program listing every line that allocated and did not free:
+
+<Example file="lessons/16_تسرب.م" title="A leak that --debug-mem reveals by line" />
+
+## The two modes: development and release
+
+| | Direct run `meem برنامج.م` | Built file `meem build` |
+|---|---|---|
+| Default | **With the detector**, no report at the end | **Without the detector** |
+| The opposite option | `--release`: no detector | `--debug` or `--debug-mem`: with the detector |
+| Report of what was not freed | with `--debug-mem` | with `--debug-mem` |
+
+So development with a direct run is protected, and the built file is fast, like Zig's Debug and ReleaseFast modes. The detector has a cost: on the benchmark programs in the compiler repository it was 0% to 32% slower, and memory freed in its mode is not returned to the system (it is quarantined so that use after free can be caught), so a long-running program that frees a lot is run with `--release`.
+
+## What the compiler guarantees in every mode
+
+Outside `خطر` (unsafe) and `بلا_فحص` (unchecked), with or without the detector:
+
+**Arithmetic and indexing.** Overflowing 64 bits, an index outside a list or string, division by zero, and unwrapping `لاشيء` are all orderly runtime errors with code 3, an ID and a line, not undefined behaviour:
+
+<Example file="guide/ذاكرة_فهرس.م" title="Index out of bounds" />
+
+<Example file="guide/ذاكرة_تجاوز.م" title="Overflowing 64 bits" />
+
+**A list or dictionary used through the same name after `حرر`.** `حرر(ق)` makes `ق` `لاشيء`, and using it afterwards is error [E0428](/en/docs/errors/catalog/#E0428), in a direct run and in a built file alike (in 0.9.1 it was a crash with SIGSEGV):
+
+<Example file="guide/ذاكرة_نفس_الاسم.م" title="Using a list after freeing it, through the same name" />
+
+**No allocation you did not write.** A program allocates only what you see in the code: a builtin that takes an allocator (written, or left to the default), `+` on strings, or a literal `[...]` or `{...}`. Operations on a «view» (the result of `جزء`, `قص_الفراغات`, `مسارات.الامتداد`...) do not copy: `طول`, comparison, indexing, `لكل`, `عدد()`, and a dictionary key. Here is a loop of a thousand rounds with `--debug-mem`, and there is no report at its end because nothing was left:
+
+<Example file="guide/ذاكرة_لا_نسخ.م" title="Operations on a view do not allocate" />
+
+The only exception: growing a string with `ن += ذيل` (see «what it does not guarantee» below).
+
+## What only the detector catches
+
+When the mistake passes through **another name** that the compiler cannot know about at compile time, the detector catches it at run time, with a message giving the line of creation and the line of freeing. These examples were all run in the default direct run, with no options:
+
+A list held by two names, freed through one and used through the other ([E0429](/en/docs/errors/catalog/#E0429)):
+
+<Example file="guide/ذاكرة_بعد_التحرير.م" title="Using a list after freeing it, through another name" />
+
+A list from an arena used after `اعد` on its arena (E0429 as well):
+
+<Example file="guide/ذاكرة_ساحة_بعد_اعد.م" title="An arena after اعد" />
+
+A view onto a string whose original was freed ([E0430](/en/docs/errors/catalog/#E0430)):
+
+<Example file="guide/ذاكرة_عرض_معلق.م" title="A dangling view" />
+
+And a string freed twice through two names ([E0431](/en/docs/errors/catalog/#E0431)). A double free of a container is [E0350](/en/docs/errors/catalog/#E0350), and of a slot or block [E0421](/en/docs/errors/catalog/#E0421):
+
+<Example file="guide/ذاكرة_تحرير_مزدوج.م" title="A double free through another name" />
+
+In detector mode, freed memory is filled with the byte `0xDF`, so a read the detector did not check sees obvious garbage, not the old data intact.
+
+## What it does not guarantee
+
+- **A built file without the detector.** The four previous examples, in a file built with `meem build` without `--debug`, are **undefined behaviour**: use after free through another name may print old output or garbage, and a double free through another name crashes the program. That is why we do not publish their output there. Try your program with a direct run, or build it with `--debug`, before building it for release.
+- **What does not run is not checked.** The detector works at run time, and the compiler does not track ownership or aliases. A branch your tests never reach is never checked.
+- **`حرر` does not follow what is inside.** Freeing a list of lists, a struct holding lists, or a list of strings from `تقسيم` does not free what they hold. For nested structures, use an arena, or a deep free you write yourself.
+- **Growing with `+=` leaves the old buffer behind.** A bounded leak: about the base-2 logarithm of the length in buffers, totalling about twice the final length ([allocation and performance of builtins](/en/docs/stdlib/allocation/)).
+- **Inside `خطر`:** raw pointers, `بلا_فحص`, `حوّل` (cast) and C memory are the writer's responsibility, and the detector does not see C memory.
+- **Threads:** the language has no threads, and the allocators are not atomic.
+- **Runtime errors do not run `خاتمه`.** A runtime error (code 3) ends the program immediately, like `panic` in Zig: the system reclaims the memory, but a temporary file that a `خاتمه` would have deleted stays on disk. An expected error is returned with `ارجع خطأ.اسم`, and then the deferred statements do run.
+
+## See also
+
+[Lesson 17: allocators and arenas](/en/learn/allocators/) · [Memory reference](/en/docs/memory/reference/) · [What is خطر?](/en/docs/understand/unsafe/) · [Meem compared with C and Zig](/en/docs/understand/compare/)

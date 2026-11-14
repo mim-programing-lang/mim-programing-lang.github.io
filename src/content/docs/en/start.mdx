@@ -1,0 +1,63 @@
+---
+title: "Getting started"
+description: "Install the meem compiler, check it, and run your first program."
+keywords: ["start", "getting started", "install", "first program"]
+template: splash
+---
+
+**Meem runs on Linux x86_64 today.** Windows and macOS are not available in 1.0.
+
+:::caution[Where it runs]
+- **The compiler package** needs glibc 2.35 or newer (glibc is Linux's core C library). It was tried on Ubuntu 22.04 and Debian 12.
+- **The file you build** is static, so it needs no libraries on the machine that runs it. The compiler's documentation (`docs/build.md`) says, and this site has not tried it: «tried on Debian 12, Ubuntu 22.04 and Alpine 3.20 (x86-64), and in a container holding no other file at all».
+:::
+
+
+## 1. Get the compiler
+
+Download the compiler archive from the [download](/en/download/) page, check its fingerprint there, then unpack it:
+
+```sh
+tar -xJf meem-0.10.0-linux-x86_64.tar.xz
+export PATH="$PWD/meem-0.10.0-linux-x86_64:$PATH"
+```
+
+The folder holds the compiler and everything it needs, so it needs neither Python nor installation. The second line makes the `meem` command available in this terminal. To make it available in every terminal, add the line to your shell's settings file (such as `~/.bashrc`) with the folder's full path.
+
+## 2. Check the installation
+
+```sh
+meem --version
+meem --self-test
+```
+
+The second command prints a single line saying that the self-test passed, or naming the reason it failed.
+
+## 3. Run your first program
+
+Write this in a file named `مرحبا.م` (Meem source files end in `.م`):
+
+```ميم
+اطبع("مرحبا يا عالم")
+```
+
+It prints «مرحبا يا عالم», which is Arabic for «hello, world». Then:
+
+```sh
+meem مرحبا.م
+```
+
+## 4. Build a file that runs on its own
+
+```sh
+meem build مرحبا.م -o مرحبا
+./مرحبا
+```
+
+The result is a standalone executable that needs neither Meem nor Python. Details on the [building](/en/docs/build/) page.
+
+## Next
+
+- [Learn Meem](/en/learn/): lessons in order, from scratch.
+- [Reference documentation](/en/docs/): the full reference for the language.
+- [Ready-made examples](/en/try/): complete programs with their output.

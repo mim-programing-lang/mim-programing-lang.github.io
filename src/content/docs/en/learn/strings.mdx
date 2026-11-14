@@ -1,0 +1,51 @@
+---
+title: "11. More about strings"
+description: "Split a string, search it, and trim the spaces from both ends."
+keywords: ["string", "strings", "split", "trim", "contains", "تقسيم"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To split a string, search it, and trim the spaces from both ends.
+
+## Explanation
+
+- `تقسيم(ن, فاصل)` (split) splits the string into a list of strings at every place the separator appears.
+- `قص_الفراغات(ن)` (trim) returns the string without spaces at its start and end.
+- `يحوي(ن, جزء)` (contains) answers: does the part appear in the string? And `يبدأ_بـ(ن, بادئة)` (starts with) answers: does the string start with it?
+
+<aside class="lesson-note">
+
+**Note:** `جزء` (slice) and `قص_الفراغات` return a «view» onto the original string without copying, and `طول`, comparison, indexing and `عدد()` on a view allocate nothing (since 0.10.0). But a view lives as long as its original string: do not free the original while you still use the view. `تقسيم`, on the other hand, allocates the list and a string for each piece. Details in [allocation and performance of builtins](/en/docs/stdlib/allocation/).
+
+</aside>
+
+## Example
+
+<HBExample id="learn/README.md#10" />
+
+## Common mistakes
+
+Thinking that `طول` (length) counts bytes: it counts code points, and diacritics count too. A **code point** is the counting unit for strings ([glossary](/en/docs/glossary/)).
+
+## Exercise
+
+Trim the spaces from both ends of «  ميم لغة عربية صغيرة  », split it into words, and print how many there are and the words that start with the letter «ع».
+
+<Solution file="lessons/10_حل.م" title="Solution" />
+
+## See also
+
+[Types: the string](/en/docs/language/types/) · [Builtins](/en/docs/stdlib/builtins/)
+
+<NextLesson />

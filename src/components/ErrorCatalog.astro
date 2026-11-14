@@ -4,15 +4,18 @@
 // ومعها أمثلة الكتاب التي تطبع وسمها إن وُجدت. مربع التصفية يعمل في المتصفح.
 import hb from '../generated/handbook.json';
 import HBExample from './HBExample.astro';
+import { contentLang } from '../lib/i18n';
+// الرسائل وأسماء المراحل من المجمّع، عربية في اللغتين؛ وما حولها بلغة الصفحة.
+const en = contentLang(Astro) === 'en';
 const phases = [...new Set(hb.catalog.map((c: any) => c.phase))];
 const withExample = hb.catalog.filter((c: any) => c.examples.length).length;
 ---
 
-<p>{hb.catalog.length} رسالة، منها {withExample} لها مثال في الكتاب المرجعي يطبعها.</p>
+<p>{en ? `${hb.catalog.length} messages, of which ${withExample} have an example in the reference handbook that prints them.` : `${hb.catalog.length} رسالة، منها ${withExample} لها مثال في الكتاب المرجعي يطبعها.`}</p>
 
 <label class="catalog-filter">
-  <span>تصفية الرسائل:</span>
-  <input type="search" id="catalog-filter" placeholder="اكتب جزءاً من الرسالة أو المعرّف" autocomplete="off" />
+  <span>{en ? 'Filter the messages:' : 'تصفية الرسائل:'}</span>
+  <input type="search" id="catalog-filter" data-lang={en ? 'en' : 'ar'} placeholder={en ? 'Type part of the message (in Arabic) or the ID' : 'اكتب جزءاً من الرسالة أو المعرّف'} autocomplete="off" />
 </label>
 <p id="catalog-count" class="catalog-count" aria-live="polite"></p>
 
@@ -23,13 +26,13 @@ const withExample = hb.catalog.filter((c: any) => c.examples.length).length;
       <article class="catalog-item" data-search={`${c.id} ${c.message}`}>
         <h3 id={c.id}><code dir="ltr">{c.id}</code> <span class="catalog-msg">{c.message}</span></h3>
         <dl>
-          <dt>رمز الخروج</dt><dd>{c.exit}</dd>
-          <dt>المصدر في المجمّع</dt><dd><code dir="ltr">{c.source}</code></dd>
-          <dt>برنامج مرجعي يطبعها</dt><dd>{c.reference === '—' ? '—' : <code dir="ltr">{c.reference}</code>}</dd>
+          <dt>{en ? 'Exit code' : 'رمز الخروج'}</dt><dd>{c.exit}</dd>
+          <dt>{en ? 'Source in the compiler' : 'المصدر في المجمّع'}</dt><dd><code dir="ltr">{c.source}</code></dd>
+          <dt>{en ? 'A reference program that prints it' : 'برنامج مرجعي يطبعها'}</dt><dd>{c.reference === '—' ? '—' : <code dir="ltr">{c.reference}</code>}</dd>
         </dl>
         {c.examples.length > 0 && (
           <details>
-            <summary>{c.examples.length > 1 ? 'أمثلة من الكتاب تطبعها' : 'مثال من الكتاب يطبعها'}</summary>
+            <summary>{en ? (c.examples.length > 1 ? 'Handbook examples that print it' : 'A handbook example that prints it') : c.examples.length > 1 ? 'أمثلة من الكتاب تطبعها' : 'مثال من الكتاب يطبعها'}</summary>
             {c.examples.map((id: string) => <HBExample id={id} />)}
           </details>
         )}
@@ -51,7 +54,7 @@ const withExample = hb.catalog.filter((c: any) => c.examples.length).length;
       it.hidden = !hit;
       if (hit) shown++;
     }
-    if (count) count.textContent = q ? `${shown} رسالة تطابق` : '';
+    if (count) count.textContent = q ? (input.dataset.lang === 'en' ? `${shown} matching messages` : `${shown} رسالة تطابق`) : '';
   });
 </script>
 

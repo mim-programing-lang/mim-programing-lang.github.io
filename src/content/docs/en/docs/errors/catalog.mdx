@@ -1,0 +1,29 @@
+---
+title: "Catalog of error and warning messages"
+description: "Every error and warning message the compiler prints, with its phase, exit code and source, and an example from the reference handbook where there is one."
+tableOfContents: false
+---
+
+import ErrorCatalog from '../../../../../components/ErrorCatalog.astro';
+import VersionBanner from '../../../../../components/VersionBanner.astro';
+import HBSource from '../../../../../components/HBSource.astro';
+import CatalogTop from '../../../../../components/CatalogTop.astro';
+
+<VersionBanner />
+
+<HBSource file="errors/catalog.md" />
+
+This catalog was generated in the reference handbook from the compiler's sources. The messages are printed by the compiler in Arabic, so they are shown here as the compiler prints them, with their phase names; the sign `…` marks a variable part of a message.
+
+- **The ID** has been stable since 0.8.0: the compiler prints it in the message tag (`[خطأ دلالي E0123]`) and in `--check --json` (the `id` field). It does not change when a message's wording is improved, and the ID of a removed message is never reused. Every message here has a link by its ID, such as `/en/docs/errors/catalog/#E0123`. A message the program writes itself (`خطا_قاتل` in your code) has no ID.
+- **Exit code:** 2 for compile errors (nothing runs), 3 for runtime errors, 1 for the command line, 0 for a warning (it becomes 2 with `--strict`, except an advisory one).
+- **A reference program that prints it:** from `tests/programs/` in the compiler repository. Under the message, an example from the reference handbook appears if one of its examples prints it.
+- The common errors have a page that explains the cause and the fix of each: [common errors](/en/docs/errors/common/).
+
+## The most frequent messages, with an example
+
+The messages that appear most often in the output of the reference programs, among those not covered in [common errors](/en/docs/errors/common/) (which gives the cause and fix of each):
+
+<CatalogTop />
+
+<ErrorCatalog />

@@ -1,0 +1,44 @@
+---
+// زر اللغة في الترويسة (مكان قائمة اللغات في Starlight)، ومعه في قائمة الهاتف: ينقل إلى الصفحة نفسها باللغة الأخرى،
+// ويحفظ اختيار الزائر في localStorage («meem-lang») فيتغلب على التحويل التلقائي (public/lang-redirect.js).
+import { uiLang } from '../lib/i18n';
+const lang = uiLang(Astro);
+const path = Astro.url.pathname;
+const target = lang === 'en' ? 'ar' : 'en';
+// صفحة «غير موجودة» لا مقابل لها بعنوانها (تُخدم 404.html لأي عنوان): الزر إلى الرئيسية باللغة الأخرى.
+const notFound = /^\/(en\/)?404(\.html|\/)?$/.test(path) || Astro.locals.starlightRoute?.id?.replace(/^en\//, '') === '404';
+const href = notFound ? (target === 'en' ? '/en/' : '/') : lang === 'en' ? path.replace(/^\/en(\/|$)/, '/') : `/en${path}`;
+---
+
+<a class="lang-switch" href={href} hreflang={target} lang={target} data-lang-choice={target}>
+  {target === 'en' ? 'English' : 'العربية'}
+</a>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-lang-choice]').forEach((a) =>
+    a.addEventListener('click', () => {
+      try {
+        localStorage.setItem('meem-lang', a.dataset.langChoice ?? '');
+      } catch {
+        // التخزين غير متاح (وضع خاص مثلاً): ينتقل الزائر، ويبقى التحويل التلقائي كما كان.
+      }
+    }),
+  );
+</script>
+
+<style>
+  .lang-switch {
+    color: var(--sl-color-gray-2);
+    text-decoration: none;
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 999px;
+  }
+  .lang-switch:hover {
+    color: var(--sl-color-white);
+    border-color: var(--sl-color-gray-3);
+  }
+</style>

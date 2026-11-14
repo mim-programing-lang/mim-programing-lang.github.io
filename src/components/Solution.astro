@@ -1,12 +1,14 @@
 ---
 // حل التمرين مطويّاً: مثال مشغَّل (examples/) يُفتح بالنقر.
 import Example from './Example.astro';
+import { contentLang } from '../lib/i18n';
 interface Props { file: string; title?: string }
 const { file, title } = Astro.props;
+const en = contentLang(Astro) === 'en';
 ---
 
 <details class="solution">
-  <summary>اعرض الحل</summary>
+  <summary>{en ? 'Show the solution' : 'اعرض الحل'}</summary>
   <Example file={file} title={title} />
 </details>
 

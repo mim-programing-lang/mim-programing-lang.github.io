@@ -13,6 +13,11 @@ export const site = {
   status: 'بيتا',
 };
 
+// الإصدار التجريبي الذي تدعو إليه صفحة /beta/: مصدر نص الزر «جرّب … معنا» في التذييل وصفحة الدعم.
+export const betaVersion = '0.10';
+export const betaLabel = `جرّب ${betaVersion} معنا`;
+export const betaLabelEn = `Try ${betaVersion} with us`;
+
 // رابط التبرع عبر PayPal (صفحة «دعم»): متغير البناء PUBLIC_PAYPAL_DONATE_URL، إعداد عام لا سر. رابط عادي يُفتح في
 // تبويب جديد، لا سكربت PayPal. فارغاً: الصفحة «قريباً» والزر معطّل ولا رابط PayPal في الموقع. غير ذلك يفشل البناء.
 export const donateUrl = (process.env.PUBLIC_PAYPAL_DONATE_URL ?? '').trim();

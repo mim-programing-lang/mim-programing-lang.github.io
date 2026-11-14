@@ -1,0 +1,41 @@
+---
+title: "Coming from Zig"
+description: "For Zig programmers: what corresponds to allocators, defer, errdefer, !T, try and catch in Meem 0.10.0, and where Meem departs from Zig's model."
+keywords: ["zig", "from zig", "defer", "errdefer", "allocator", "arena", "comptime"]
+---
+
+import Example from '../../../../../components/Example.astro';
+
+Meem is closer to Zig than to any teaching language: an allocator is a value that is passed around, `خاتمه` corresponds to `defer`, and `!نوع` corresponds to `!T`. Zig was not installed on the analysis machine, so what is said here about Zig comes from its documentation and is **not tried**.
+
+## What corresponds to what
+
+| In Zig | In Meem |
+|---|---|
+| passing a `std.mem.Allocator` | the allocator as the last argument, which may be left out, and then `الافتراضي` is passed |
+| `ArenaAllocator` | `ساحة(الاصل)` and `اعد` |
+| `FixedBufferAllocator` | `مخزن_ثابت` |
+| `GeneralPurposeAllocator` in debugging | the detector, on by default in `meem برنامج.م` and with `--debug` in `meem build`; `--debug-mem` adds the leak report |
+| `defer` / `errdefer` | `خاتمه` / `خاتمه_عند_خطأ` |
+| `!T`, `try`, `catch` | `!نوع`, `جرّب`, `والا` |
+| `error{...}` | an `اخطاء:` block, and one global set |
+| `?T` | `لاشيء`, for strings and pointers only |
+| Debug / ReleaseFast | a direct run with the detector / `meem build` or `--release` without it. Bounds and overflow are checked in both modes, and `بلا_فحص` inside `خطر` switches that off locally |
+
+<Example file="guide/ذاكرة_خاتمه.م" title="خاتمه, like defer" />
+
+<Example file="guide/اخطاء_عند_خطأ.م" title="خاتمه_عند_خطأ, like errdefer" />
+
+## Where Meem departs from Zig's model (0.10.0)
+
+- **«No hidden allocation» is the rule since 0.10.0, with one exception:** growing with `ن += ذيل` leaves the old buffer behind (a bounded leak of about twice the final length). In 0.9.1, operations on a «view» allocated copies that were never given back.
+- **Slices and strings:** a string is `{pointer, length, owner}`, and a view is a string on the bytes of another string, living as long as it does.
+- **No `comptime` and no generic types.**
+- **`خاتمه ... والا` is not possible:** clean-up that can fail needs a wrapper function.
+- **No user-written allocators**, and no `resize` or alignment.
+- **The detector works at run time, not compile time,** it does not see C memory, and `حرر` does not follow what is inside a container (no deep `deinit`).
+- **Errors have no sets in the signature and no trace** (Zig has an error return trace in debug builds).
+
+## See also
+
+[Memory in Meem](/en/docs/understand/memory/) · [Dealing with errors](/en/docs/understand/errors/) · [Meem compared with C and Zig](/en/docs/understand/compare/)

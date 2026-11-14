@@ -2,12 +2,14 @@
 // ملاحظة الحجز والأداء لكل مدمجة (src/data/builtin-notes.json)، بعنوان لكل منها تحيل إليه صفحة الفهرس.
 import { slug } from 'github-slugger';
 import notes from '../data/builtin-notes.json';
-const entries = Object.entries(notes.notes as Record<string, string>).sort(([a], [b]) => a.localeCompare(b, 'ar'));
+import { contentLang, localHref } from '../lib/i18n';
+const lang = contentLang(Astro);
+const entries = Object.entries((lang === 'en' ? notes.notes_en : notes.notes) as Record<string, string>).sort(([a], [b]) => a.localeCompare(b, 'ar'));
 ---
 
 {entries.map(([name, note]) => (
   <section class="alloc-note">
-    <h3 id={slug(name)}><a href={`/docs/stdlib/builtins/#${slug(name)}`}><code>{name}</code></a></h3>
+    <h3 id={slug(name)}><a href={localHref(lang, `/docs/stdlib/builtins/#${slug(name)}`)}><code>{name}</code></a></h3>
     <p>{note}</p>
   </section>
 ))}

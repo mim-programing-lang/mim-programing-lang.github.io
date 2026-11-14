@@ -1,8 +1,10 @@
 ---
 // شريط الإصدار لصفحات الكتاب المرجعي والدروس (نصه بأمر صاحب المشروع: «صدرت 0.10.0»).
+import { contentLang } from '../lib/i18n';
+const en = contentLang(Astro) === 'en';
 ---
 
-<aside class="version-banner" role="note">صدرت 0.10.0، وهي التنزيل الحالي. تصف هذه الصفحة الإصدار 0.10.</aside>
+<aside class="version-banner" role="note">{en ? 'Meem 0.10.0 is out and is the current download. This page describes release 0.10.' : 'صدرت 0.10.0، وهي التنزيل الحالي. تصف هذه الصفحة الإصدار 0.10.'}</aside>
 
 <style>
   .version-banner {

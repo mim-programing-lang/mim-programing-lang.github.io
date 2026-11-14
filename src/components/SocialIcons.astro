@@ -1,12 +1,17 @@
 ---
 // مكان أيقونات الشبكات في الترويسة (سطح المكتب) يحمل روابط الأقسام.
 import Default from '@astrojs/starlight/components/SocialIcons.astro';
-import { topNav } from '../nav.mjs';
+import { topNav, navLabel } from '../nav.mjs';
+import { uiLang, localHref } from '../lib/i18n';
+const lang = uiLang(Astro);
 const here = Astro.url.pathname;
 ---
 
-<nav class="top-nav" aria-label="أقسام الموقع">
-  {topNav.map((l) => <a href={l.href} aria-current={here.startsWith(l.href) ? 'page' : undefined}>{l.label}</a>)}
+<nav class="top-nav" aria-label={lang === 'en' ? 'Site sections' : 'أقسام الموقع'}>
+  {topNav.map((l) => {
+    const href = localHref(lang, l.href);
+    return <a href={href} aria-current={here.startsWith(href) ? 'page' : undefined}>{navLabel(l.label, lang)}</a>;
+  })}
 </nav>
 <Default />
 

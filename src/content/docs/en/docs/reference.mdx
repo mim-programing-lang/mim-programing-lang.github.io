@@ -1,0 +1,14 @@
+---
+title: "Reference index"
+description: "Everything in the Meem 0.10.0 language on one page: the thirty-two keywords, the types, the fifty-eight builtin functions, and the standard library modules with their functions."
+keywords: ["index", "reference", "keywords", "types", "builtins", "functions", "modules", "standard library"]
+---
+
+import ReferenceIndex from '../../../../components/ReferenceIndex.astro';
+import Generated from '../../../../components/Generated.astro';
+
+<Generated command="meem --list-keywords --json، meem --list-types، meem --list-module" />
+
+Everything in the language by name, generated from the compiler's own output when the site was built, and every name links to its explanation. The names and their short descriptions come from the compiler, so they are in Arabic. For a quick overview: the [cheat sheet](/en/docs/cheatsheet/). For the terms in Arabic and English: the [glossary](/en/docs/glossary/).
+
+<ReferenceIndex />

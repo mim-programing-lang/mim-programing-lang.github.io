@@ -1,0 +1,50 @@
+---
+title: "13. Files"
+description: "Write a file and read its lines."
+keywords: ["file", "files", "write", "read lines", "ملفات"]
+---
+
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To write a file and read its lines.
+
+## Explanation
+
+- After `استورد ملفات` (import files), `ملفات.اكتب_ملف(مسار, نص)` (write file) writes the text to the file: it creates the file if it does not exist, replaces its whole content if it does, and does not add a newline at the end.
+- `ملفات.اقرأ_سطور(مسار)` (read lines) returns a list of the file's lines.
+- The functions of `ملفات` can fail (the file does not exist, or there is no permission), so write `جرّب` (try) before them.
+- The `ملفات` module is **experimental**.
+
+## Example
+
+<HBExample id="learn/README.md#12" />
+
+## Common mistakes
+
+Forgetting `جرّب` or `والا` with a function that can fail: this is a compile error, and its message tells you what to write. And note: `جرّب` at the top level of the file ends the program with exit code 3 if the function fails.
+
+<HBExample id="errors/common.md#23" label="Causes the error" section="نتيجة دالة قد تفشل مهملة" />
+
+<HBExample id="errors/common.md#24" label="Fixes it" section="نتيجة دالة قد تفشل مهملة" />
+
+## Exercise
+
+Write three tasks to the file «مهام.txt», one line per task, then read them back and print how many there are and the longest one.
+
+<Solution file="lessons/12_حل.م" title="Solution" />
+
+## See also
+
+[The `ملفات` module](/en/docs/stdlib/files/) · [Error handling](/en/docs/language/errors/)
+
+<NextLesson />

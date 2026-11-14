@@ -1,7 +1,13 @@
 ---
 // بريد المشروع العام من site.config.mjs. لا بريد شخصي.
 import { contactEmail, links } from '../../site.config.mjs';
+import { contentLang } from '../lib/i18n';
+const en = contentLang(Astro) === 'en';
 ---
 
-<p>للتواصل، ولطلب الأذونات التي تذكرها <a href="/license/">رخصة ميم</a>: <a href={`mailto:${contactEmail}`} dir="ltr">{contactEmail}</a></p>
-{links.issues && <p>وللأخطاء والاقتراحات العلنية: <a href={links.issues}>مستودع البلاغات</a>.</p>}
+{en ? (
+  <p>To get in touch, and to ask for the permissions that the <a href="/en/license/">Meem License</a> mentions: <a href={`mailto:${contactEmail}`} dir="ltr">{contactEmail}</a></p>
+) : (
+  <p>للتواصل، ولطلب الأذونات التي تذكرها <a href="/license/">رخصة ميم</a>: <a href={`mailto:${contactEmail}`} dir="ltr">{contactEmail}</a></p>
+)}
+{links.issues && (en ? <p>For public bug reports and suggestions: the <a href={links.issues}>issues repository</a>.</p> : <p>وللأخطاء والاقتراحات العلنية: <a href={links.issues}>مستودع البلاغات</a>.</p>)}

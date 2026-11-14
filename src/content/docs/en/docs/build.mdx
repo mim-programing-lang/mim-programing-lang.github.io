@@ -36,7 +36,7 @@ meem build برنامجي.م -o برنامجي
 | `--json` | The build result and diagnostics as JSON |
 | `--emit-ir=file` | Save the LLVM IR of the built program |
 
-Plus the usual compile options: `--strict`, `--deny-deprecated`, `--debug-mem`, `--wrap-overflow`, `--no-ffi`, `--full-buffered`, `--overlay`.
+Plus the usual compile options: `--strict`, `--warn-unproven`, `--strict-memory`, `--debug-mem`, `--fast`, `--no-ffi`, `--full-buffered`, `--overlay`. (`--deny-deprecated` was removed in 0.8.0, and `--fast` replaced `--wrap-overflow` in 0.12.0.)
 
 Exit codes: 0 the file was built, 2 a compile or link error (no file), 1 a usage error.
 

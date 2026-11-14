@@ -36,7 +36,7 @@ meem build برنامجي.م -o برنامجي
 | `--json` | نتيجة البناء وتشخيصاته بصيغة JSON |
 | `--emit-ir=ملف` | حفظ شيفرة LLVM IR للبرنامج المبني |
 
-ومعها خيارات الترجمة المعتادة: `--strict`، `--deny-deprecated`، `--debug-mem`، `--wrap-overflow`، `--no-ffi`، `--full-buffered`، `--overlay`.
+ومعها خيارات الترجمة المعتادة: `--strict`، `--warn-unproven`، `--strict-memory`، `--debug-mem`، `--fast`، `--no-ffi`، `--full-buffered`، `--overlay`. (و`--deny-deprecated` أُزيل في 0.8.0، و`--wrap-overflow` حلّ محله `--fast` في 0.12.0.)
 
 رموز الخروج: 0 بُني الملف، 2 خطأ ترجمة أو ربط (لا ملف)، 1 خطأ استعمال.
 

@@ -1,6 +1,6 @@
 ---
 title: "Reference documentation"
-description: "The reference for the Meem language 0.10, from the reference handbook: the language, the standard library, errors, tools, memory and migration."
+description: "The reference for the Meem language 0.17, from the reference handbook: the language, the standard library, errors, tools, memory and migration."
 ---
 
 import VersionBanner from '../../../../components/VersionBanner.astro';
@@ -21,17 +21,17 @@ The handbook is written in Arabic. The pages generated from it are shown in Arab
 | [Understand Meem](/en/docs/understand/capabilities/) | What Meem can and cannot do, memory, errors, «خطر», and the comparison with C and Zig: short pages with examples that were run |
 | [Coming from another language](/en/docs/from/c/) | What corresponds to the concepts of [C](/en/docs/from/c/), [Python](/en/docs/from/python/) and [Zig](/en/docs/from/zig/) in Meem |
 | [Quick references](/en/docs/reference/) | [The reference index](/en/docs/reference/) (keywords, types, builtins and modules), the [cheat sheet](/en/docs/cheatsheet/), and [allocation and performance](/en/docs/stdlib/allocation/) |
-| [The language](/en/docs/language/lexicon/) | Lexicon, types, expressions, statements, functions, structs, modules, the low-level layer, calling C, what a program can do, enums, error handling |
+| [The language](/en/docs/language/lexicon/) | Lexicon, types, expressions, statements, functions, structs, modules, the low-level layer, calling C, what a program can do, enums, error handling, generics and traits |
 | [Manual memory](/en/docs/memory/) | Allocators and `خاتمه`: a simple introduction, then the reference |
-| [Standard library](/en/docs/stdlib/) | The builtins and modules, with an example for each function |
+| [Standard library](/en/docs/stdlib/) | The builtins and modules (including `مجموعات`, collections), with an example for each function |
 | [Errors](/en/docs/errors/catalog/) | A catalog of every message, and the common errors with their causes and fixes |
 | [Tools](/en/docs/tools/options/) | Command-line options, and the schema of the `--check --json` output |
-| [Migration](/en/docs/migration/to-0-10/) | From 0.9 to 0.10, [from 0.7 to 0.8](/en/docs/migration/to-0-8/), [from 0.6 to 0.7](/en/docs/migration/), and [to error handling](/en/docs/migration/errors/): what changed and what may break |
+| [Migration](/en/docs/migration/to-0-17/) | Release by release, from [0.16 to 0.17](/en/docs/migration/to-0-17/) back to [0.9 to 0.10](/en/docs/migration/to-0-10/), [from 0.7 to 0.8](/en/docs/migration/to-0-8/), [from 0.6 to 0.7](/en/docs/migration/), and [to error handling](/en/docs/migration/errors/): what changed and what may break |
 | [Glossary](/en/docs/glossary/) | Each Arabic term, its English equivalent, and its meaning |
 
 ## Releases
 
-The handbook describes release 0.10.0 (the beta before 1.0: the memory detector is on by default in a direct run, and there is no new language feature since 0.8.0). What was added in 0.8.0 is marked «منذ 0.8.0» (since 0.8.0), and what is not implemented yet is marked «مخطط» (planned). The current download on this site is 0.10.0, and what changed since 0.9 is in [migrating from 0.9 to 0.10](/en/docs/migration/to-0-10/).
+The handbook describes release 0.17.1: sized numbers, the optional type, tuples, enums with a payload, generics and traits, the `مجموعات` (collections) library, line-by-line reading and writing, the confirmed leak `E0472` as a compile error, and the new warning policy. Everything added is marked with its release («منذ 0.12.0», since 0.12.0, for example), and what is not implemented yet is marked «مخطط» (planned). The current download on this site is 0.10.0, and what changed after it, release by release, is in [the migration pages](/en/docs/migration/to-0-17/).
 
 ## Pages from outside the handbook
 

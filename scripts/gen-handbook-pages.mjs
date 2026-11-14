@@ -16,15 +16,14 @@ const { commit } = hbSource();
 
 // إضافات الموقع على نص الكتاب، بأمر صاحب المشروع (2026-10-18)، ومسجَّلة في docs-gaps.md.
 const CORRECTIONS = {
-  // حالة النشر: الكتاب (7a52f6c) كُتب قبل رفع الحزمة فيقول عن 0.10.0 «لم تُنشر». الموقع يكتب حالتها بعد الرفع بصيغة الكتاب
-  // نفسه للإصدارات السابقة («منشورة على https://meemlang.org»). مسجَّل في docs-gaps.md.
+  // حالة النشر: الكتاب (v0.17.1) يقول عن 0.10.0 «صدرت، ولم تُنشر»، وقد نُشرت على الموقع في 2026-10-31. الموقع يكتب حالتها
+  // بصيغة الكتاب نفسه للإصدارات السابقة. مسجَّل في docs-gaps.md.
   'README.md': [
-    ['وقد صدرت (مبنية ومختبرة، **لم تُنشر بعد**)', 'وقد صدرت (منشورة على https://meemlang.org)'],
     ['| 0.10.0 | **صدرت، ولم تُنشر**: `master` بالوسم `v0.10.0` (إيداع `b01b55f`)، والحزمة `meem-0.10.0-linux-x86_64.tar.xz` في `build/release/`.', '| 0.10.0 | **صدرت** (منشورة على https://meemlang.org): `master` بالوسم `v0.10.0` (إيداع `b01b55f`)، والحزمة `meem-0.10.0-linux-x86_64.tar.xz`.'],
   ],
   // سطران يضيفهما الموقع إلى المصطلحات بأمر صاحب المشروع.
   'glossary.md': [
-    ['| الملعب | playground |', '| LLVM | LLVM | مكتبة ترجمة يولّد بها المجمّع شيفرة الآلة من البرنامج (الخيار `--emit-ir` يحفظ ما يعطيه لها) |\n| IEEE-754 | IEEE-754 | معيار تمثيل الأعداد الكسرية في الحاسوب؛ `كسر` في ميم عشري مضاعف الدقة عليه (64 بتاً) |\n| الملعب | playground |'],
+    ['| الملعب | playground |', '| LLVM | LLVM | مكتبة ترجمة يولّد بها المجمّع شيفرة الآلة من البرنامج (الخيار `--emit-ir` يحفظ ما يعطيه لها) |\n| IEEE-754 | IEEE-754 | معيار تمثيل الأعداد الكسرية في الحاسوب؛ `كسر64` في ميم عشري مضاعف الدقة عليه (64 بتاً)، و`كسر32` مفرد الدقة |\n| الملعب | playground |'],
   ],
 };
 const short = commit.slice(0, 7);
@@ -46,6 +45,7 @@ export const PAGES = {
   'language/11-security.md': { slug: 'docs/language/security' },
   'language/12-enums.md': { slug: 'docs/language/enums', keywords: ['تعداد', 'تعدادات', 'عضو'] },
   'language/13-errors.md': { slug: 'docs/language/errors', keywords: ['خطأ', 'اخطاء', 'معالجة الاخطاء', 'جرب', 'والا'] },
+  'language/14-generics.md': { slug: 'docs/language/generics', description: 'الدوال والهياكل والتعدادات المعمّمة بمعاملات نوع تُستنتج من الوسائط أو تُكتب صراحةً، والسمات والقيود بـ«سمة» و«يحقق»، والسمات القياسية والاشتقاق.',  keywords: ['معمم', 'معممة', 'معمّم', 'سمة', 'سمات', 'يحقق', 'قيد', 'قيود'] },
   'stdlib/README.md': { slug: 'docs/stdlib' },
   'stdlib/builtins.md': { slug: 'docs/stdlib/builtins', notes: true, keywords: ['اطبع', 'مدمجة', 'مدمجات', 'دالة', 'دوال'] },
   'stdlib/رياضيات.md': { slug: 'docs/stdlib/math' },
@@ -53,10 +53,18 @@ export const PAGES = {
   'stdlib/ملفات.md': { slug: 'docs/stdlib/files' },
   'stdlib/عشوائي.md': { slug: 'docs/stdlib/random' },
   'stdlib/مسارات.md': { slug: 'docs/stdlib/paths', keywords: ['مسار', 'مسارات', 'ملف', 'مجلد', 'امتداد'] },
+  'stdlib/مجموعات.md': { slug: 'docs/stdlib/collections', title: 'الوحدة مجموعات', description: 'الكومة والطابور والمجموعة: هياكل معمّمة مكتوبة بميم في الوحدة القياسية «مجموعات»، بدوال بنائها وإضافتها وسحبها.',  keywords: ['مجموعات', 'مجموعة', 'كومة', 'طابور'] },
   'errors/common.md': { slug: 'docs/errors/common', keywords: ['خطأ', 'اخطاء', 'اصلاح'] },
   'tools/options.md': { slug: 'docs/tools/options' },
   'tools/check-json.md': { slug: 'docs/tools/check-json', schema: true },
   'migration/0.6-to-0.7.md': { slug: 'docs/migration' },
+  'migration/0.16-to-0.17.md': { slug: 'docs/migration/to-0-17', description: 'ما تغيّر بين ميم 0.16 و0.17: «سمة» و«يحقق» كلمتان محجوزتان، وتحذيرات صارت أخطاء ترجمة، وما لا يثبته المجمّع خلف --warn-unproven، والسمات ومكتبة مجموعات.',  keywords: ['ترحيل', 'ترقية', '0.17', 'سمة', 'يحقق', 'تحذيرات', 'warn-unproven'] },
+  'migration/0.15-to-0.16.md': { slug: 'docs/migration/to-0-16', description: 'ما تغيّر بين ميم 0.15 و0.16: الهياكل والتعدادات المعمّمة، ومعاملات النوع الصريحة، وتحذير المتغير باسم دالة.',  keywords: ['ترحيل', 'ترقية', '0.16', 'معمم'] },
+  'migration/0.14-to-0.15.md': { slug: 'docs/migration/to-0-15', description: 'ما تغيّر بين ميم 0.14 و0.15: التعداد بحمولة (الاتحاد الموسوم) وفكّه بـ«حالات»، والدوال المعمّمة بالاستنتاج؛ ولا تغيير كاسر.',  keywords: ['ترحيل', 'ترقية', '0.15', 'تعداد', 'حمولة', 'معمم'] },
+  'migration/0.13-to-0.14.md': { slug: 'docs/migration/to-0-14', description: 'ما تغيّر بين ميم 0.13 و0.14: التسريب المؤكد E0472 خطأ ترجمة، والصفوف والتفكيك، وقيم التعداد وعرضه، والقارئ والكاتب والملفات الثنائية.',  keywords: ['ترحيل', 'ترقية', '0.14', 'صف', 'صفوف', 'تسريب'] },
+  'migration/0.12-to-0.13.md': { slug: 'docs/migration/to-0-13', description: 'ما تغيّر بين ميم 0.12 و0.13: المجمّع يحرر المؤقتات، وتحذيرات الحجز الجديدة، وقيمة ترجعها «احذف»، وتقرير الذاكرة بكل المواضع.',  keywords: ['ترحيل', 'ترقية', '0.13', 'ذاكرة', 'تحرير'] },
+  'migration/0.11-to-0.12.md': { slug: 'docs/migration/to-0-12', description: 'ما تغيّر بين ميم 0.11 و0.12: الأعداد بأحجامها، فالنوعان «عدد» و«كسر» أُزيلا ويُكتب عدد64 وكسر64 في الغالب، والتحويل الصريح، و«حلل».',  keywords: ['ترحيل', 'ترقية', '0.12', 'عدد64', 'كسر64', 'طبيعي'] },
+  'migration/0.10-to-0.11.md': { slug: 'docs/migration/to-0-11', description: 'ما تغيّر بين ميم 0.10 و0.11: النص لا يكون «لاشيء» والغياب نوع اختياري يُفحص قبل الاستعمال، والأخطاء بسياقها وموضع نشأتها.',  keywords: ['ترحيل', 'ترقية', '0.11', 'اختياري', 'لاشيء'] },
   'migration/0.9-to-0.10.md': { slug: 'docs/migration/to-0-10', description: 'ما تغيّر بين ميم 0.9 و0.10: الذاكرة (أخطاء بدل السقوط، والكاشف افتراضي في التشغيل المباشر، ولا نسخ خفية)، والخياران --release و--debug.', keywords: ['ترحيل', 'ترقية', '0.10', 'كاشف', 'release', 'debug'] },
   'migration/0.7-to-0.8.md': { slug: 'docs/migration/to-0-8', description: 'ما تغيّر بين ميم 0.7 و0.8: الصيغ المهجورة صارت أخطاء ترجمة، والرسائل بمعرّفات ثابتة، وصيغ جديدة في النصوص، وما يُضاف ولا يكسر.', keywords: ['ترحيل', 'ترقية', '0.8', 'مهجورة', 'معرف'] },
   'migration/errors.md': { slug: 'docs/migration/errors', keywords: ['ترحيل', 'معالجة الاخطاء', 'جرب', 'والا'] },
@@ -153,11 +161,19 @@ function convert(file, meta) {
       continue;
     }
     if (dropping) continue;
+    // الروابط خارج الشيفرة وحدها: «`داله اسم[ن](...)`» صيغة لا رابط.
     out.push(
       escapeProse(word(line))
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, target) => rewriteLink(label, target, file))
-        // عنوان مجرد تتبعه علامة ترقيم عربية («…/issues؛»): الربط الآلي يضمّ العلامة إلى الرابط فيكسره. رابط صريح، والعلامة خارجه.
-        .replace(/(^|\s)(https?:\/\/[^\s<>\[\]()]+?)([؛،؟.]*)(?=\s|$)/g, (_, pre, url, punct) => `${pre}[${url}](${url})${punct}`),
+        .split(/(`+[^`]*`+)/)
+        .map((part, k) =>
+          k % 2
+            ? part
+            : part
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, target) => rewriteLink(label, target, file))
+                // عنوان مجرد تتبعه علامة ترقيم عربية («…/issues؛»): الربط الآلي يضمّ العلامة إلى الرابط فيكسره. رابط صريح، والعلامة خارجه.
+                .replace(/(^|\s)(https?:\/\/[^\s<>\[\]()]+?)([؛،؟.]*)(?=\s|$)/g, (_, pre, url, punct) => `${pre}[${url}](${url})${punct}`),
+        )
+        .join(''),
     );
   }
   return { title, body: out.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n' };

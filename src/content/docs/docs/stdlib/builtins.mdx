@@ -41,7 +41,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 **الصيغة:** `احذف(القاموس, المفتاح)   أو   احذف(القائمة, الموضع)`
 
-يحذف مفتاحاً من القاموس (خطأ تشغيل إن لم يكن موجوداً)، أو العنصر رقم الموضع من القائمة (خارجها خطأ تشغيل)
+يحذف مفتاحاً من القاموس ويرجع قيمته (منذ 0.13.0؛ خطأ تشغيل إن لم يكن موجوداً، والقيمة لك: حرّرها إن كانت نصاً أو حاوية لا تحتاجها)، أو العنصر رقم الموضع من القائمة (خارجها خطأ تشغيل)
 
 <HBExample id="stdlib/builtins.md#3" />
 
@@ -76,6 +76,16 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 <HBExample id="stdlib/builtins.md#5" />
 
 <BuiltinNotes name="استبدال" />
+
+## `اسم_الخطأ`
+
+**الصيغة:** `اسم_الخطأ(خ)`
+
+اسم الخطأ وحده نصاً (بلا رسالته وسببه)، بلا حجز: لمفتاح قاموس أو مقارنة
+
+(لا مثال بعد)
+
+<BuiltinNotes name="اسم_الخطأ" />
 
 ## `اضف`
 
@@ -135,7 +145,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 صيغ أخرى للاسم: `اقرا`
 
-يقرأ سطراً من إدخال المستخدم (بعد عرض رسالة اختيارية)
+يقرأ سطراً من إدخال المستخدم (بعد عرض رسالة اختيارية)؛ لاشيء عند نهاية الإدخال (نص؟ منذ 0.11.0، كان نصاً فارغاً لا يُفرَّق من سطر فارغ)
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
@@ -157,15 +167,51 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 <BuiltinNotes name="انتهى_الدخل" />
 
+## `بايت_عند`
+
+**الصيغة:** `بايت_عند(النص, الموضع)`
+
+البايت رقم الموضع (من 0) في النص، عدداً من 0 إلى 255؛ خارج النص خطأ تشغيل
+
+**أخطاؤها:**
+
+- الفهرس %lld خارج الحدود (الحجم %lld)
+
+<HBExample id="stdlib/builtins.md#12" />
+
+<BuiltinNotes name="بايت_عند" />
+
+## `بايتات_نص`
+
+**الصيغة:** `بايتات_نص(النص[, المخصص])`
+
+نسخة من بايتات النص شريحةً شريحة[بايت] (للكتابة الثنائية والشبكة وC)؛ تُحرَّر بـ حرر(ش[, المخصص])
+
+المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
+
+<HBExample id="stdlib/builtins.md#13" />
+
+<BuiltinNotes name="بايتات_نص" />
+
 ## `بحث`
 
 **الصيغة:** `بحث(النص, الجزء)   أو   بحث(القائمة, القيمة)`
 
-موضع أول ظهور للجزء في النص (بعدد الأحرف، من 0)، أو فهرس أول عنصر يساوي القيمة في القائمة؛ -1 إن لم يوجد
+موضع أول ظهور للجزء في النص (بعدد الأحرف، من 0)، أو فهرس أول عنصر يساوي القيمة في القائمة؛ لاشيء إن لم يوجد (عدد؟ منذ 0.11.0، كان -1)
 
-<HBExample id="stdlib/builtins.md#12" />
+<HBExample id="stdlib/builtins.md#14" />
 
 <BuiltinNotes name="بحث" />
+
+## `بحث_بايت`
+
+**الصيغة:** `بحث_بايت(النص, الجزء)   أو   بحث_بايت(النص, الجزء, من)`
+
+موضع أول ظهور للجزء في النص بالبايت (من الموضع من إن مُرّر)، أو لاشيء إن لم يوجد
+
+<HBExample id="stdlib/builtins.md#15" />
+
+<BuiltinNotes name="بحث_بايت" />
 
 ## `تقسيم`
 
@@ -179,7 +225,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 - فاصل 'تقسيم' لا يمكن أن يكون نصاً فارغاً
 
-<HBExample id="stdlib/builtins.md#13" />
+<HBExample id="stdlib/builtins.md#16" />
 
 <BuiltinNotes name="تقسيم" />
 
@@ -189,7 +235,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 يحجز خانة جديدة على الكومة فيها القيمة ويرجع مؤشراً إليها (من المخصص إن مُرّر، وإلا من الافتراضي)
 
-<HBExample id="stdlib/builtins.md#14" />
+<HBExample id="stdlib/builtins.md#17" />
 
 <BuiltinNotes name="جديد" />
 
@@ -199,9 +245,29 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 جزء من النص (بعدد الأحرف) عرضاً على بايتاته نفسها، بلا حجز ولا نسخ (0.7.0)؛ يعيش ما عاش النص الأصل، ولا يُحرَّر
 
-<HBExample id="stdlib/builtins.md#15" />
+<HBExample id="stdlib/builtins.md#18" />
 
 <BuiltinNotes name="جزء" />
+
+## `جزء_بايت`
+
+**الصيغة:** `جزء_بايت(النص, البداية, النهاية)   أو   جزء_بايت(النص, البداية)`
+
+جزء من النص بمواضع البايت، عرضاً بلا حجز كـ جزء؛ والحدّان على حدّ حرف UTF-8 وإلا خطأ تشغيل، فالنص يبقى صالحاً. الخارج عن النص يُقصّ إلى طرفيه
+
+<HBExample id="stdlib/builtins.md#19" />
+
+<BuiltinNotes name="جزء_بايت" />
+
+## `جمع_ملتف`
+
+**الصيغة:** `جمع_ملتف(ا, ب)`
+
+جمع صحيحين بالتفاف معرَّف عند التجاوز (المتمم الثنائي بعرض نوعهما)، بلا خطأ تشغيل
+
+<HBExample id="stdlib/builtins.md#20" />
+
+<BuiltinNotes name="جمع_ملتف" />
 
 ## `حاول_احجز`
 
@@ -209,7 +275,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 مثل احجز، لكنه يرجع !شريحة: خطأ.لا_ذاكرة إن تعذّر الحجز بدل خطأ التشغيل
 
-<HBExample id="stdlib/builtins.md#16" />
+<HBExample id="stdlib/builtins.md#21" />
 
 <BuiltinNotes name="حاول_احجز" />
 
@@ -219,7 +285,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 عدد البايتات التي يأخذها عنصر من هذا النوع في كتلة أو شريحة
 
-<HBExample id="stdlib/builtins.md#17" />
+<HBExample id="stdlib/builtins.md#22" />
 
 <BuiltinNotes name="حجم_النوع" />
 
@@ -233,7 +299,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 - لا يمكن تحرير الثابت '…': 'حرر' يجعل المؤشر لاشيء وهذا تعديل للثابت
 
-<HBExample id="stdlib/builtins.md#18" />
+<HBExample id="stdlib/builtins.md#23" />
 
 <BuiltinNotes name="حرر" />
 
@@ -245,7 +311,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
-<HBExample id="stdlib/builtins.md#19" />
+<HBExample id="stdlib/builtins.md#24" />
 
 <BuiltinNotes name="حروف_صغيرة" />
 
@@ -257,9 +323,24 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
-<HBExample id="stdlib/builtins.md#20" />
+<HBExample id="stdlib/builtins.md#25" />
 
 <BuiltinNotes name="حروف_كبيرة" />
+
+## `حلل`
+
+**الصيغة:** `حلل(النص, النوع)`
+
+يقرأ النص عدداً من النوع المكتوب (عدد64، طبيعي8، كسر64...): !النوع، وخطأ.صيغة_خاطئة لنص ليس عدداً، وخطأ.خارج_المدى لعدد لا يتسع فيه
+
+**أخطاؤها:**
+
+- 'حلل' تقرأ عدداً من الأنواع العددية لا '…'
+- 'حلل' تقرأ نصاً لا '…'
+
+<HBExample id="stdlib/builtins.md#26" />
+
+<BuiltinNotes name="حلل" />
 
 ## `حوّل`
 
@@ -274,7 +355,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 - حوّل: حجم الشريحة %lld بايتاً لا ينقسم على حجم العنصر الجديد %lld
 - لا تحويل من '…' إلى '…'
 
-<HBExample id="stdlib/builtins.md#21" />
+<HBExample id="stdlib/builtins.md#27" />
 
 <BuiltinNotes name="حوّل" />
 
@@ -284,7 +365,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 ينهي البرنامج بخطأ تشغيل (رمز الخروج 3) برسالته: لخطأ المبرمج الذي لا يُكمَل بعده
 
-<HBExample id="stdlib/builtins.md#22" />
+<HBExample id="stdlib/builtins.md#28" />
 
 <BuiltinNotes name="خطا_قاتل" />
 
@@ -300,7 +381,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 - الوسيط رقم 1 لـ 'دمج' يجب أن يكون قائمة نصوص لكن وُجد النوع '…'
 
-<HBExample id="stdlib/builtins.md#23" />
+<HBExample id="stdlib/builtins.md#29" />
 
 <BuiltinNotes name="دمج" />
 
@@ -316,7 +397,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 - الوسيط رقم … لـ 'دمج_نصوص' من النوع '…' ولا يُدمج في نص
 
-<HBExample id="stdlib/builtins.md#24" />
+<HBExample id="stdlib/builtins.md#30" />
 
 <BuiltinNotes name="دمج_نصوص" />
 
@@ -330,7 +411,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 - 'رتب' على قائمة عناصرها '…' غير مدعومة
 
-<HBExample id="stdlib/builtins.md#25" />
+<HBExample id="stdlib/builtins.md#31" />
 
 <BuiltinNotes name="رتب" />
 
@@ -344,9 +425,31 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 - مقارن 'رتب_ب' من النوع '…' لكن وُجد '…'
 
-<HBExample id="stdlib/builtins.md#26" />
+<HBExample id="stdlib/builtins.md#32" />
 
 <BuiltinNotes name="رتب_ب" />
+
+## `رسالة`
+
+**الصيغة:** `رسالة(خ[, المخصص])`
+
+نسخة من رسالة الخطأ (ما بعد «مع» عند إنشائه) نصاً من المخصص، أو لاشيء إن لم تكن له رسالة أو كُتب فوق سياقه (منذ 0.12.0؛ كانت نصاً فارغاً). ورسالة «مع ""» الفارغة لاشيء كذلك
+
+المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
+
+(لا مثال بعد)
+
+<BuiltinNotes name="رسالة" />
+
+## `رقم_النظام`
+
+**الصيغة:** `رقم_النظام(خ)`
+
+رقم خطأ النظام (errno) المرفق بالخطأ، أو 0
+
+(لا مثال بعد)
+
+<BuiltinNotes name="رقم_النظام" />
 
 ## `ساحة`
 
@@ -354,9 +457,19 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 مخصص يأخذ كتلاً من أصله ويحجز منها بالتتابع؛ اعد(س) يعيدها كلها دفعة واحدة (حرر وحده لا يعيد شيئاً)
 
-<HBExample id="stdlib/builtins.md#27" />
+<HBExample id="stdlib/builtins.md#33" />
 
 <BuiltinNotes name="ساحة" />
+
+## `سبب`
+
+**الصيغة:** `سبب(خ)`
+
+الخطأ السابق الذي سبّب هذا (بعد «بسبب» عند إنشائه)، أو لاشيء
+
+(لا مثال بعد)
+
+<BuiltinNotes name="سبب" />
 
 ## `شريحة`
 
@@ -371,7 +484,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 - طول الشريحة %lld سالب
 - طول الشريحة عدد صحيح لا '…'
 
-<HBExample id="stdlib/builtins.md#28" />
+<HBExample id="stdlib/builtins.md#34" />
 
 <BuiltinNotes name="شريحة" />
 
@@ -386,17 +499,27 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 - 'شريحة_خام' تأخذ مؤشر_خام لكن وُجد '…'
 - شريحة_خام: طول سالب، أو مؤشر لاشيء بطول %lld
 
-<HBExample id="stdlib/builtins.md#29" />
+<HBExample id="stdlib/builtins.md#35" />
 
 <BuiltinNotes name="شريحة_خام" />
+
+## `ضرب_ملتف`
+
+**الصيغة:** `ضرب_ملتف(ا, ب)`
+
+ضرب صحيحين بالتفاف معرَّف عند التجاوز (المتمم الثنائي بعرض نوعهما)، بلا خطأ تشغيل
+
+<HBExample id="stdlib/builtins.md#36" />
+
+<BuiltinNotes name="ضرب_ملتف" />
 
 ## `طبيعي16`
 
 **الصيغة:** `طبيعي16(قيمة)`
 
-القيمة كما يخزّنها 'طبيعي16'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
+القيمة بالنوع 'طبيعي16': التوسيع لا يفشل، والتضييق خارج المدى خطأ تشغيل، وداخل بلا_فحص يلتف؛ والكسر إلى صحيح يحتاج اختيار التقريب (رياضيات.بتر ...)
 
-<HBExample id="stdlib/builtins.md#30" />
+<HBExample id="stdlib/builtins.md#37" />
 
 <BuiltinNotes name="طبيعي16" />
 
@@ -404,9 +527,9 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 **الصيغة:** `طبيعي32(قيمة)`
 
-القيمة كما يخزّنها 'طبيعي32'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
+القيمة بالنوع 'طبيعي32': التوسيع لا يفشل، والتضييق خارج المدى خطأ تشغيل، وداخل بلا_فحص يلتف؛ والكسر إلى صحيح يحتاج اختيار التقريب (رياضيات.بتر ...)
 
-<HBExample id="stdlib/builtins.md#31" />
+<HBExample id="stdlib/builtins.md#38" />
 
 <BuiltinNotes name="طبيعي32" />
 
@@ -414,9 +537,9 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 **الصيغة:** `طبيعي64(قيمة)`
 
-القيمة كما يخزّنها 'طبيعي64'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
+القيمة بالنوع 'طبيعي64': التوسيع لا يفشل، والتضييق خارج المدى خطأ تشغيل، وداخل بلا_فحص يلتف؛ والكسر إلى صحيح يحتاج اختيار التقريب (رياضيات.بتر ...)
 
-<HBExample id="stdlib/builtins.md#32" />
+<HBExample id="stdlib/builtins.md#39" />
 
 <BuiltinNotes name="طبيعي64" />
 
@@ -426,11 +549,21 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 صيغ أخرى للاسم: `بايت`
 
-القيمة كما يخزّنها 'طبيعي8'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
+القيمة بالنوع 'طبيعي8': التوسيع لا يفشل، والتضييق خارج المدى خطأ تشغيل، وداخل بلا_فحص يلتف؛ والكسر إلى صحيح يحتاج اختيار التقريب (رياضيات.بتر ...)
 
-<HBExample id="stdlib/builtins.md#33" />
+<HBExample id="stdlib/builtins.md#40" />
 
 <BuiltinNotes name="طبيعي8" />
+
+## `طرح_ملتف`
+
+**الصيغة:** `طرح_ملتف(ا, ب)`
+
+طرح صحيحين بالتفاف معرَّف عند التجاوز (المتمم الثنائي بعرض نوعهما)، بلا خطأ تشغيل
+
+<HBExample id="stdlib/builtins.md#41" />
+
+<BuiltinNotes name="طرح_ملتف" />
 
 ## `طول`
 
@@ -443,32 +576,27 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 - دالة 'طول' تعمل فقط مع القوائم والمصفوفات والقواميس والنصوص لكن وُجد النوع '…'
 - دالة 'طول' لا تعمل مع النوع '…'
 
-<HBExample id="stdlib/builtins.md#34" />
+<HBExample id="stdlib/builtins.md#42" />
 
 <BuiltinNotes name="طول" />
 
-## `عدد`
+## `طول_بايت`
 
-**الصيغة:** `عدد(القيمة)`
+**الصيغة:** `طول_بايت(النص)`
 
-يحوّل كسراً أو قيمة منطقية إلى عدد صحيح، ونصاً إلى !عدد (خطأ.صيغة_خاطئة لنص ليس عدداً، وخطأ.خارج_المدى لعدد لا يتسع في 64 بتاً)
+عدد بايتات النص بترميز UTF-8 (لا عدد أحرفه كـ طول)، بلا كلفة: طول_بايت("ميم") = 6
 
-**أخطاؤها:**
+<HBExample id="stdlib/builtins.md#43" />
 
-- لا يمكن تحويل الكسر %s إلى عدد: خارج مدى الأعداد الصحيحة أو ليس عدداً
-- لا يمكن تحويل النوع '…' إلى عدد
-
-<HBExample id="stdlib/builtins.md#35" />
-
-<BuiltinNotes name="عدد" />
+<BuiltinNotes name="طول_بايت" />
 
 ## `عدد16`
 
 **الصيغة:** `عدد16(قيمة)`
 
-القيمة كما يخزّنها 'عدد16'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
+القيمة بالنوع 'عدد16': التوسيع لا يفشل، والتضييق خارج المدى خطأ تشغيل، وداخل بلا_فحص يلتف؛ والكسر إلى صحيح يحتاج اختيار التقريب (رياضيات.بتر ...)
 
-<HBExample id="stdlib/builtins.md#36" />
+<HBExample id="stdlib/builtins.md#44" />
 
 <BuiltinNotes name="عدد16" />
 
@@ -476,19 +604,29 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 **الصيغة:** `عدد32(قيمة)`
 
-القيمة كما يخزّنها 'عدد32'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
+القيمة بالنوع 'عدد32': التوسيع لا يفشل، والتضييق خارج المدى خطأ تشغيل، وداخل بلا_فحص يلتف؛ والكسر إلى صحيح يحتاج اختيار التقريب (رياضيات.بتر ...)
 
-<HBExample id="stdlib/builtins.md#37" />
+<HBExample id="stdlib/builtins.md#45" />
 
 <BuiltinNotes name="عدد32" />
+
+## `عدد64`
+
+**الصيغة:** `عدد64(قيمة)`
+
+القيمة بالنوع 'عدد64': التوسيع لا يفشل، والتضييق خارج المدى خطأ تشغيل، وداخل بلا_فحص يلتف؛ والكسر إلى صحيح يحتاج اختيار التقريب (رياضيات.بتر ...)
+
+(لا مثال بعد)
+
+<BuiltinNotes name="عدد64" />
 
 ## `عدد8`
 
 **الصيغة:** `عدد8(قيمة)`
 
-القيمة كما يخزّنها 'عدد8'، ناتجها عدد؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
+القيمة بالنوع 'عدد8': التوسيع لا يفشل، والتضييق خارج المدى خطأ تشغيل، وداخل بلا_فحص يلتف؛ والكسر إلى صحيح يحتاج اختيار التقريب (رياضيات.بتر ...)
 
-<HBExample id="stdlib/builtins.md#38" />
+<HBExample id="stdlib/builtins.md#46" />
 
 <BuiltinNotes name="عدد8" />
 
@@ -504,7 +642,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 - 'قائمة_من' تأخذ قائمة لا '…'
 
-<HBExample id="stdlib/builtins.md#39" />
+<HBExample id="stdlib/builtins.md#47" />
 
 <BuiltinNotes name="قائمة_من" />
 
@@ -516,7 +654,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
-<HBExample id="stdlib/builtins.md#40" />
+<HBExample id="stdlib/builtins.md#48" />
 
 <BuiltinNotes name="قص" />
 
@@ -526,7 +664,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 النص بلا فراغات في أوله وآخره (المسافة و\t و\n و\r و\v و\f)، عرضاً على بايتاته نفسها بلا حجز (كـ جزء)
 
-<HBExample id="stdlib/builtins.md#41" />
+<HBExample id="stdlib/builtins.md#49" />
 
 <BuiltinNotes name="قص_الفراغات" />
 
@@ -542,7 +680,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 - القطعة من %lld إلى %lld خارج الشريحة (طولها %lld)
 - حدّا القطعة عددان صحيحان لا '…'
 
-<HBExample id="stdlib/builtins.md#42" />
+<HBExample id="stdlib/builtins.md#50" />
 
 <BuiltinNotes name="قطعة" />
 
@@ -554,7 +692,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
-<HBExample id="stdlib/builtins.md#43" />
+<HBExample id="stdlib/builtins.md#51" />
 
 <BuiltinNotes name="قيم" />
 
@@ -564,33 +702,29 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 مخصص يلفّ أصله ويسجّل كل كتلة: يكشف التحرير المزدوج والتحرير بمخصص آخر، ويبلّغ عمّا لم يُحرَّر عند اعد أو عند نهاية البرنامج
 
-<HBExample id="stdlib/builtins.md#44" />
+<HBExample id="stdlib/builtins.md#52" />
 
 <BuiltinNotes name="كاشف" />
-
-## `كسر`
-
-**الصيغة:** `كسر(القيمة)`
-
-يحوّل عدداً إلى كسر، ونصاً إلى !كسر (خطأ.صيغة_خاطئة لنص ليس كسراً، وخطأ.خارج_المدى لكسر لا يتسع مثل 1e400)
-
-**أخطاؤها:**
-
-- لا يمكن تحويل النوع '…' إلى كسر
-
-<HBExample id="stdlib/builtins.md#45" />
-
-<BuiltinNotes name="كسر" />
 
 ## `كسر32`
 
 **الصيغة:** `كسر32(قيمة)`
 
-القيمة كما يخزّنها 'كسر32'، ناتجها كسر؛ خارج مداه خطأ تشغيل، وداخل بلا_فحص تلتف
+القيمة بالنوع 'كسر32': التوسيع لا يفشل، والتضييق خارج المدى خطأ تشغيل، وداخل بلا_فحص يلتف؛ والكسر إلى صحيح يحتاج اختيار التقريب (رياضيات.بتر ...)
 
-<HBExample id="stdlib/builtins.md#46" />
+<HBExample id="stdlib/builtins.md#53" />
 
 <BuiltinNotes name="كسر32" />
+
+## `كسر64`
+
+**الصيغة:** `كسر64(قيمة)`
+
+القيمة بالنوع 'كسر64': التوسيع لا يفشل، والتضييق خارج المدى خطأ تشغيل، وداخل بلا_فحص يلتف؛ والكسر إلى صحيح يحتاج اختيار التقريب (رياضيات.بتر ...)
+
+(لا مثال بعد)
+
+<BuiltinNotes name="كسر64" />
 
 ## `محتوى`
 
@@ -598,7 +732,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 الخانة التي يشير إليها المؤشر: تُقرأ ويُسند إليها (محتوى(م) = قيمة)
 
-<HBExample id="stdlib/builtins.md#47" />
+<HBExample id="stdlib/builtins.md#54" />
 
 <BuiltinNotes name="محتوى" />
 
@@ -606,13 +740,13 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 **الصيغة:** `مخزن_ثابت(شريحة_بايتات)`
 
-مخصص يحجز بالتتابع من بايتات شريحة معطاة، بلا نظام؛ الحجز منه بعد امتلائه خطأ تشغيل (أو لاشيء مع حاول_احجز). حرر به لا يعيد شيئاً
+مخصص يحجز بالتتابع من بايتات شريحة معطاة، بلا نظام؛ الحجز منه بعد امتلائه خطأ تشغيل (أو خطأ.لا_ذاكرة مع حاول_احجز). حرر به لا يعيد شيئاً
 
 **أخطاؤها:**
 
 - 'مخزن_ثابت' يأخذ شريحة[بايت] لا '…'
 
-<HBExample id="stdlib/builtins.md#48" />
+<HBExample id="stdlib/builtins.md#55" />
 
 <BuiltinNotes name="مخزن_ثابت" />
 
@@ -628,7 +762,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 - حدود 'مدى' يجب أن تكون أعداداً صحيحة لكن وُجد النوع '…'
 - خطوة 'مدى' لا يمكن أن تكون صفراً
 
-<HBExample id="stdlib/builtins.md#49" />
+<HBExample id="stdlib/builtins.md#56" />
 
 <BuiltinNotes name="مدى" />
 
@@ -640,21 +774,35 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
-<HBExample id="stdlib/builtins.md#50" />
+<HBExample id="stdlib/builtins.md#57" />
 
 <BuiltinNotes name="مفاتيح" />
+
+## `ملتف`
+
+**الصيغة:** `ملتف(القيمة, النوع)`
+
+القيمة في النوع الصحيح المكتوب بقطع بتاتها (التفاف معرَّف): ملتف(300, بايت) هو 44
+
+**أخطاؤها:**
+
+- 'ملتف' تحوّل عدداً صحيحاً إلى نوع صحيح
+
+<HBExample id="stdlib/builtins.md#58" />
+
+<BuiltinNotes name="ملتف" />
 
 ## `من_نص_سي`
 
 **الصيغة:** `من_نص_سي(خ)`
 
-نص يعرض بايتات نص_سي بلا نسخ، طوله حتى أول صفر (داخل خطر)؛ يبقى صالحاً ما بقيت الذاكرة. نص_سي قيمته لاشيء يعطي لاشيء
+نص يعرض بايتات نص_سي بلا نسخ، طوله حتى أول صفر (داخل خطر)؛ يبقى صالحاً ما بقيت الذاكرة. نص_سي قيمته لاشيء يعطي لاشيء (نص؟ منذ 0.11.0)
 
 **أخطاؤها:**
 
 - 'من_نص_سي' تأخذ نص_سي (مؤشر[طبيعي8]) لكن وُجد '…'
 
-<HBExample id="stdlib/builtins.md#51" />
+<HBExample id="stdlib/builtins.md#59" />
 
 <BuiltinNotes name="من_نص_سي" />
 
@@ -662,16 +810,16 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 **الصيغة:** `نسخ(القيمة[, المخصص])`
 
-نسخة عميقة مستقلة من قائمة أو قاموس أو هيكل أو مصفوفة (بكل ما بداخلها من حاويات)، من المخصص إن مُرّر وإلا من الافتراضي؛ النصوص فيها مشتركة لا تُنسخ
+نسخة عميقة مستقلة من قائمة أو قاموس أو هيكل أو مصفوفة (بكل ما بداخلها من حاويات)، أو نسخة من نص (منذ 0.13.0)، من المخصص إن مُرّر وإلا من الافتراضي؛ النصوص داخل الحاويات مشتركة لا تُنسخ
 
 المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
 
 **أخطاؤها:**
 
-- 'نسخ' تعمل مع القوائم والقواميس والهياكل والمصفوفات لكن وُجد النوع '…'
+- 'نسخ' تعمل مع القوائم والقواميس والهياكل والمصفوفات والنصوص لكن وُجد النوع '…'
 - 'نسخ' لا تعمل مع النوع '…'
 
-<HBExample id="stdlib/builtins.md#52" />
+<HBExample id="stdlib/builtins.md#60" />
 
 <BuiltinNotes name="نسخ" />
 
@@ -687,7 +835,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 - لا يمكن تحويل … إلى نص
 
-<HBExample id="stdlib/builtins.md#53" />
+<HBExample id="stdlib/builtins.md#61" />
 
 <BuiltinNotes name="نص" />
 
@@ -702,11 +850,27 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 **أخطاؤها:**
 
 - 'نص_سي' تأخذ نصاً لكن وُجد '…'
-- 'نص_سي' على نص قيمته لاشيء (تحقق منه أولاً: س != لاشيء)
+- 'نص_سي' على نص قيمته لاشيء (هل حُرّر بـ حرر؟)
 
-<HBExample id="stdlib/builtins.md#54" />
+<HBExample id="stdlib/builtins.md#62" />
 
 <BuiltinNotes name="نص_سي" />
+
+## `نص_من_بايتات`
+
+**الصيغة:** `نص_من_بايتات(الشريحة[, المخصص])`
+
+نص مستقل من بايتات شريحة[بايت] بعد فحص UTF-8؛ ليس_نصا إن لم تكن UTF-8 أو فيها بايت صفري. يملكه المستدعي ويحرره بـ حرر
+
+المخصص الأخير اختياري (يُعرف بنوعه): ما تبنيه يُحجز منه، وإلا من الافتراضي.
+
+**أخطاؤها:**
+
+- 'نص_من_بايتات' تأخذ شريحة[بايت] لا '…'
+
+<HBExample id="stdlib/builtins.md#63" />
+
+<BuiltinNotes name="نص_من_بايتات" />
 
 ## `يبدأ_بـ`
 
@@ -714,7 +878,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 هل يبدأ النص بالبادئة؟ (البادئة الفارغة: صواب)
 
-<HBExample id="stdlib/builtins.md#55" />
+<HBExample id="stdlib/builtins.md#64" />
 
 <BuiltinNotes name="يبدأ_بـ" />
 
@@ -724,7 +888,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 هل يظهر الجزء في النص، أو القيمة في القائمة، أو المفتاح في القاموس (كـ يوجد)؟
 
-<HBExample id="stdlib/builtins.md#56" />
+<HBExample id="stdlib/builtins.md#65" />
 
 <BuiltinNotes name="يحوي" />
 
@@ -734,7 +898,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 هل ينتهي النص باللاحقة؟ (اللاحقة الفارغة: صواب)
 
-<HBExample id="stdlib/builtins.md#57" />
+<HBExample id="stdlib/builtins.md#66" />
 
 <BuiltinNotes name="ينتهي_بـ" />
 
@@ -744,7 +908,7 @@ import BuiltinNotes from '../../../../components/BuiltinNotes.astro';
 
 هل المفتاح موجود في القاموس؟
 
-<HBExample id="stdlib/builtins.md#58" />
+<HBExample id="stdlib/builtins.md#67" />
 
 
 <BuiltinNotes name="يوجد" />

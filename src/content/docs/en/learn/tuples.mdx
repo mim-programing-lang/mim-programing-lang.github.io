@@ -1,0 +1,53 @@
+---
+title: "17. Tuples and multiple return values"
+description: "Return more than one value from a function with a tuple, unpack it into names, and go through a list of tuples with «لكل»."
+keywords: ["tuple", "tuples", "destructuring", "multiple return", "صف", "صفوف"]
+---
+
+import Example from '../../../../components/Example.astro';
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To write a function that returns more than one value in a single call, and to unpack its result into names.
+
+## Explanation
+
+- A **tuple** is a struct without a name: ordered values, each with a name and a type, such as `(اصغر عدد64, اكبر عدد64)` (smallest, largest), with two fields or more (since 0.14.0).
+- You write it as the function's return type, and return its value in parentheses: `ارجع (ص, ك)`.
+- **Destructuring:** `ص, ك = حدود(درجات)` puts each field into a name, in order, and `_` is for a field you do not want.
+- Or you keep the whole tuple under one name and read a field with a dot: `ح.اكبر`. `اطبع(ح)` prints the fields with their names.
+
+<Example file="lessons/صفوف_حدود.م" title="The smallest and the largest mark" />
+
+A tuple can also be a list element, and `لكل` (for each) unpacks it on every round:
+
+<Example file="lessons/صفوف_مواقع.م" title="A list of tuples" />
+
+## Exercise
+
+Write a function `ملخص` (summary) that takes a list of ages and returns a tuple with their total (`عدد64`) and their average (`كسر64`), then print both.
+
+<Solution file="lessons/صفوف_حل.م" title="Solution" />
+
+## Common mistakes
+
+The number of names in the destructuring does not match the number of fields in the tuple ([E0490](/en/docs/errors/catalog/#E0490)):
+
+<Example file="lessons/صفوف_خطأ.م" title="Causes the error" />
+
+The fix: one name for each field, and `_` for what you do not want (`ا, _ = نقطة()`). Note also that two tuples are not compared with `==` directly ([E0147](/en/docs/errors/catalog/#E0147)); compare their fields.
+
+## See also
+
+[Types: tuples and multiple return values](/en/docs/language/types/) · [Functions](/en/learn/functions/) · [Structs](/en/learn/structs/)
+
+<NextLesson />

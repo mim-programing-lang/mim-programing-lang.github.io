@@ -16,13 +16,14 @@ You will find familiar things in Meem: blocks by indentation after `:`, `لكل 
 | `if` / `elif` / `else` | `اذا` / `غير ذلك اذا` / `غير ذلك` |
 | `for x in range(1, 11):` | `لكل س في مدى(1, 11):` |
 | `while`, `break` and `continue` | `طالما`, `توقف` and `تجاوز` |
-| `def f(x: int) -> int:` | `داله ف(س عدد) عدد:` (types are mandatory) |
+| `def f(x: int) -> int:` | `داله ف(س عدد64) عدد64:` (types are mandatory, and numbers have sizes) |
 | `list` and `dict` | `قائمة[نوع]` (one type) and `قاموس[مفتاح, قيمة]` |
 | a `class` with fields | a `هيكل` with fields, and functions take it as a parameter (no methods) |
 | `import math` then `math.sqrt` | `استورد رياضيات` then `رياضيات.جذر` |
 | `print(a, b)` | `اطبع(ا, ب)`: **no space** between the values; write it yourself |
 | `try` / `except` | `!نوع`, `جرّب` and `والا` |
-| `None` | `لاشيء` (for strings and pointers) |
+| `None` and `Optional[int]` | `لاشيء` (nothing) in an optional type: `عدد64؟`, `نص؟` (since 0.11.0), checked before use |
+| `return a, b` | a tuple: `داله ف() (ا عدد64, ب عدد64):` and `ا, ب = ف()` (since 0.14.0) |
 
 ## What is different
 
@@ -30,7 +31,7 @@ You will find familiar things in Meem: blocks by indentation after `:`, `لكل 
 
 <HBExample id="errors/common.md#9" label="Causes the error" section="تغيير نوع المتغير" />
 
-**`/` between two integers is integer division**, truncating toward zero (close to Python's `//`, but different for negative numbers), and with a float it is fractional division:
+**`/` between two integers is integer division**, truncating toward zero (close to Python's `//`, but different for negative numbers), and with a float it is fractional division. Meem does not mix an integer variable and a float without a conversion (`كسر64(ن) / 2`):
 
 <Example file="lessons/02_حل.م" title="Division" />
 
@@ -42,7 +43,7 @@ You will find familiar things in Meem: blocks by indentation after `:`, `لكل 
 
 ## Performance compared with Python (measurements on 0.9.1)
 
-In the direction report: algorithms are much faster (on a par with C), and text processing is on a par with Python in time (0.70 s against 0.74), but with about 7 times the memory, because the file is read whole and there is no line-by-line reading yet. Details in [what Meem can and cannot do](/en/docs/understand/capabilities/).
+In the direction report: algorithms are much faster (on a par with C), and text processing is on a par with Python in time (0.70 s against 0.74), but with about 7 times the memory, because the program read the whole file (there was no line-by-line reading before 0.14.0). Details in [what Meem can and cannot do](/en/docs/understand/capabilities/).
 
 ## See also
 

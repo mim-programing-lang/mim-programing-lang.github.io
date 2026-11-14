@@ -1,6 +1,6 @@
 ---
 title: "Coming from Zig"
-description: "For Zig programmers: what corresponds to allocators, defer, errdefer, !T, try and catch in Meem 0.10.0, and where Meem departs from Zig's model."
+description: "For Zig programmers: what corresponds to allocators, defer, errdefer, !T, try and catch in Meem 0.17.1, and where Meem departs from Zig's model."
 keywords: ["zig", "from zig", "defer", "errdefer", "allocator", "arena", "comptime"]
 ---
 
@@ -18,23 +18,23 @@ Meem is closer to Zig than to any teaching language: an allocator is a value tha
 | `GeneralPurposeAllocator` in debugging | the detector, on by default in `meem برنامج.م` and with `--debug` in `meem build`; `--debug-mem` adds the leak report |
 | `defer` / `errdefer` | `خاتمه` / `خاتمه_عند_خطأ` |
 | `!T`, `try`, `catch` | `!نوع`, `جرّب`, `والا` |
-| `error{...}` | an `اخطاء:` block, and one global set |
-| `?T` | `لاشيء`, for strings and pointers only |
+| `error{...}` | an `اخطاء:` (errors) block, and an optional error set in the signature: `!{غير_موجود, ممنوع} نص` (since 0.11.0) |
+| `?T` | `ن؟` (since 0.11.0), with `والا` (else) for a fallback |
+| `fn max(comptime T: type, ...)` | `داله اكبر[ن](ا ن, ب ن) ن:`, inferred from the arguments (since 0.15.0) |
 | Debug / ReleaseFast | a direct run with the detector / `meem build` or `--release` without it. Bounds and overflow are checked in both modes, and `بلا_فحص` inside `خطر` switches that off locally |
 
 <Example file="guide/ذاكرة_خاتمه.م" title="خاتمه, like defer" />
 
 <Example file="guide/اخطاء_عند_خطأ.م" title="خاتمه_عند_خطأ, like errdefer" />
 
-## Where Meem departs from Zig's model (0.10.0)
+## Where Meem departs from Zig's model (0.17.1)
 
 - **«No hidden allocation» is the rule since 0.10.0, with one exception:** growing with `ن += ذيل` leaves the old buffer behind (a bounded leak of about twice the final length). In 0.9.1, operations on a «view» allocated copies that were never given back.
 - **Slices and strings:** a string is `{pointer, length, owner}`, and a view is a string on the bytes of another string, living as long as it does.
-- **No `comptime` and no generic types.**
-- **`خاتمه ... والا` is not possible:** clean-up that can fail needs a wrapper function.
+- **No `comptime`:** generics use type parameters copied for each combination, and a constraint is a trait (`سمة` and `يحقق`, since 0.17.0), not code run at compile time.
 - **No user-written allocators**, and no `resize` or alignment.
 - **The detector works at run time, not compile time,** it does not see C memory, and `حرر` does not follow what is inside a container (no deep `deinit`).
-- **Errors have no sets in the signature and no trace** (Zig has an error return trace in debug builds).
+- **No full error trace:** «نشأ في» (originated in) with the line of the first `ارجع` that returned it, and a «ثم» (then) line for each `جرّب` it passed through in a direct run (since 0.11.0); Zig has a full error return trace in debug builds.
 
 ## See also
 

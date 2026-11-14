@@ -1,0 +1,57 @@
+---
+title: "18. Generics and traits"
+description: "Write one function or struct for every type with a type parameter, and constrain it with a trait such as «قابل_للمقارنة» (comparable)."
+keywords: ["generic", "generics", "trait", "traits", "constraint", "معمم", "سمة", "يحقق"]
+---
+
+import Example from '../../../../components/Example.astro';
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To write a function or a struct once so that it works with many types, and to require what you need from the type with a trait.
+
+## Explanation
+
+- A **type parameter** is a name in square brackets after the function's name: `داله اول_او[ن](عناصر قائمة[ن], بديل ن) ن:` (first or a fallback). `ن` stands for some type (since 0.15.0).
+- You do not write the type at the call: the compiler **infers** it from the arguments, and copies the function for each type it is called with, so there is no run-time cost.
+
+<Example file="lessons/معمم_اول.م" title="One function for every type" />
+
+- A **generic struct** (since 0.16.0): `هيكل زوج[ا, ب]:` (pair) with fields of types `ا` and `ب`. Construction infers them from the values, or you write them explicitly: `زوج[نص, كسر64](...)`.
+
+<Example file="lessons/معمم_زوج.م" title="A pair of any two types" />
+
+- A **trait** (since 0.17.0) is an ability a type implements, such as `قابل_للمساواة` (equatable, `==`), `قابل_للمقارنة` (comparable, `<` and `>`) and `قابل_للتجزئة` (hashable, a dictionary key). Numbers and strings implement them.
+- The **constraint** `[ن يحقق قابل_للمقارنة]` says that the function accepts only types that implement the trait.
+- Your struct implements it by declaring it in its definition: `هيكل نسخة يحقق قابل_للمقارنة:`. If you do not write its functions, the compiler derives them field by field, in field order.
+
+<Example file="lessons/معمم_سمة.م" title="The constraint and a derived trait" />
+
+## Exercise
+
+Write a generic function `عد_مرات` (count occurrences) that counts how many times a value appears in a list, for any type that implements `قابل_للمساواة`, and try it on numbers, strings and booleans.
+
+<Solution file="lessons/معمم_حل.م" title="Solution" />
+
+## Common mistakes
+
+Passing a type that does not implement the trait the constraint asks for ([E0521](/en/docs/errors/catalog/#E0521)):
+
+<Example file="lessons/معمم_خطأ.م" title="Causes the error" />
+
+The fix, as the hint says: `هيكل نقطة يحقق قابل_للمقارنة:`.
+
+## See also
+
+[Generics in the reference](/en/docs/language/generics/) · [Migrating from 0.16 to 0.17](/en/docs/migration/to-0-17/) · [The collections library](/en/learn/collections/)
+
+<NextLesson />

@@ -1,7 +1,7 @@
 {
   "repo": "my_compiler",
   "branch": "release-0.17",
-  "commit": "64d0b1f2e1d5b4c36d2252929f758dcfb3af42e7",
+  "commit": "53266ac1b309fb49937fbcfa8a041b422ff8cf2e",
   "paths": [
     "docs/handbook",
     "docs/playground.md",

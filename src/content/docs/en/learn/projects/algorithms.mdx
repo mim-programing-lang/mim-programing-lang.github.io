@@ -15,7 +15,7 @@ import Example from '../../../../../components/Example.astro';
 ## Step by step
 
 1. **A min-heap on top of a list:** `ادفع` (push) adds at the end then raises the element until it settles, and `اسحب` (pop) takes the smallest and moves the last one down in its place. The elements are `عنصر_كومة` structs, by value.
-2. **Dijkstra:** a list `بعد` of distances, a heap of candidates, and the four neighbours in a fixed `مصفوفة[عدد, 4]` (-1 for a missing one).
+2. **Dijkstra:** a list `بعد` of distances, a heap of candidates, and the four neighbours in a fixed `مصفوفة[عدد64, 4]` (-1 for a missing one).
 3. **The tree:** a node holds `مؤشر[عقدة_شجرة]` pointers to the left and right. `جديد(...)` (new) allocates a node, `محتوى(م)` (content) reaches it, and `لاشيء` (nothing) for an empty one.
 4. **Deep freeing:** `حرر` does not follow pointers, so `احرق` walks the tree and frees each node by hand.
 5. **Time:** it prints «صواب» (true), not the seconds, so that the output stays the same.

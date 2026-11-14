@@ -1,7 +1,7 @@
 {
   "note": "ملاحظات الحجز والأداء لكل مدمجة، من قياسات direction-0.9.1 في مستودع المجمّع، أُعيد قياسها على ميم 0.10.0 (كل عملية مئة مرة تحت --debug-mem) ووُفّقت مع memory-safety.md. «عرض» = ناتج جزء أو قص_الفراغات أو مسارات.الامتداد/المجلد/اسم_الملف.",
   "notes": {
-    "جزء": "يرجع عرضاً على النص الأصل بلا نسخ، واستعماله بعدُ (طول، مقارنة، فهرسة، لكل، عدد()، مفتاح قاموس) لا يحجز منذ 0.10.0. والعرض يعيش بعمر نصه الأصل: استعماله بعد تحرير الأصل يكشفه الكاشف (E0430)، وفي الملف المبني بلا كاشف سلوك غير معرَّف.",
+    "جزء": "يرجع عرضاً على النص الأصل بلا نسخ، واستعماله بعدُ (طول، مقارنة، فهرسة، لكل، مفتاح قاموس) لا يحجز منذ 0.10.0. والعرض يعيش بعمر نصه الأصل: استعماله بعد تحرير الأصل يكشفه الكاشف (E0430)، وفي الملف المبني بلا كاشف سلوك غير معرَّف.",
     "قص_الفراغات": "مثل جزء: عرض بلا نسخ، واستعماله لا يحجز. ويعيش بعمر نصه الأصل.",
     "طول": "على النص يعدّ الأحرف بالمرور عليه، ولا يحجز ولو على عرض.",
     "تقسيم": "يحجز القائمة ونصاً لكل قطعة (نسخاً لا عروضاً). حرر(القائمة) لا يحرّر نصوصها، فاستعمل ساحة لما يكثر.",
@@ -11,8 +11,6 @@
     "اضف": "تكبير القائمة يحرّر مخزنها القديم: لا تسرب من النمو نفسه.",
     "احذف": "على القاموس يحرّر نسخة المفتاح النصي التي يملكها القاموس.",
     "حرر": "لا يتبع ما في داخل الحاوية: تحرير قائمة قوائم يترك الداخلية، وتحرير قائمة من تقسيم يترك نصوصها. ويجعل المتغير لاشيء، فاستعمال القائمة أو القاموس بالاسم نفسه بعده خطأ E0428 في كل الأوضاع. والاستعمال أو التحرير المزدوج عبر اسم آخر يكشفه الكاشف (E0429، E0430، E0431، E0350)، وفي الملف المبني بلا كاشف سلوك غير معرَّف.",
-    "عدد": "لا يحجز، ولو على عرض (إلا نسخة مؤقتة للأرقام الهندية تُحرَّر).",
-    "كسر": "لا يحجز، ولو على عرض.",
     "يحوي": "لا يحجز، ولو على عرض.",
     "بحث": "لا يحجز، ولو على عرض.",
     "يبدأ_بـ": "لا يحجز، ولو على عرض.",
@@ -27,7 +25,7 @@
     "قص": "يحجز نصاً جديداً؛ تحرّره أنت."
   },
   "notes_en": {
-    "جزء": "Returns a view onto the original string with no copying, and using it afterwards (length, comparison, indexing, لكل, عدد(), a dictionary key) allocates nothing since 0.10.0. A view lives as long as its original string: using it after the original is freed is caught by the detector (E0430), and in a file built without the detector it is undefined behaviour.",
+    "جزء": "Returns a view onto the original string with no copying, and using it afterwards (length, comparison, indexing, لكل, a dictionary key) allocates nothing since 0.10.0. A view lives as long as its original string: using it after the original is freed is caught by the detector (E0430), and in a file built without the detector it is undefined behaviour.",
     "قص_الفراغات": "Like جزء: a view with no copying, and using it allocates nothing. It lives as long as its original string.",
     "طول": "On a string, it counts the characters by going through it, and it allocates nothing, even on a view.",
     "تقسيم": "Allocates the list and a string for each piece (copies, not views). حرر(the list) does not free its strings, so use an arena when there are many.",
@@ -37,8 +35,6 @@
     "اضف": "Growing the list frees its old buffer: the growth itself leaks nothing.",
     "احذف": "On a dictionary, it frees the copy of the string key that the dictionary owns.",
     "حرر": "Does not follow what is inside a container: freeing a list of lists leaves the inner lists, and freeing a list from تقسيم leaves its strings. It makes the variable لاشيء, so using the list or dictionary through the same name afterwards is error E0428 in every mode. Use or double free through another name is caught by the detector (E0429, E0430, E0431, E0350), and in a file built without the detector it is undefined behaviour.",
-    "عدد": "Allocates nothing, even on a view (except a temporary copy for Arabic-Indic digits, which is freed).",
-    "كسر": "Allocates nothing, even on a view.",
     "يحوي": "Allocates nothing, even on a view.",
     "بحث": "Allocates nothing, even on a view.",
     "يبدأ_بـ": "Allocates nothing, even on a view.",

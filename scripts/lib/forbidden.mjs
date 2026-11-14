@@ -16,6 +16,11 @@ export function findConcat(code, language) {
       } else if (ch === quote || ch === char_quote) inside = ch;
       else if (line.startsWith(comment, i)) break;
       else if (ch === '.' && line[i + 1] === '.') {
+        // «...» ثلاث نقاط: علامة حذف في وصف الصيغة (`داله اسم[ن](المعامل ن, ...)`)، لا عامل دمج.
+        if (line[i + 2] === '.') {
+          while (line[i + 1] === '.') i++;
+          continue;
+        }
         hits.push(n + 1);
         break;
       }

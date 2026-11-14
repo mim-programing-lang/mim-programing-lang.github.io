@@ -26,7 +26,7 @@ To split a string, search it, and trim the spaces from both ends.
 
 <aside class="lesson-note">
 
-**Note:** `جزء` (slice) and `قص_الفراغات` return a «view» onto the original string without copying, and `طول`, comparison, indexing and `عدد()` on a view allocate nothing (since 0.10.0). But a view lives as long as its original string: do not free the original while you still use the view. `تقسيم`, on the other hand, allocates the list and a string for each piece. Details in [allocation and performance of builtins](/en/docs/stdlib/allocation/).
+**Note:** `جزء` (slice) and `قص_الفراغات` return a «view» onto the original string without copying, and `طول`, comparison and indexing on a view allocate nothing (since 0.10.0). But a view lives as long as its original string: do not free the original while you still use the view. `تقسيم`, on the other hand, allocates the list and a string for each piece. Details in [allocation and performance of builtins](/en/docs/stdlib/allocation/).
 
 </aside>
 

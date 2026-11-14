@@ -22,7 +22,7 @@ To add to a list, sort it, and search it.
 
 - A **list** holds elements of one type between square brackets, and grows as you add to it: `[70, 95, 82]`.
 - `اضف(ق, قيمة)` (add) appends the value at the end. `رتب(ق)` (sort) sorts it ascending in place. `طول(ق)` (length) is the number of its elements.
-- `بحث(ق, قيمة)` (search) returns the **index** of the first element equal to the value, or -1 if it is not found. The index is the element's position number, starting from 0.
+- `بحث(ق, قيمة)` (search) returns the **index** of the first element equal to the value, or `لاشيء` (nothing) if it is not found (its type is `عدد64؟`), so write `بحث(ق, قيمة) والا -1` if you always want a number. The index is the element's position number, starting from 0.
 - A list is a **reference**: after `ب = ق`, `ب` and `ق` are two names for the same list, and nothing is copied.
 
 ## Example

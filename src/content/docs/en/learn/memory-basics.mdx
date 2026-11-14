@@ -46,11 +46,13 @@ If you reach the same list through another name, the detector also says where it
 
 `نسخة = درجات` does not copy the list: the two names are for one list, so when it was freed on line 3, nothing was left for `نسخة`. ([E0429](/en/docs/errors/catalog/#E0429))
 
-If you forget to free, there is no error: everything returns on exit. But `--debug-mem` tells you what was left and its line:
+If you forget to free at the top level of the file, there is no error: everything returns on exit. But `--debug-mem` tells you what was left and its line:
 
 <Example file="lessons/10ب_نسيان.م" title="Forgetting to free" />
 
 Line 1 allocated the list (two blocks: its header and its data), and line 2 allocated the string.
+
+**Inside a function**, though, forgetting is a compile error (since 0.14.0): a string or list you build in a local variable, and neither free nor return nor pass out of the function, is lost on every call, so the compiler rejects it with error [E0472](/en/docs/errors/catalog/#E0472), and its hint says what to write: `خاتمه حرر(ن)` after the allocation, or `ارجع ن` (return) if the caller should own it.
 
 <aside class="lesson-note">
 
@@ -68,6 +70,7 @@ Fix the program «forgetting to free» above so that `--debug-mem` prints nothin
 
 - Using something after `حرر`: runtime error [E0428](/en/docs/errors/catalog/#E0428) through the same name, and [E0429](/en/docs/errors/catalog/#E0429) through another name. Move `حرر` after the last use, or use `خاتمه حرر`.
 - Freeing the same thing twice: through the same name, [E0347](/en/docs/errors/catalog/#E0347) «تحرير حاوية قيمتها لاشيء» (freeing a container whose value is nothing), and through two names a «تحرير مزدوج» (double free) ([E0350](/en/docs/errors/catalog/#E0350) for a list or dictionary, and [E0431](/en/docs/errors/catalog/#E0431) for a string).
+- Building a string or a container in a local variable inside a function and then forgetting it: compile error [E0472](/en/docs/errors/catalog/#E0472). Write `خاتمه حرر(الاسم)` next to the allocation, or return it.
 - Thinking that `ب = ا` copies the list: for an independent copy use `نسخ(ا)` (copy), and free each of them.
 
 ## See also

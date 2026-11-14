@@ -5,6 +5,7 @@ keywords: ["تعداد", "تعدادات", "حالات", "حاله", "عضو"]
 ---
 
 import Example from '../../../components/Example.astro';
+import HBExample from '../../../components/HBExample.astro';
 import VersionBanner from '../../../components/VersionBanner.astro';
 import LessonMeta from '../../../components/LessonMeta.astro';
 import Solution from '../../../components/Solution.astro';
@@ -21,11 +22,15 @@ import NextLesson from '../../../components/NextLesson.astro';
 ## الشرح
 
 - `تعداد الاسم:` في المستوى الأعلى، ثم عضو في كل سطر. الاسم نوع جديد، والعضو يُكتب `الاسم.العضو`.
-- رقم العضو موضعه من 0، و`عدد(العضو)` يعطيه.
+- رقم العضو موضعه من 0، و`عدد64(العضو)` يعطيه.
 - `لكل ف في فصل:` تمرّ على الأعضاء بترتيبها.
 - `حالات` على التعداد يجب أن تذكر كل عضو، أو تضيف `حاله _:` لما بقي. نسيان عضو خطأ ترجمة، فلا تفوتك حالة.
 
 <Example file="lessons/14_تعداد.م" title="الفصول الأربعة" />
+
+**التعداد بحمولة** (منذ 0.15.0): للعضو حقول بين قوسين، فيحمل كل عضو بياناته، و`حاله شكل.دائرة(نق):` في `حالات` تفكّها بأسمائها. الشرح في [التعداد](/docs/language/enums/):
+
+<HBExample id="language/12-enums.md#5" section="التعداد" />
 
 ## تمرين
 

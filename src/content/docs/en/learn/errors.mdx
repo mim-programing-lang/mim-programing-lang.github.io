@@ -20,7 +20,7 @@ To write a function that can fail, and to handle its failure: with a fallback va
 
 ## Explanation
 
-- A function that can fail writes `!` before its return type: `!عدد`. When it fails, it returns `خطأ.اسم` (error.name).
+- A function that can fail writes `!` before its return type: `!عدد64`. When it fails, it returns `خطأ.اسم` (error.name).
 - You define the names of your errors in an `اخطاء:` (errors) block at the top of the file.
 - `ن = ف() والا 0`: if it fails, the value is 0. And `والا خ:` followed by a block: inside it, `خ` is the error's name, and the last line of the block is the fallback value.
 - `جرّب ف()` (try) inside a `!نوع` function: if `ف` fails, your function exits with the same error.
@@ -32,17 +32,17 @@ To write a function that can fail, and to handle its failure: with a fallback va
 
 <Example file="lessons/15_جرب.م" title="جرّب" />
 
-**Limits today (0.10.0):** an error is only a name, with no data attached (no «which line» and no «which file»), and a function's signature does not say which errors it returns. Runtime errors, such as division by zero or an index outside the list, are not of this kind: they cannot be handled, and they end the program with code 3. Details in [dealing with errors](/en/docs/understand/errors/).
+**An error has context** (since 0.11.0): the library's errors carry what happened, so `اطبع(خ)` prints for example «صيغة_خاطئة: «ثلاثون» ليس عدداً» (wrong format: «ثلاثون» is not a number), or the path and the system error number for a file error; `ارجع خطأ.اسم مع قيم` attaches a message to your error, and `بسبب خ` (because of) the error that came before it. A signature may list its errors: `!{غير_موجود, ممنوع} نص`. Details in [error handling](/en/docs/language/errors/). Runtime errors, such as division by zero or an index outside the list, are not of this kind: they cannot be handled, and they end the program with code 3. Details in [dealing with errors](/en/docs/understand/errors/).
 
 ## Exercise
 
-A function `اقرأ_عمر(ن نص) !عدد` converts the string to a number with `جرّب`, and returns your error `عمر_غير_معقول` (unreasonable age) if the age is below 0 or above 150. Try it on «30», «ثلاثون» and «200», and for each case print the reason for the failure with `حالات`.
+A function `اقرأ_عمر(ن نص) !عدد64` converts the string to a number with `جرّب`, and returns your error `عمر_غير_معقول` (unreasonable age) if the age is below 0 or above 150. Try it on «30», «ثلاثون» and «200», and for each case print the reason for the failure with `حالات`.
 
 <Solution file="lessons/15_حل.م" title="Solution" />
 
 ## Common mistakes
 
-Using the result of `!عدد` as if it were `عدد`, without `جرّب` or `والا`:
+Using the result of `!عدد64` as if it were `عدد64`, without `جرّب` or `والا`:
 
 <Example file="lessons/15_غير_معالج.م" title="Causes the error" />
 

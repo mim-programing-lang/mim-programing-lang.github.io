@@ -1,10 +1,11 @@
 ---
-// شريط الإصدار لصفحات الكتاب المرجعي والدروس (نصه بأمر صاحب المشروع: «صدرت 0.10.0»).
+// شريط الإصدار لصفحات الكتاب المرجعي والدروس (نصه بأمر صاحب المشروع: «صدرت 0.10.0»). الرقم من downloads.json (src/lib/release.ts).
 import { contentLang } from '../lib/i18n';
+import { releaseVersion, releaseMinor } from '../lib/release';
 const en = contentLang(Astro) === 'en';
 ---
 
-<aside class="version-banner" role="note">{en ? 'Meem 0.10.0 is out and is the current download. This page describes release 0.10.' : 'صدرت 0.10.0، وهي التنزيل الحالي. تصف هذه الصفحة الإصدار 0.10.'}</aside>
+<aside class="version-banner" role="note">{en ? `Meem ${releaseVersion} is out and is the current download. This page describes release ${releaseMinor}.` : `صدرت ${releaseVersion}، وهي التنزيل الحالي. تصف هذه الصفحة الإصدار ${releaseMinor}.`}</aside>
 
 <style>
   .version-banner {

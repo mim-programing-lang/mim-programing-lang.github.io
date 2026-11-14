@@ -8,6 +8,7 @@ import { site } from '../../site.config.mjs';
 import downloads from '../data/downloads.json';
 import { mbRound } from '../lib/size.mjs';
 import { contentLang } from '../lib/i18n';
+import { releaseVersion, releaseMinor } from '../lib/release';
 const en = contentLang(Astro) === 'en';
 
 // حجم الحزمة لا يُكتب باليد: يُقرأ من قياس الأرشيف في downloads.json (scripts/make-downloads.mjs).
@@ -25,7 +26,7 @@ const rowsEn: { k: string; v: string; src: string; href?: string }[] = [
   { k: 'Calling C libraries', v: 'The خارجي declaration with explicit C types. Tried with libc and libm', src: 'docs/stdlib-design.md', href: '/en/docs/language/ffi/' },
   { k: 'Standard library', v: `${language.builtins.length} builtin functions, and standard modules: ${modules.map((m) => `${m.name} (${m.functions.length} functions)`).join(', ')}`, src: 'meem --list-keywords, meem --list-module', href: '/en/docs/stdlib/' },
   { k: 'Platforms', v: 'Linux x86_64 only. Windows and macOS are not available in 1.0', src: 'docs/build.md, docs/cli.md', href: '/en/docs/build/#limits' },
-  { k: 'Release', v: 'The current download is 0.10 — beta. Meem 0.10.0 is out (a beta before 1.0), and the reference documentation describes it', src: 'downloads.json, and the reference handbook' },
+  { k: 'Release', v: `The current download is ${releaseMinor} — beta. Meem ${releaseVersion} is out (a beta before 1.0), and the reference documentation describes it`, src: 'downloads.json, and the reference handbook' },
   { k: 'Package size', v: bundle?.bytes ? `about ${mbRound(bundle.bytes)} MB (the compressed archive)` : 'written once the package is published', src: 'measuring the archive (make-downloads)' },
   { k: 'Size of a built program', v: '«مرحبا يا عالم» (hello, world) is about 30 kB static (29640 bytes)', src: 'measured with meem build in 0.10.0', href: '/en/docs/build/' },
   { k: 'Build command', v: 'meem build ملف.م', src: 'docs/build.md', href: '/en/docs/tools/options/' },
@@ -39,7 +40,7 @@ const rows: { k: string; v: string; src: string; href?: string }[] = [
   { k: 'الاتصال بمكتبات C', v: 'التصريح خارجي بأنواع C صريحة. جُرّب مع libc وlibm', src: 'docs/stdlib-design.md', href: '/docs/language/ffi/' },
   { k: 'المكتبة القياسية', v: `${language.builtins.length} دالة مدمجة، ووحدة قياسية: ${mods}`, src: 'meem --list-keywords، meem --list-module', href: '/docs/stdlib/' },
   { k: 'المنصات', v: 'لينكس x86_64 وحده. ويندوز وماك غير متاحين في 1.0', src: 'docs/build.md، docs/cli.md', href: '/docs/build/#الحدود' },
-  { k: 'الإصدار', v: `التنزيل الحالي 0.10 — ${site.status}. صدرت 0.10.0 (تجريبية قبل 1.0)، والوثائق المرجعية تصفها`, src: 'downloads.json، والكتاب المرجعي' },
+  { k: 'الإصدار', v: `التنزيل الحالي ${releaseMinor} — ${site.status}. صدرت ${releaseVersion} (تجريبية قبل 1.0)، والوثائق المرجعية تصفها`, src: 'downloads.json، والكتاب المرجعي' },
   { k: 'حجم الحزمة', v: `${bundleSize}`, src: 'قياس الأرشيف (make-downloads)' },
   { k: 'حجم البرنامج المبني', v: '«مرحبا يا عالم» ساكناً نحو 30 ك.ب (29640 بايتاً)', src: 'قياس بـ meem build في 0.10.0', href: '/docs/build/' },
   { k: 'أمر البناء', v: 'meem build ملف.م', src: 'docs/build.md', href: '/docs/tools/options/' },

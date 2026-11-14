@@ -14,7 +14,7 @@ export const sections = [
         label: 'المستوى الأول: مبتدئ',
         items: ['learn/print', 'learn/variables', 'learn/input', 'learn/conditions', 'learn/loops', 'learn/lists', 'learn/dictionaries', 'learn/functions', 'learn/structs', 'learn/memory-basics'],
       },
-      { label: 'المستوى الثاني: متوسط', items: ['learn/strings', 'learn/modules', 'learn/files', 'learn/memory', 'learn/enums', 'learn/errors'] },
+      { label: 'المستوى الثاني: متوسط', items: ['learn/strings', 'learn/modules', 'learn/files', 'learn/memory', 'learn/enums', 'learn/errors', 'learn/tuples', 'learn/generics', 'learn/collections'] },
       { label: 'المستوى الثالث: نظامي', items: ['learn/allocators', 'learn/unsafe', 'learn/build'] },
       {
         label: 'مشاريع صغيرة',

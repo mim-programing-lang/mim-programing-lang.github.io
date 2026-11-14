@@ -161,19 +161,15 @@ function convert(file, meta) {
       continue;
     }
     if (dropping) continue;
-    // الروابط خارج الشيفرة وحدها: «`داله اسم[ن](...)`» صيغة لا رابط.
+    // الروابط خارج الشيفرة وحدها: «`داله اسم[ن](...)`» صيغة لا رابط. ورابط نصه فيه شيفرة («[مخطط `--check --json`](…)») رابط.
+    const prose = escapeProse(word(line));
+    const spans = [...prose.matchAll(/`+[^`]*`+/g)].map((m) => [m.index, m.index + m[0].length]);
+    const inCode = (at) => spans.some(([a, b]) => at > a && at < b);
     out.push(
-      escapeProse(word(line))
-        .split(/(`+[^`]*`+)/)
-        .map((part, k) =>
-          k % 2
-            ? part
-            : part
-                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, target) => rewriteLink(label, target, file))
-                // عنوان مجرد تتبعه علامة ترقيم عربية («…/issues؛»): الربط الآلي يضمّ العلامة إلى الرابط فيكسره. رابط صريح، والعلامة خارجه.
-                .replace(/(^|\s)(https?:\/\/[^\s<>\[\]()]+?)([؛،؟.]*)(?=\s|$)/g, (_, pre, url, punct) => `${pre}[${url}](${url})${punct}`),
-        )
-        .join(''),
+      prose
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (all, label, target, at) => (inCode(at) ? all : rewriteLink(label, target, file)))
+        // عنوان مجرد تتبعه علامة ترقيم عربية («…/issues؛»): الربط الآلي يضمّ العلامة إلى الرابط فيكسره. رابط صريح، والعلامة خارجه.
+        .replace(/(^|\s)(https?:\/\/[^\s<>\[\]()]+?)([؛،؟.]*)(?=\s|$)/g, (all, pre, url, punct, at) => (inCode(at) ? all : `${pre}[${url}](${url})${punct}`)),
     );
   }
   return { title, body: out.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n' };

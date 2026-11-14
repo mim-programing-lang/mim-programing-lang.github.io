@@ -13,7 +13,7 @@ const lang = contentLang(Astro);
 const en = lang === 'en';
 const L = (href: string) => localHref(lang, href);
 
-const moduleSlug: Record<string, string> = { رياضيات: 'math', عشوائي: 'random', مسارات: 'paths', ملفات: 'files', نظام: 'system' };
+const moduleSlug: Record<string, string> = { رياضيات: 'math', عشوائي: 'random', مسارات: 'paths', ملفات: 'files', نظام: 'system', مجموعات: 'collections' };
 const KIND: Record<string, string> = en
   ? { control: 'control', loop: 'loop', jump: 'jump', declaration: 'declaration', definition: 'definition', logic: 'logic' }
   : { control: 'تحكم', loop: 'تكرار', jump: 'قفز', declaration: 'تصريح', definition: 'تعريف', logic: 'منطق' };

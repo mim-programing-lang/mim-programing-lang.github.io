@@ -3,6 +3,7 @@
 // حدود الخادم (docs/playground.md في مستودع المجمّع): خيارات --no-unsafe --no-ffi --debug-mem، ولا وحدات إلا رياضيات
 // وعشوائي، وبرنامج من ملف واحد، ولا ملفات ولا وسائط ولا متغيرات بيئة. والملعب هنا بلا مدخل (لا مربع إدخال).
 // فيُستبعد كل مثال يستعمل ما لا يُتاح، ويُسجَّل سببه.
+import { isAfterRelease } from '../../src/lib/version.mjs';
 
 export const ALLOWED_MODULES = new Set(['رياضيات', 'عشوائي']);
 // كلمات تكفي وحدها للاستبعاد، وسببها.
@@ -41,6 +42,6 @@ export function exclusionReasons(ex, { includeDev = false, release } = {}) {
   for (const t of ex.tags ?? []) if (TAGS.has(t)) reasons.push(TAGS.get(t));
   const extra = (ex.flags ?? []).filter((f) => f !== '--deny-deprecated');
   if (extra.length) reasons.push(`سُجّل مخرجه بخيارات (${extra.join(' ')}) غير خيارات الملعب`);
-  if (!includeDev && ex.version !== release) reasons.push(`بعد ${release} (فرع التطوير)، والخادم يشغّل حزمة ${release}`);
+  if (!includeDev && isAfterRelease(ex.version, release)) reasons.push(`بعد ${release} (فرع التطوير)، والخادم يشغّل حزمة ${release}`);
   return [...new Set(reasons)];
 }

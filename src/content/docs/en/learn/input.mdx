@@ -20,18 +20,18 @@ To read a line the user types, and convert it to a number.
 
 ## Explanation
 
-- `اقرأ("رسالة")` (read) shows the message, then reads a line the user types.
-- `عدد(...)` converts a string to an integer. Its result has the type `!عدد`, meaning the conversion may fail, so you handle the failure where it happens.
+- `اقرأ("رسالة")` (read) shows the message, then reads a line the user types. Its result has the type `نص؟` (optional string): a string, or `لاشيء` (nothing) at the end of input. So give it a fallback: `اقرأ("رسالة") والا ""`.
+- `حلل(النص, عدد64)` (parse) converts a string to an integer. Its result has the type `!عدد64`, meaning the conversion may fail, so you handle the failure where it happens.
 
 ## Example
 
-The handbook's examples run with empty input, so `اقرأ` returned an empty string here:
+The handbook's examples run with no input, so `اقرأ` returned `لاشيء` here, and `والا ""` gave an empty string:
 
 <HBExample id="learn/README.md#3" />
 
 ## Common mistakes
 
-`عدد(اقرأ())` has the type `!عدد`, because what the user types may not be a number. So give a fallback value for the failure: `عدد(اقرأ()) والا 0`.
+`حلل(النص, عدد64)` has the type `!عدد64`, because what the user types may not be a number. So give a fallback value for the failure: `حلل(اقرأ() والا "", عدد64) والا 0`.
 
 <HBExample id="errors/common.md#21" label="Causes the error" section="تحويل نص إلى عدد بلا معالجة الفشل" />
 
@@ -45,6 +45,6 @@ Read a number from the user and print twice its value; if what they typed is not
 
 ## See also
 
-[Builtins: `اقرأ` and `عدد`](/en/docs/stdlib/builtins/) · [Error handling](/en/docs/language/errors/)
+[Builtins: `اقرأ` and `حلل`](/en/docs/stdlib/builtins/) · [Error handling](/en/docs/language/errors/)
 
 <NextLesson />

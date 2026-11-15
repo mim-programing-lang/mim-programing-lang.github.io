@@ -31,6 +31,7 @@ const en = lang === 'en';
       <a class="home-button primary" href={localHref(lang, '/start/')}>{en ? 'Get started' : 'ابدأ'}</a>
       <a class="home-button" href={localHref(lang, '/download/')}>{en ? 'Download' : 'نزّل'}</a>
     </div>
+    <p class="home-news"><a href={localHref(lang, '/news/0-17-3/')}>{en ? 'New: Meem 0.17.3 and Meem editor 0.5.0 are out' : 'جديد: صدرت ميم 0.17.3 ومحرر ميم 0.5.0'}</a></p>
   </div>
   <div class="home-example">
     <Example file={example} />
@@ -50,6 +51,11 @@ const en = lang === 'en';
       gap: 3rem;
       padding-block: 3rem;
     }
+  }
+  .home-news {
+    margin: 0;
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
   }
   .home-intro {
     display: flex;

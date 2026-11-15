@@ -1,6 +1,6 @@
 ---
 title: "Dealing with errors"
-description: "!نوع, جرّب, والا and خاتمه_عند_خطأ in Meem, the difference between a handled error and a runtime error (code 3), and the system's limits in 0.10.0, told plainly."
+description: "!نوع, جرّب, والا and خاتمه_عند_خطأ in Meem, the difference between a handled error and a runtime error (code 3), and the system's limits in 0.17.1, told plainly."
 keywords: ["error", "errors", "error handling", "try", "else", "exit code", "runtime error", "جرب", "والا", "خاتمه_عند_خطأ"]
 ---
 
@@ -12,7 +12,7 @@ import HBExample from '../../../../../components/HBExample.astro';
 <figure class="diagram">
 <svg viewBox="0 0 640 250" role="img" aria-label="Diagram: a function returns !نوع; either جرّب passes the error to its caller, or والا handles it on the spot; an error that reaches the top level unhandled ends the program with code 3" xmlns="http://www.w3.org/2000/svg" direction="ltr" font-family="inherit" font-size="15">
   <rect x="400" y="20" width="220" height="56" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
-  <text x="510" y="44" text-anchor="middle" fill="currentColor">A function returning !عدد</text>
+  <text x="510" y="44" text-anchor="middle" fill="currentColor">A function returning !عدد64</text>
   <text x="510" y="65" text-anchor="middle" fill="currentColor" font-size="12">Success: the value · failure: خطأ.اسم</text>
   <rect x="400" y="150" width="220" height="70" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
   <text x="510" y="176" text-anchor="middle" fill="currentColor" direction="rtl">ن = ف() والا 0</text>
@@ -44,7 +44,7 @@ import HBExample from '../../../../../components/HBExample.astro';
 
 Forgetting to handle a failure is a **compile error**, so no program reaches run time with a failure you have not decided what to do with:
 
-<Example file="lessons/15_غير_معالج.م" title="A !عدد result left unhandled" />
+<Example file="lessons/15_غير_معالج.م" title="A !عدد64 result left unhandled" />
 
 And the reference handbook's full example:
 
@@ -52,23 +52,34 @@ And the reference handbook's full example:
 
 ## A runtime error is not a handled error
 
-Division by zero, an index outside a list, and overflowing 64 bits are programming mistakes: `والا` does not catch them, and they end the program with code 3, an ID and a line. **And `خاتمه` does not run when they happen**, so a temporary file that was going to be deleted stays on disk:
+Division by zero, an index outside a list, and overflowing the type's width are programming mistakes: `والا` does not catch them, and they end the program with code 3, an ID and a line. **And `خاتمه` does not run when they happen**, so a temporary file that was going to be deleted stays on disk:
 
 <Example file="guide/اخطاء_تشغيل.م" title="خاتمه does not run on a runtime error" />
 
-## Limits today (0.10.0)
+## What changed since 0.10.0
+
+This page listed seven limits in 0.10.0, and most of them are solved:
+
+| In 0.10.0 | Now |
+|---|---|
+| An error is a name without data | An error has context (since 0.11.0): `ارجع خطأ.اسم مع قيم` attaches a message, and the library's errors carry the path and the system error number, or the bad text |
+| One error set | An error set in the signature is optional: `!{غير_موجود, ممنوع} نص`, and a `حالات` that misses a case is error [E0449](/en/docs/errors/catalog/#E0449), which names it |
+| No chain and no cause | `بسبب خ` (because of) keeps the earlier error, and `سبب(خ)` reads it (since 0.11.0) |
+| No trace | «نشأ في» (originated in) with the place of the first `ارجع` that returned it, in every mode, and «ثم» (then) for each `جرّب` it passed through in a direct run and `build --debug` (since 0.11.0) |
+| `خاتمه` does not accept `والا` | `خاتمه اغلق(م) والا خ:` and `خاتمه جرّب` are accepted (since 0.11.0) |
+| A function pointer cannot return `!نوع` | `داله(نص) !عدد64` is a function pointer type (since 0.14.0) |
+| `errno` from C is not available | `نظام.خطأ_النظام()` and `رقم_النظام(خ)` (since 0.14.0) |
+
+## Limits in 0.17.1
 
 | Limit | What it means |
 |---|---|
-| An error is a name without data | No «which file» and no «which line» with the error; you need a global variable to carry that |
-| One error set | The signature does not say which errors the function returns, and a `حالات` on a name it never returns gives no warning |
-| No chain and no cause | Converting an error between layers loses the original error |
-| No trace | «Unhandled error» names the top-level line, not where the first failure happened, and a runtime error has no call path |
-| `خاتمه` does not accept `والا` | Clean-up that can fail needs a wrapper function |
-| A function pointer cannot return `!نوع` | No tables of handlers that can fail |
-| `errno` from C is not available | No direct bridge to the errors of C libraries |
+| The context is a message, not typed data | What is attached to an error is text and a cause, not a value of a type you choose |
+| The context store is fixed | 64 errors: an error stored and then followed by 64 newer ones keeps its name, and its context becomes «لم يعد متاحاً» (no longer available); copy `رسالة(خ, م)` if you want it kept |
+| A function pointer's error set | It is accepted in the type, and its containment is not checked: a call through the pointer has an open set |
+| A runtime error is not a value | It ends the program with code 3, and `خاتمه` does not run (above) |
 
-**And the strength:** handling is enforced at compile time with three short words, `خاتمه_عند_خطأ` runs in the right order across functions, and the success path costs nothing. In ease and safety it is close to Zig; in expressiveness it is weaker than Rust and Go, because an error carries no data.
+**The strength:** handling is enforced at compile time with three short words, `خاتمه_عند_خطأ` runs in the right order across functions, the successful path costs nothing, and the error context sits in a fixed store with no allocation on the failure path. For ease and safety it is close to Zig; for expressiveness it is weaker than Rust, because what is attached to an error is text, not typed data.
 
 ## See also
 

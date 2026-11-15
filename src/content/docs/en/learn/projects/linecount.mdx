@@ -23,7 +23,7 @@ A «وثائق» (documents) folder with a subfolder, text files with different 
 
 1. **Walking:** `امش` (walk) reads the folder's names with `ملفات.سرد_مجلد` (list folder). If that returns the error `ليس_مجلدا` (not a folder), the path is a file, so `عد_ملف` counts it. And `حالات خ` tells `ممنوع` (forbidden) apart from other errors.
 2. **The file:** `ملفات.اقرأ_ملف` rejects anything that is not UTF-8 with the error `ليس_نصا` (not text), so the file is counted as binary. Lines are counted by going through the file's characters.
-3. **The extension:** `مسارات.الامتداد(مسار)` (extension), then `سجّل` (record) stores it in the table **as a copy** with `قص(امتداد, 0)`.
+3. **The extension:** `مسارات.الامتداد(مسار) والا ""` (extension; it returns `نص؟` since 0.12.0), then `سجّل` (record) stores it in the table **as a copy** with `قص(امتداد, 0)`.
 4. **The totals:** a `حصيلة` (totals) struct is allocated with `جديد`, and changed through `محتوى(ح)` in every function.
 
 ## What was hard
@@ -31,7 +31,7 @@ A «وثائق» (documents) folder with a subfolder, text files with different 
 - **The dangling view, the worst thing in the report:** `مسارات.الامتداد` returns a view onto the path. The view was first stored in the struct, then the path was freed, and the extension was printed corrupted (`ss.` instead of `.md`) with exit code 0. `--debug-mem` did not catch it in 0.9.1; it actually fixed the output and so hid the error. **In 0.10.0**, the detector that is on by default in a direct run catches it as error [E0430](/en/docs/errors/catalog/#E0430), with the lines where the string was created and freed; in a file built without the detector, the output stays undefined. The program here keeps a copy with `قص`, so it has no dangling view.
 - **No way to find a file's type** (no `stat`), so a folder is told apart from a file by the error from `سرد_مجلد`.
 - **No detection of symbolic links**, so the depth is limited to forty.
-- **`طول` counts characters, not bytes**, and there is no function for the byte count: the column is «characters», not «bytes».
+- **`طول` counts characters, not bytes**: the column is «characters», not «bytes». There was no function for the byte count in 0.9.1; since 0.14.0 `طول_بايت` gives it, and the program here is as it was written for the report.
 
 ## What we learned
 

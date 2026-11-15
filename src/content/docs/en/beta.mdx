@@ -1,23 +1,25 @@
 ---
-title: "Try 0.10 with us"
-description: "Meem 0.10 is a beta release before 1.0: what changed in 0.10.0, what we ask you to test, how to report a bug with one template, what is already known, and when 1.0 comes."
-keywords: ["beta", "testing", "bug report", "reports", "bug", "test", "0.9", "0.10", "detector", "1.0"]
+title: "Try 0.17.3 with us"
+description: "Meem 0.17.3 is a beta release before 1.0: what changed since 0.10.0, what we ask you to test, how to report a bug with one template, what is already known, and when 1.0 comes."
+keywords: ["beta", "testing", "bug report", "reports", "bug", "test", "0.17", "0.17.3", "detector", "1.0"]
 template: splash
 ---
 
 import IssuesLink from '../../../components/IssuesLink.astro';
 
-Meem **0.10.0** is **the beta before 1.0**, together with the Meem editor 0.4.0. The aim is for many people to write real programs in Meem on their own machines, so that what automated testing misses comes to light before the language is frozen in 1.0. Release 0.10 brings no new language feature since 0.8.0; its aim is for Meem to keep its promises about memory. Download it from the [download](/en/download/) page.
+Meem **0.17.3** is **the beta before 1.0**, together with the Meem editor 0.5.0 (which has Meem 0.17.3 built in). The aim is for many people to write real programs in Meem on their own machines, so that what automated testing misses comes to light before the language is frozen in 1.0. Between 0.10.0 and 0.17.3 the language changed a lot, and some of the changes **break** 0.10 programs. Download it from the [download](/en/download/) page.
 
-## What changed in 0.10.0
+## What changed since 0.10.0
 
-- **The crash hole is closed:** a list or dictionary used through the same name after `حرر` used to crash the program (SIGSEGV); it is now runtime error [E0428](/en/docs/errors/catalog/#E0428) with code 3, in every mode.
-- **The detector is on by default in a direct run:** `meem برنامج.م` runs with the memory detector, so use after free through another name, or after `اعد` on its arena, is now error [E0429](/en/docs/errors/catalog/#E0429) for a list or dictionary and [E0430](/en/docs/errors/catalog/#E0430) for a string or a view, naming the line of creation and the line of freeing. A double free of a string is [E0431](/en/docs/errors/catalog/#E0431). All of this used to be silent wrong output with code 0.
-- **`--release` and `--debug`:** `--release` runs without the detector (faster), `meem build` has no detector by default, and `meem build --debug` builds the detector into the file. `--debug-mem` adds the report of what was not freed, as before.
-- **No hidden copies:** `طول`, comparison, indexing, `لكل`, `عدد()` and a dictionary key on a «view» (the result of `جزء`, `قص_الفراغات`...) used to allocate a copy that was never given back, every time; they no longer allocate anything.
-- **The built file is faster at recursion:** Fibonacci on the benchmark programs went from 1.014 s to 0.762 s.
+- **0.11:** a string cannot be `لاشيء` (nothing); absence is an optional type `ن؟`, checked before use; and an error has context («نشأ في», originated in, a cause and a message). [Migration](/en/docs/migration/to-0-11/)
+- **0.12 (breaking):** sized numbers: `عدد` and `كسر` were removed, you write `عدد64` and `كسر64`, and conversion is explicit (`حلل(ن, عدد64)`). [Migration](/en/docs/migration/to-0-12/)
+- **0.13:** the compiler frees temporaries by itself, and `--debug-mem=fail`. [Migration](/en/docs/migration/to-0-13/)
+- **0.14:** tuples and destructuring, enum values and widths, line-by-line reading, binary files and byte strings, and **the confirmed leak `E0472` is a compile error**. [Migration](/en/docs/migration/to-0-14/)
+- **0.15 and 0.16:** enums with a payload, and generic functions, structs and enums. [Migration](/en/docs/migration/to-0-15/)
+- **0.17 (breaking):** traits and constraints (`سمة` and `يحقق` are reserved words), the `مجموعات` (collections) library, and `--strict-memory`; and the warning policy: thirteen warnings became compile errors, and what the compiler cannot prove is behind `--warn-unproven`. [Migration](/en/docs/migration/to-0-17/)
+- **0.17.1 to 0.17.3:** handbook corrections, free functions in `مجموعات`, and `==` on an enum with a payload that does not implement `قابل_للمساواة` is now a compile error (`E0536`) instead of a silent wrong result.
 
-The details of the change and what may break are in [migrating from 0.9 to 0.10](/en/docs/migration/to-0-10/), and all the guarantees are in [memory in Meem](/en/docs/understand/memory/).
+Every change is in [the changelog](/en/docs/changelog/), and the new lessons: [tuples](/en/learn/tuples/), [generics and traits](/en/learn/generics/), and [the collections library](/en/learn/collections/).
 
 ## What we ask you to test
 
@@ -26,8 +28,8 @@ In order, most important first:
 1. **Installing and running on your machine:** unpack the archive, then `meem --version`, the self-test (`meem --self-test`), and `meem build`, on any Linux x86_64 with glibc 2.35 or newer. The package was tested on Debian 12 and Ubuntu 22.04 only, so every other distribution (Fedora, Arch, openSUSE, Mint…) is a new trial.
 2. **Real programs:** a small tool you need (processing a text file, a calculation, a terminal game), not the handbook's examples. What matters: can it be written in Meem as you expect, and where did you have to work around something.
 3. **Error messages:** when the compiler rejects your program, does the message say what the error is and where, and does the hint fix it? An unclear message deserves its own report.
-4. **The newest parts of the language:** [error handling](/en/docs/language/errors/) (`!نوع`, `جرّب`, `والا` and `خاتمه_عند_خطأ`), [enums](/en/docs/language/enums/), and [manual memory](/en/docs/memory/) (`حرر`, `خاتمه` and arenas) with the new detector: does it catch your mistake, and does its message point you to the line? Does the output of `meem برنامج.م` differ from `--release`?
-5. **The standard modules:** `ملفات`, `نظام`, `مسارات`, `رياضيات` and `عشوائي`, on Arabic and large files and paths.
+4. **The newest parts of the language:** sized numbers and the optional type, [tuples](/en/learn/tuples/), [enums with a payload](/en/docs/language/enums/), [generics and traits](/en/docs/language/generics/), and [memory](/en/docs/memory/) (`E0472`, `--warn-unproven`, `--strict-memory` and the detector): can you write what you want with them, and does the message point you to the line? And does the output of `meem برنامج.م` differ from `--release`?
+5. **The standard modules:** `ملفات` (with the reader, the writer and binary files), `نظام`, `مسارات`, `رياضيات`, `عشوائي` and `مجموعات`, on Arabic and large files and paths.
 6. **`meem build`:** does the built file run on another machine that has no Meem?
 7. **The tools:** `--check --json` and `--fix`, for anyone writing a tool or an editor plugin ([the tools contract](/en/docs/tools/check-json/)).
 
@@ -81,7 +83,7 @@ The output of `meem --check --json برنامج.م`:
 
 | What you attach | Why |
 |---|---|
-| `meem --version` | It holds the commit (such as `0.10.0+abcdef0`), which identifies the exact package |
+| `meem --version` | It holds the commit (such as `0.17.3+abcdef0`), which identifies the exact package |
 | The system and glibc | The package was tested on Debian 12 and Ubuntu 22.04 only |
 | The program as text (the `.م` file, not a screenshot) | To reproduce the bug; a smaller program is fixed faster |
 | stderr and the exit code | The most important part is the message's ID (`E0123` in `[خطأ دلالي E0123]`), explained in the [error catalog](/en/docs/errors/catalog/) |
@@ -106,20 +108,19 @@ The output of `meem --check --json برنامج.م`:
 |---|---|
 | Linux x86_64 only, and glibc 2.35 or newer | No macOS, Windows, ARM or musl distributions, and not in 1.0 either |
 | The licence | The [Meem License](/en/license/) (version 1.0), and its text is inside the package: in the compiler's folder since 0.9.1 (`LICENSE` and `LICENSE.en`), and in both editor packages since 0.4.0 (`/usr/share/doc/meem-editor/`) and the «About» window |
-| Double-clicking `.م` files does not work in GNOME | A limitation in the GLib library: it does not match a non-Latin file-name suffix, so it treats a `.م` file as plain text with no icon. Open the file from the editor, or with the command `meem-editor ملف.م` |
 | The AppImage does not register the file type with the system | No icon for `.م` files and no association with the editor, except with the deb package |
 | Strings are sorted by code point | No Arabic dictionary order |
-| No generic types, no tagged union, no `اتحاد` (union), and no pointer arithmetic | After 1.0 |
+| No untagged `اتحاد` (union), no pointer arithmetic, and no dynamic polymorphism | After 1.0 (generics and enums with a payload exist since 0.15–0.16) |
 | No JSON, networking or running commands in the library | Not before 1.0, and `خارجي` to C is available |
-| Temporary strings in loops stay until exit | `--strict` gives an advisory warning about them, and `خاتمه حرر(ن)` gives them back ([memory in long loops](/en/learn/memory/)) |
+| A named string in a long loop stays until exit if it is not freed | A temporary without a name is freed by itself since 0.13.0; a named one is mentioned by `--warn-unproven` (`E0471`), and `خاتمه حرر(ن)` gives it back ([memory in long loops](/en/learn/memory/)) |
 | A built file without the detector | Use after free through another name is undefined behaviour in it (old output or garbage), and a double free through another name crashes it. A direct run and `meem build --debug` catch both |
 | Growing with `ن += ذيل` leaves the old buffer behind | A documented, bounded leak: about the base-2 logarithm of the length in buffers, totalling about twice the final length |
 | `حرر` does not follow what is inside a container | A list of lists, or a list of strings from `تقسيم`: use an arena for nested structures |
 | The detector is slower | A direct run is 0% to 32% slower than `--release` on the benchmark programs, and memory freed in its mode is not returned to the system |
 | A call chain deeper than 2000 to 3000 consecutive functions | Compile error `E0385` «أعقد مما يدعمه المجمّع» (more complex than the compiler supports), not a crash; a documented limit that stays |
 | A huge file is slow to compile | 50 thousand lines (5000 functions): `--check` in 8 s, and running or building in 66 s with 1.4 GB of memory |
-| A file is read whole | The `ملفات` module has no line-by-line reading and no binary files, and reading a 1 GB file has not been tested |
 | No CPU or memory limit in the compiler | A program runs with the user's full permissions ([what a program can do on your machine](/en/docs/language/security/)); the options `--no-system`, `--no-ffi` and `--no-unsafe` restrict it |
+| Fixed in 0.11 to 0.17.3 | Line-by-line reading and binary files (0.14); double-clicking a `.م` file in GIO-based file managers (GNOME) is recognised as `text/x-meem` since Meem editor 0.5.0; and `==` on an enum with a payload without `يحقق قابل_للمساواة` used to return `خطاء` silently and is now `E0536` (0.17.3) |
 | Fixed in 0.10.0 | The crash from using a list or dictionary after `حرر` (now `E0428`), and the hidden copies from views |
 | Fixed after 0.8.0 | A string too big for memory used to crash the program (now «نفدت الذاكرة», out of memory, `E0427`), and a very deep call chain used to be an «internal error» |
 

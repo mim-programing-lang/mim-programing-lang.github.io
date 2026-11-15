@@ -1,0 +1,62 @@
+---
+title: "Changelog (0.11 to 0.17.3)"
+description: "What changed in the Meem compiler from 0.10.0 to 0.17.3, release by release: what breaks, what is added, what is fixed, and what changed in the Meem editor 0.5.0."
+keywords: ["changelog", "new", "changes", "release", "0.17.3", "0.17", "upgrade"]
+---
+
+Source: `CHANGELOG.md` in the compiler repository (tag `v0.17.3`) and the Meem editor's changelog (tag `v0.5.0`), summarised. What breaks and how to fix it is in each release's migration page. What came before 0.11 is in [migrating from 0.9 to 0.10](/en/docs/migration/to-0-10/) and [the old changelog](/en/docs/whats-new/).
+
+## 0.17.3 (2026-11-15)
+
+Fixes before the unified release. A correct 0.17.2 program compiles as it is.
+
+- **Breaking:** `==` and `!=` between two values of an enum with a payload that does not declare `يحقق قابل_للمساواة` (implements equatable) is compile error [E0536](/en/docs/errors/catalog/#E0536); it used to be accepted and always return `خطاء` (false). `==` between two optional values is semantic error [E0537](/en/docs/errors/catalog/#E0537), with a hint.
+- **Added:** a generic type from a module can be written as a type: `مجموعات.كومة[عدد64]` in a declaration, a parameter, a return type and a field.
+- **Fixed:** messages that named removed types (`E0217`, `E0238`, `E0181` and `E0447`), and a cascading error after a type parameter could not be inferred.
+
+## 0.17.2 (2026-11-15)
+
+A correction of the reference handbook, with no change to the compiler or the language.
+
+- **Added:** `حرر_كومة`, `حرر_طابور` and `حرر_مجموعة` in `مجموعات` ([lesson 19](/en/learn/collections/)).
+- **Fixed (the handbook):** the release it describes, removed names in its code, the warning policy and its counts (thirteen and eleven), the exit code in the message catalog, and the glossary terms for generics and traits.
+
+## 0.17.1 (2026-11-14)
+
+No change to the language: `type_args` for each builtin and `number-exponent` in `--list-keywords --json` for the editor, the positions of four errors on the type parameter itself, and no cascading error after an error on a line that opens a block.
+
+## 0.17.0 (2026-11-14)
+
+- **Breaking:** `سمة` (trait) and `يحقق` (implements) are reserved words. Thirteen warnings became compile errors, and eleven appear only with `--warn-unproven` ([migration](/en/docs/migration/to-0-17/)).
+- **Added:** traits, constraints and derivation ([generics](/en/docs/language/generics/)), the [`مجموعات`](/en/docs/stdlib/collections/) (collections) library with a stack, a queue and a set, and `--strict-memory`.
+
+## 0.16.0 (2026-11-09)
+
+- **Added:** generic structs and enums, and explicit type arguments (`زوج[نص, عدد64](...)`). ([migration](/en/docs/migration/to-0-16/))
+
+## 0.15.0 (2026-11-10)
+
+- **Added:** enums with a payload, unpacked with `حالات`, and generic functions inferred from their arguments. Nothing breaks. ([migration](/en/docs/migration/to-0-15/))
+
+## 0.14.0 (2026-11-08)
+
+- **Breaking:** the confirmed leak [E0472](/en/docs/errors/catalog/#E0472) is a compile error, and so is a parameter or variable named after a builtin ([E0474](/en/docs/errors/catalog/#E0474)).
+- **Added:** tuples and destructuring, enum values and widths, hexadecimal and binary literals, the opaque struct in `خارجي`, the reader, the writer and binary files in `ملفات`, and byte strings. ([migration](/en/docs/migration/to-0-14/))
+
+## 0.13.0 (2026-11-07)
+
+- **Added:** the compiler frees temporaries, allocation warnings (`E0471`, `E0472` and `E0473`), `احذف` (delete) returns what it removed, `نسخ` (copy) for strings, and a `--debug-mem` report with every place and `--debug-mem=fail` (code 4). ([migration](/en/docs/migration/to-0-13/))
+
+## 0.12.0 (2026-11-06)
+
+- **Breaking:** sized numbers: `عدد`, `كسر` and `حجم` were removed, and you write `عدد64`, `كسر64` and `طبيعي64`; conversion is explicit and checked (`عدد8(ن)`), `حلل(ن, عدد64)` (parse) replaces `عدد(ن)`, and an integer and a float do not mix without a conversion. ([migration](/en/docs/migration/to-0-12/))
+- **Added:** exponents in literals (`1e9`), `--fast` with defined wrapping, and `عشوائي.نسبة()` (random ratio).
+
+## 0.11.0 (2026-11-02)
+
+- **Breaking:** a string cannot be `لاشيء` (nothing), and absence is an optional type `ن؟`, checked before use; `بحث`, `اقرأ` and `نظام.بيئة` return optionals; and `و`, `والا` and `خاتمه` are reserved words that cannot be names. ([migration](/en/docs/migration/to-0-11/))
+- **Added:** error context (`مع` with, `بسبب` because of, and «نشأ في» originated in), an error set in the signature, `خاتمه ... والا`, and calls spread over several lines.
+
+## Meem editor 0.5.0
+
+It has Meem 0.17.3 built in instead of 0.10.0. Added: go to definition (F12), rename symbol (F2), standard library files opened read-only, completion of enum members and tuple fields, highlighting of the 0.12 to 0.17 forms, and a content security policy for the interface. Fixed: a `.م` file is recognised as `text/x-meem` in GIO-based file managers (GNOME).

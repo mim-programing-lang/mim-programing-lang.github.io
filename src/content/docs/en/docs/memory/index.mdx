@@ -34,7 +34,8 @@ Freeing the same value twice is a runtime error:
 - **An arena** (`ساحة(الاصل)`) is an allocator that collects what is allocated from it, and `اعد(ساحه)` (reset) gives it all back at once.
 - **The detector** (`كاشف(الاصل)`) is an allocator that reports what was not freed from it.
 - In builtins and functions, a last argument of type `مخصص` (allocator) is optional, and what the function builds is allocated from it.
-- The `--debug-mem` option turns the default allocator into a detector.
+- The detector is on by default in a direct run (since 0.10.0); `--debug-mem` adds a report of what was not freed, with the allocation line and the call line, and `--debug-mem=fail` turns whatever is left into a failure with code 4 (since 0.13.0).
+- Before running (since 0.13.0): the compiler frees temporaries by itself, a local allocation in a function that is neither freed nor passed out of it is compile error [E0472](/en/docs/errors/catalog/#E0472) (since 0.14.0), and «لا دليل على تحرير» (no proof of freeing, [E0471](/en/docs/errors/catalog/#E0471)) is shown with `--warn-unproven` and becomes an error with `--strict-memory` (since 0.17.0).
 
 The full table, the examples and the limits are in [the memory reference: allocators and خاتمه](/en/docs/memory/reference/).
 

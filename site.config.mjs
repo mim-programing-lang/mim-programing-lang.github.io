@@ -14,7 +14,7 @@ export const site = {
 };
 
 // الإصدار التجريبي الذي تدعو إليه صفحة /beta/: مصدر نص الزر «جرّب … معنا» في التذييل وصفحة الدعم.
-export const betaVersion = '0.10';
+export const betaVersion = '0.17.3';
 export const betaLabel = `جرّب ${betaVersion} معنا`;
 export const betaLabelEn = `Try ${betaVersion} with us`;
 

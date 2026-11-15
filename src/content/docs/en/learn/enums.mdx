@@ -5,6 +5,7 @@ keywords: ["enum", "enums", "match", "case", "member", "تعداد", "حالات
 ---
 
 import Example from '../../../../components/Example.astro';
+import HBExample from '../../../../components/HBExample.astro';
 import VersionBanner from '../../../../components/VersionBanner.astro';
 import LessonMeta from '../../../../components/LessonMeta.astro';
 import Solution from '../../../../components/Solution.astro';
@@ -21,11 +22,15 @@ To define an enum for a known set of fixed values (seasons, directions, the stat
 ## Explanation
 
 - `تعداد الاسم:` (enum) at the top level, then one member per line. The name is a new type, and a member is written `الاسم.العضو`.
-- A member's number is its position from 0, and `عدد(العضو)` gives it.
+- A member's number is its position from 0, and `عدد64(العضو)` gives it.
 - `لكل ف في فصل:` goes through the members in order.
 - `حالات` on an enum must name every member, or add `حاله _:` for the rest. Forgetting a member is a compile error, so no case slips past you.
 
 <Example file="lessons/14_تعداد.م" title="The four seasons" />
+
+**Enums with a payload** (since 0.15.0): a member has fields in parentheses, so each member carries its own data, and `حاله شكل.دائرة(نق):` in `حالات` unpacks them by name. Details in [enums](/en/docs/language/enums/):
+
+<HBExample id="language/12-enums.md#5" section="التعداد" />
 
 ## Exercise
 

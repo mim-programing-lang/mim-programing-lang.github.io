@@ -21,7 +21,7 @@ The file has two deliberately bad lines: a line with missing fields (9), and a l
 
 ## Step by step
 
-1. **Parsing a line:** `حلل` (parse) returns `!سجل`. It splits the line with `تقسيم(سطر, ",")`, and returns its error `حقول_ناقصة` (missing fields) if there are not five fields. Converting the numbers with `جرّب عدد(...)` passes on `صيغة_خاطئة` (wrong format) if a field is not a number.
+1. **Parsing a line:** `حلل_سطر` (parse line) returns `!سجل` (it used to be called `حلل`, which became the name of a builtin in 0.12.0). It splits the line with `تقسيم(سطر, ",")`, and returns its error `حقول_ناقصة` (missing fields) if there are not five fields. Converting the numbers with `جرّب حلل(الحقل, عدد64)` (and `كسر64` for the price) passes on `صيغة_خاطئة` (wrong format) if a field is not a number.
 2. **A bad line does not stop the program:** `حلل(سطر) والا خ:` counts the bad line, keeps a description of the first one, then `تجاوز` (continue) moves to the next line.
 3. **Totalling:** the dictionary `مناطق` keeps each region's position in the list `جدول`, and a fixed array `اشهر` of 13 slots totals the revenue for each month.
 4. **Sorting and printing:** `رتب_ب` by revenue, and `رياضيات.نسق` to two decimal places.
@@ -29,10 +29,10 @@ The file has two deliberately bad lines: a line with missing fields (9), and a l
 ## What was hard
 
 - **Changing an element of a list:** the report's author wrote `ق = جدول[م]` then `جدول[م] = ق`, thinking that changing a field of a list element was not possible. Then they found that `جدول[م].كمية += س.كمية` works directly. What was missing was in the documentation, not in the language.
-- **The `--strict` warning:** the string `اول_فاسد` is built with `دمج_نصوص` inside the loop and never freed, so the compiler warns with `--strict` (warning E0270). Here it is actually built only once (at the first bad line), so the warning is a precaution, not a fault; that is why this example is shown without the strict guard.
+- **The parts of `تقسيم`:** `خاتمه حرر(ح)` gives back the list alone, and the strings of its parts stay. The compiler does not mention this by default; with `--warn-unproven` it warns with [E0473](/en/docs/errors/catalog/#E0473) on the two `تقسيم` lines, and its hint is to build them in an arena and give it back after the line.
 - **Memory and time:** on 200 thousand lines: 0.64 s built statically (0.48 dynamically) and 76.1 MB, against 0.54 s and 10.9 MB for Python.
 
 ## What we learned
 
 - `والا خ:` with `تجاوز` makes «a bad line» an ordinary case that is counted, not an exception that stops everything.
-- A fixed array (`مصفوفة[كسر, 13]`) suits a known number of slots, and allocates nothing from the heap.
+- A fixed array (`مصفوفة[كسر64, 13]`) suits a known number of slots, and allocates nothing from the heap.

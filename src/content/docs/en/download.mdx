@@ -1,6 +1,6 @@
 ---
 title: "Download"
-description: "Download the Meem compiler 0.10.0 and the Meem editor 0.4.0 for Linux x86_64, with a SHA-256 fingerprint for each file and the installation steps."
+description: "Download the Meem compiler 0.17.3 and the Meem editor 0.5.0 for Linux x86_64, with a SHA-256 fingerprint for each file and the installation steps."
 keywords: ["download", "install", "editor", "deb", "AppImage", "sha256sum"]
 template: splash
 ---
@@ -10,8 +10,8 @@ import { betaLabelEn } from '../../../../site.config.mjs';
 
 <Downloads />
 
-:::note[0.10 is a beta release]
-Meem 0.10.0 is the beta before 1.0. Its aim is for Meem to keep its promises about memory: the memory detector is on by default when you run `meem برنامج.م`, `--release` switches it off, and `meem build --debug` builds it into the file. The Meem editor 0.4.0 bundles this same compiler, 0.10.0. What changed since 0.9: [migrating from 0.9 to 0.10](/en/docs/migration/to-0-10/). What we ask you to test, and how to report a bug: [{betaLabelEn}](/en/beta/).
+:::note[0.17.3 is a beta release]
+Meem 0.17.3 is the beta before 1.0, and Meem editor 0.5.0 includes the same 0.17.3 compiler. Between it and 0.10.0 there are changes that **break** 0.10 programs: sized numbers (`عدد64` instead of `عدد`), the optional type, and the warning policy. What changed is in [the changelog](/en/docs/changelog/) and the [migration](/en/docs/migration/to-0-17/) pages. What we ask you to test, and how to report a bug: [{betaLabelEn}](/en/beta/).
 :::
 
 ## Requirements
@@ -30,9 +30,9 @@ Meem 0.10.0 is the beta before 1.0. Its aim is for Meem to keep its promises abo
 Unpack the archive in any folder, then run `meem` from inside it. It needs no installation and no administrator rights:
 
 ```sh
-tar -xJf meem-0.10.0-linux-x86_64.tar.xz
-meem-0.10.0-linux-x86_64/meem --version
-meem-0.10.0-linux-x86_64/meem برنامج.م
+tar -xJf meem-0.17.3-linux-x86_64.tar.xz
+meem-0.17.3-linux-x86_64/meem --version
+meem-0.17.3-linux-x86_64/meem برنامج.م
 ```
 
 The folder can be moved as it is, and nothing is written into it when it runs. It holds the licence text: `LICENSE` (the Arabic text, which is the authoritative one) and `LICENSE.en` (its English translation, for guidance), and the licences of the bundled components in the `licenses/` folder. Next step: [getting started](/en/start/).
@@ -42,7 +42,7 @@ The folder can be moved as it is, and nothing is written into it when it runs. I
 For Ubuntu and Debian:
 
 ```sh
-sudo apt install ./meem-editor_0.4.0_amd64.deb
+sudo apt install ./meem-editor_0.5.0_amd64.deb
 ```
 
 Then open «محرر ميم» (Meem editor) from the applications menu, or run it with the command `meem-editor`. To open a file: `meem-editor ملف.م`; if the editor is already running, the file opens in its window. The package holds the licence text: `/usr/share/doc/meem-editor/LICENSE` (the Arabic text, which is the authoritative one) and `LICENSE.en`, and the Arabic text is in the «About» window.
@@ -52,15 +52,14 @@ Then open «محرر ميم» (Meem editor) from the applications menu, or run i
 For any distribution with glibc 2.35 or newer and the interface libraries:
 
 ```sh
-chmod +x meem-editor_0.4.0_amd64.AppImage
-./meem-editor_0.4.0_amd64.AppImage
+chmod +x meem-editor_0.5.0_amd64.AppImage
+./meem-editor_0.5.0_amd64.AppImage
 ```
 
-If the message «Cannot mount AppImage» appears, install `libfuse2`, or run it with `./meem-editor_0.4.0_amd64.AppImage --appimage-extract-and-run`.
+If the message «Cannot mount AppImage» appears, install `libfuse2`, or run it with `./meem-editor_0.5.0_amd64.AppImage --appimage-extract-and-run`.
 
 ## Known issues
 
-- **Double-clicking `.م` files does not work in GNOME** (and in file managers built on GLib), and the file icon does not show. The cause is a limitation in the GLib library: it does not match a file-name suffix that is not Latin, such as `.م`, so it treats the file as plain text. Open the file from the editor, or with the command `meem-editor ملف.م`.
 - **The AppImage does not register the `.م` file type with the system:** no icon for these files, and no association with the editor. That comes with the deb package only.
 - **The detector makes a direct run slower** (0% to 32% on the benchmark programs) and heavier on memory. For measurements, run with `--release`, or with the «تشغيل سريع (--release)» (fast run) button in the editor.
 

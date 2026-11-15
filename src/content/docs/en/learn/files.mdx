@@ -21,7 +21,8 @@ To write a file and read its lines.
 ## Explanation
 
 - After `استورد ملفات` (import files), `ملفات.اكتب_ملف(مسار, نص)` (write file) writes the text to the file: it creates the file if it does not exist, replaces its whole content if it does, and does not add a newline at the end.
-- `ملفات.اقرأ_سطور(مسار)` (read lines) returns a list of the file's lines.
+- `ملفات.اقرأ_سطور(مسار)` (read lines) returns a list of the file's lines, so it reads the whole file into memory.
+- For a large file, read it line by line (since 0.14.0): `ق = جرّب ملفات.افتح_للقراءة(مسار)` (open for reading) then `خاتمه ملفات.اغلق(ق)` (close), and `ملفات.اقرأ_سطر(ق)` (read line) returns the next line or `لاشيء` (nothing) at the end of the file. For writing there are `ملفات.افتح_للكتابة` and `ملفات.اكتب_سطر`, and for binary files `اقرأ_ملف_بايتات` and `اكتب_ملف_بايتات`. Details in [the files module](/en/docs/stdlib/files/).
 - The functions of `ملفات` can fail (the file does not exist, or there is no permission), so write `جرّب` (try) before them.
 - The `ملفات` module is **experimental**.
 

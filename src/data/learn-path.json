@@ -2,7 +2,7 @@
   "note": "مسار التعلّم: المصدر الوحيد لصفحة المسار وبيانات كل درس (المستوى والزمن والمتطلبات والتالي). الزمن تقدير للقراءة وحل التمرين. والحقول المنتهية بـ _en للنسخة الإنجليزية تحت /en/.",
   "levels": [
     { "id": "beginner", "name": "مبتدئ", "about": "أساسيات أي برنامج: الطباعة والمتغيرات والإدخال والشروط والحلقات والقوائم والقواميس والدوال والهياكل، وثلاث قواعد للذاكرة.", "name_en": "Beginner", "about_en": "The basics of any program: printing, variables, input, conditions, loops, lists, dictionaries, functions and structs, and three rules for memory." },
-    { "id": "intermediate", "name": "متوسط", "about": "النصوص والوحدات والملفات، والتعداد، ومعالجة الأخطاء، والذاكرة في الحلقات الطويلة.", "name_en": "Intermediate", "about_en": "Strings, modules and files, enums, error handling, and memory in long loops." },
+    { "id": "intermediate", "name": "متوسط", "about": "النصوص والوحدات والملفات، والتعداد، ومعالجة الأخطاء، والذاكرة في الحلقات الطويلة، والصفوف، والمعمّمة والسمات، ومكتبة مجموعات.", "name_en": "Intermediate", "about_en": "Strings, modules and files, enums, error handling, memory in long loops, tuples, generics and traits, and the collections library." },
     { "id": "systems", "name": "نظامي", "about": "المخصصات والساحات، و«خطر» واستدعاء C، وبناء ملف تنفيذي مستقل.", "name_en": "Systems", "about_en": "Allocators and arenas, «خطر» (unsafe) and calling C, and building a standalone executable." }
   ],
   "lessons": [
@@ -22,6 +22,9 @@
     { "slug": "learn/memory", "title": "الذاكرة في الحلقات الطويلة", "level": "intermediate", "minutes": 20, "requires": ["learn/memory-basics", "learn/strings"], "title_en": "Memory in long loops" },
     { "slug": "learn/enums", "title": "التعداد", "level": "intermediate", "minutes": 15, "requires": ["learn/conditions", "learn/functions"], "title_en": "Enums" },
     { "slug": "learn/errors", "title": "معالجة الأخطاء", "level": "intermediate", "minutes": 25, "requires": ["learn/functions", "learn/files"], "title_en": "Error handling" },
+    { "slug": "learn/tuples", "title": "الصفوف والإرجاع المتعدد", "level": "intermediate", "minutes": 15, "requires": ["learn/functions", "learn/structs"], "title_en": "Tuples and multiple return values" },
+    { "slug": "learn/generics", "title": "المعمّمة والسمات", "level": "intermediate", "minutes": 25, "requires": ["learn/tuples", "learn/enums"], "title_en": "Generics and traits" },
+    { "slug": "learn/collections", "title": "مكتبة مجموعات", "level": "intermediate", "minutes": 20, "requires": ["learn/generics", "learn/modules"], "title_en": "The collections library" },
     { "slug": "learn/allocators", "title": "المخصصات والساحات", "level": "systems", "minutes": 30, "requires": ["learn/memory", "learn/errors"], "title_en": "Allocators and arenas" },
     { "slug": "learn/unsafe", "title": "«خطر» واستدعاء C", "level": "systems", "minutes": 25, "requires": ["learn/allocators"], "title_en": "«خطر» (unsafe) and calling C" },
     { "slug": "learn/build", "title": "بناء ملف مستقل", "level": "systems", "minutes": 20, "requires": ["learn/modules"], "title_en": "Building a standalone executable" }

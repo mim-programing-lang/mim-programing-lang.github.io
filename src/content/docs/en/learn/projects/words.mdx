@@ -30,7 +30,7 @@ We changed two things from the report's version: we removed the «internal time�
 ## What was hard
 
 - **The hidden cost (in 0.9.1):** `نظف` uses `جزء` because it is a «view» with no copying. But in 0.9.1, `طول(ن)` on the view inside the loop allocated a small copy every time, never given back and not visible in the code, and that only showed up with `--debug-mem`. **In 0.10.0**, operations on a view allocate nothing.
-- **Memory:** on a 9 MB file, the built program's peak was 69.6 MB, against 10.7 for the equivalent Python program: Meem reads the whole file and its lines into memory (there is no line-by-line reading yet), and on top of that came the hidden copies in 0.9.1. This measurement has not been redone on 0.10.0.
+- **Memory:** on a 9 MB file, the built program's peak was 69.6 MB, against 10.7 for the equivalent Python program: Meem reads the whole file and its lines into memory (there was no line-by-line reading before 0.14.0), and on top of that came the hidden copies in 0.9.1. This measurement has not been redone since 0.9.1.
 - **Time:** 0.70 s built statically, 0.56 s built with `--dynamic`, and Python 0.74 s.
 
 ## What we learned

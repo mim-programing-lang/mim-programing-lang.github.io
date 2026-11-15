@@ -50,7 +50,7 @@ The report says, in Arabic: 1000 blocks (26890 bytes) were not freed from the de
 
 ## Common mistakes
 
-Forgetting to free in a long loop raises the program's peak memory use, and the `--debug-mem` option reveals it by line. Using a string after freeing it is caught by the detector (on by default when you run `meem برنامج.م`) as a runtime error with its line. And freeing the same value twice is an error:
+Forgetting to free in a long loop raises the program's peak memory use, and the `--debug-mem` option reveals it by line, and `--warn-unproven` mentions it before running («لا دليل على تحرير», no proof of freeing, [E0471](/en/docs/errors/catalog/#E0471)). Inside a function, a local string that is neither freed nor returned is compile error [E0472](/en/docs/errors/catalog/#E0472). Using a string after freeing it is caught by the detector (on by default when you run `meem برنامج.م`) as a runtime error with its line. And freeing the same value twice is an error:
 
 <HBExample id="errors/common.md#31" label="Causes the error" section="تحرير مرتين" />
 

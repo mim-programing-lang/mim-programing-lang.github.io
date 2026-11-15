@@ -1,0 +1,21 @@
+---
+title: "Meem 0.17.3 and Meem editor 0.5.0 are out"
+description: "The unified release: the Meem compiler 0.17.3 and the Meem editor 0.5.0, after seven releases since 0.10.0: sized numbers, optionals, tuples, enums with a payload, generics and traits, and the collections library."
+keywords: ["news", "release", "0.17.3", "editor", "0.5.0", "new"]
+---
+
+**2026-11-15.** **Meem 0.17.3** is out, together with **Meem editor 0.5.0** (which has Meem 0.17.3 built in), on the [download page](/en/download/). It is the beta before 1.0, and what we ask you to test is in [Try 0.17.3 with us](/en/beta/).
+
+Between 0.10.0 and 0.17.3 there are seven releases that were not published before today, and some of them **break** 0.10 programs:
+
+- **Sized numbers:** `عدد64` and `كسر64` instead of `عدد` and `كسر`, and conversion is explicit ([migrating to 0.12](/en/docs/migration/to-0-12/)).
+- **The optional type:** `ن؟` is checked before use, and a string cannot be `لاشيء` (nothing) ([migrating to 0.11](/en/docs/migration/to-0-11/)).
+- **Tuples, enums with a payload, generics and traits:** new lessons on [tuples](/en/learn/tuples/) and [generics and traits](/en/learn/generics/), and the reference in [generics](/en/docs/language/generics/).
+- **The `مجموعات` (collections) library:** a stack, a queue and a set ([lesson 19](/en/learn/collections/)).
+- **Memory:** temporaries are freed by themselves, the confirmed leak `E0472` is a compile error, and `--strict-memory`.
+- **Input and output:** line-by-line reading, binary files and byte strings.
+- **The warning policy:** thirteen warnings became compile errors, and what the compiler cannot prove is behind `--warn-unproven`.
+
+And Meem editor 0.5.0: go to definition, rename symbol, completion of enum members and tuple fields, and highlighting of the 0.17 forms.
+
+All the details are in [the changelog](/en/docs/changelog/). Every example on the site and in the reference handbook was run with the 0.17.3 archive when the site was built.

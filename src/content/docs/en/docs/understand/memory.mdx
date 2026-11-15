@@ -1,6 +1,6 @@
 ---
 title: "Memory in Meem"
-description: "Memory in Meem is manual, in the style of Zig: no reference counting and no garbage collector, but allocators, arenas and خاتمه. What the compiler guarantees and what it does not in 0.10.0, and the detector that is on by default in a direct run, with examples that were run."
+description: "Memory in Meem is manual, in the style of Zig: no reference counting and no garbage collector, but allocators, arenas and خاتمه. What the compiler guarantees and what it does not in 0.17.1, and the detector that is on by default in a direct run, with examples that were run."
 keywords: ["memory", "memory management", "allocator", "arena", "defer", "free", "leak", "debug-mem", "release", "detector", "zig", "garbage collector"]
 ---
 
@@ -64,21 +64,35 @@ So development with a direct run is protected, and the built file is fast, like 
 
 Outside `خطر` (unsafe) and `بلا_فحص` (unchecked), with or without the detector:
 
-**Arithmetic and indexing.** Overflowing 64 bits, an index outside a list or string, division by zero, and unwrapping `لاشيء` are all orderly runtime errors with code 3, an ID and a line, not undefined behaviour:
+**Arithmetic and indexing.** Overflowing the type's width (`عدد64` and the others), an index outside a list or string, division by zero, and unwrapping `لاشيء` are all orderly runtime errors with code 3, an ID and a line, not undefined behaviour:
 
 <Example file="guide/ذاكرة_فهرس.م" title="Index out of bounds" />
 
-<Example file="guide/ذاكرة_تجاوز.م" title="Overflowing 64 bits" />
+<Example file="guide/ذاكرة_تجاوز.م" title="Overflowing عدد64" />
 
 **A list or dictionary used through the same name after `حرر`.** `حرر(ق)` makes `ق` `لاشيء`, and using it afterwards is error [E0428](/en/docs/errors/catalog/#E0428), in a direct run and in a built file alike (in 0.9.1 it was a crash with SIGSEGV):
 
 <Example file="guide/ذاكرة_نفس_الاسم.م" title="Using a list after freeing it, through the same name" />
 
-**No allocation you did not write.** A program allocates only what you see in the code: a builtin that takes an allocator (written, or left to the default), `+` on strings, or a literal `[...]` or `{...}`. Operations on a «view» (the result of `جزء`, `قص_الفراغات`, `مسارات.الامتداد`...) do not copy: `طول`, comparison, indexing, `لكل`, `عدد()`, and a dictionary key. Here is a loop of a thousand rounds with `--debug-mem`, and there is no report at its end because nothing was left:
+**No allocation you did not write.** A program allocates only what you see in the code: a builtin that takes an allocator (written, or left to the default), `+` on strings, or a literal `[...]` or `{...}`. Operations on a «view» (the result of `جزء`, `قص_الفراغات`, `مسارات.الامتداد`...) do not copy: `طول`, comparison, indexing, `لكل`, and a dictionary key. Here is a loop of a thousand rounds with `--debug-mem`, and there is no report at its end because nothing was left:
 
 <Example file="guide/ذاكرة_لا_نسخ.م" title="Operations on a view do not allocate" />
 
 The only exception: growing a string with `ن += ذيل` (see «what it does not guarantee» below).
+
+## What the compiler rejects or warns about before running (since 0.13.0)
+
+**The promise**, in the words of the [memory reference](/en/docs/memory/reference/): «ميم تحرر ما تبنيه في وسط التعبير بنفسها، وتحذّرك من البرنامج الذي يضيّع حجزاً محلياً لم يُحرَّر ولم يخرج من دالته (وترفضه منذ 0.14.0)، ومما تعجز عن إثبات تحريره؛ وما بقي فعليك، والكاشف يدلّك عليه.» (Meem frees what you build in the middle of an expression by itself, warns you about a program that loses a local allocation that was neither freed nor passed out of its function, and rejects it since 0.14.0, and about what it cannot prove is freed; the rest is up to you, and the detector points you to it.)
+
+| Message | When | Mode |
+|---|---|---|
+| [E0472](/en/docs/errors/catalog/#E0472) | An allocation assigned to a local in a function, which does not leave the function and is not named in any `حرر`: it is lost on every call | **Compile error** (since 0.14.0) |
+| [E0471](/en/docs/errors/catalog/#E0471) | No proof it is freed: it is freed on some paths only, or before an early exit, or reassigned in a loop without freeing the previous one | A warning shown only with `--warn-unproven` (since 0.17.0) |
+| [E0473](/en/docs/errors/catalog/#E0473) | `حرر` on a list from `تقسيم` gives back its head, and its parts stay | A warning shown only with `--warn-unproven` (since 0.17.0) |
+
+**`--strict-memory`** (since 0.17.0) makes «no proof of freeing» (`E0471` and `E0473`) a compile error: optional for your program, and the default for the standard library only. The fix is usually one line after the allocation: `خاتمه حرر(س)`, or `ارجع س` if it belongs to the caller. The promise has limits: whatever leaves the function (returned, stored, passed to something that may keep it, or to `خارجي`) is not judged by the language, there is no analysis of pointers, of `خطر` or of C, and the analysis stays silent when in doubt.
+
+And `--debug-mem=fail` (since 0.13.0) turns whatever is left at exit into a failure with code 4, for tests.
 
 ## What only the detector catches
 
@@ -105,7 +119,7 @@ In detector mode, freed memory is filled with the byte `0xDF`, so a read the det
 ## What it does not guarantee
 
 - **A built file without the detector.** The four previous examples, in a file built with `meem build` without `--debug`, are **undefined behaviour**: use after free through another name may print old output or garbage, and a double free through another name crashes the program. That is why we do not publish their output there. Try your program with a direct run, or build it with `--debug`, before building it for release.
-- **What does not run is not checked.** The detector works at run time, and the compiler does not track ownership or aliases. A branch your tests never reach is never checked.
+- **What does not run is not checked.** The detector works at run time, and the compiler's analysis before running (above) does not track aliases or pointers. A branch your tests never reach is never checked.
 - **`حرر` does not follow what is inside.** Freeing a list of lists, a struct holding lists, or a list of strings from `تقسيم` does not free what they hold. For nested structures, use an arena, or a deep free you write yourself.
 - **Growing with `+=` leaves the old buffer behind.** A bounded leak: about the base-2 logarithm of the length in buffers, totalling about twice the final length ([allocation and performance of builtins](/en/docs/stdlib/allocation/)).
 - **Inside `خطر`:** raw pointers, `بلا_فحص`, `حوّل` (cast) and C memory are the writer's responsibility, and the detector does not see C memory.
@@ -114,4 +128,4 @@ In detector mode, freed memory is filled with the byte `0xDF`, so a read the det
 
 ## See also
 
-[Lesson 17: allocators and arenas](/en/learn/allocators/) · [Memory reference](/en/docs/memory/reference/) · [What is خطر?](/en/docs/understand/unsafe/) · [Meem compared with C and Zig](/en/docs/understand/compare/)
+[Lesson 20: allocators and arenas](/en/learn/allocators/) · [Memory reference](/en/docs/memory/reference/) · [What is خطر?](/en/docs/understand/unsafe/) · [Meem compared with C and Zig](/en/docs/understand/compare/)

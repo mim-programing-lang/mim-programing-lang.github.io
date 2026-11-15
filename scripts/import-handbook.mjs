@@ -1,6 +1,6 @@
 // ينسخ الكتاب المرجعي من مستودع المجمّع إلى handbook/ في الموقع: الوثائق والأمثلة فقط، من إيداع محدد.
 // يقرأ بـ git archive ولا يكتب في مستودع المجمّع. الموقع يُبنى من هذه النسخة، لا من المستودع مباشرة.
-// الاستعمال: HANDBOOK_COMMIT=7a52f6c COMPILER_REPO=../my_compiler npm run import-handbook
+// الاستعمال: HANDBOOK_COMMIT=v0.17.1 COMPILER_REPO=../my_compiler npm run import-handbook
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync, mkdtempSync, cpSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -8,11 +8,11 @@ import path from 'node:path';
 import { root } from './lib/meem.mjs';
 
 const repo = path.resolve(process.env.COMPILER_REPO ?? path.join(root, '../my_compiler'));
-const commit = process.env.HANDBOOK_COMMIT ?? '7a52f6c';
+const commit = process.env.HANDBOOK_COMMIT ?? 'v0.17.1';
 // ما يُنسخ: الكتاب كله، ووثيقتا الملعب والجاهزية اللتان يحيل إليهما.
 const PATHS = ['docs/handbook', 'docs/playground.md', 'docs/v1-readiness.md'];
 
-const full = spawnSync('git', ['-C', repo, 'rev-parse', commit], { encoding: 'utf8' });
+const full = spawnSync('git', ['-C', repo, 'rev-parse', `${commit}^{commit}`], { encoding: 'utf8' });
 if (full.status !== 0) {
   console.error(`[import-handbook] الإيداع ${commit} غير موجود في ${repo}.`);
   process.exit(1);
@@ -30,7 +30,7 @@ try {
   mkdirSync(path.join(dest, '_related'), { recursive: true });
   cpSync(path.join(tmp, 'docs/playground.md'), path.join(dest, '_related/playground.md'));
   cpSync(path.join(tmp, 'docs/v1-readiness.md'), path.join(dest, '_related/v1-readiness.md'));
-  writeFileSync(path.join(dest, 'SOURCE.json'), JSON.stringify({ repo: 'my_compiler', branch: '0.7.0-dev', commit: full.stdout.trim(), paths: PATHS }, null, 2) + '\n');
+  writeFileSync(path.join(dest, 'SOURCE.json'), JSON.stringify({ repo: 'my_compiler', branch: 'release-0.17', commit: full.stdout.trim(), paths: PATHS }, null, 2) + '\n');
   console.log(`[import-handbook] docs/handbook عند ${full.stdout.trim().slice(0, 7)} ← handbook/`);
 } finally {
   rmSync(tmp, { recursive: true, force: true });

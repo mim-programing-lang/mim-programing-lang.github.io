@@ -1,0 +1,61 @@
+---
+title: "19. The collections library"
+description: "Use the standard module «مجموعات» (collections), the stack, the queue and the set: add, take out, and check membership."
+keywords: ["collections", "set", "stack", "queue", "مجموعات", "كومة", "طابور"]
+---
+
+import Example from '../../../../components/Example.astro';
+import HBExample from '../../../../components/HBExample.astro';
+import VersionBanner from '../../../../components/VersionBanner.astro';
+import LessonMeta from '../../../../components/LessonMeta.astro';
+import Solution from '../../../../components/Solution.astro';
+import NextLesson from '../../../../components/NextLesson.astro';
+
+<VersionBanner />
+
+<LessonMeta />
+
+## Goal
+
+To choose the structure that fits what you are doing: the stack for the last thing in, the queue for the first thing in, and the set for membership without repetition.
+
+## Explanation
+
+- After `استورد مجموعات` (import collections), you build the structure from a list: `كومة_من` (stack from), `طابور_من` (queue from) and `مجموعة_من` (set from). The element type is inferred from the list, because they are generic structs written in Meem (since 0.17.0).
+- What only reads takes the structure itself (`اعلى` top, `طول_كومة` stack length, `يحوي_عنصر` contains), and what changes it takes a **pointer** to it (`ادفع` push, `اسحب` pop, `اضف_اليها` add). That is why it is built with `جديد(...)` (new) and read with `محتوى(...)` (contents).
+- Taking from an empty structure returns `لاشيء` (nothing), so the result of `اسحب` and `اعلى` has the type `ن؟`: give it a fallback with `والا` (else).
+- **Freeing** (since 0.17.2): `حرر_كومة`, `حرر_طابور` and `حرر_مجموعة` give the structure's memory back, so it is not used afterwards. For one allocated with `جديد`, free its contents and then the slot: write `خاتمه حرر(ك)` and then `خاتمه مجموعات.حرر_كومة(محتوى(ك))` next to the line that builds it; `خاتمه` runs in reverse order.
+
+The examples here were run with the `--debug-mem` option, and the line «كل الخانات حُرّرت» (all slots were freed) at their end says that nothing was left.
+
+**The stack:** the last thing in is the first thing out.
+
+<Example file="lessons/مجموعات_كومة.م" title="Undoing step by step" />
+
+**The queue:** the first thing in is the first thing out.
+
+<Example file="lessons/مجموعات_طابور.م" title="Waiting in line" />
+
+**The set:** each element appears once, and `يحوي_عنصر` answers: is it in there?
+
+<Example file="lessons/مجموعات_مجموعة.م" title="The different visitors" />
+
+## Exercise
+
+Count the different words in a sentence with `تقسيم` (split) and then `مجموعة_من`. Then keep the squares a player passed through on a board in a set of a struct `مربع` (square) that implements `قابل_للتجزئة`, and ask whether the player passed through a given square. Free everything you built, so that `--debug-mem` prints no report (the parts from `تقسيم` go in an arena, given back at once).
+
+<Solution file="lessons/مجموعات_حل.م" title="Solution" />
+
+## Common mistakes
+
+A set of a struct that does not implement `قابل_للتجزئة` ([E0521](/en/docs/errors/catalog/#E0521)):
+
+<Example file="lessons/مجموعات_خطأ.م" title="Causes the error" />
+
+The fix: `هيكل نقطة يحقق قابل_للتجزئة:`, so the compiler derives hashing and equality from the fields.
+
+## See also
+
+[The collections module in the reference](/en/docs/stdlib/collections/) · [Generics and traits](/en/learn/generics/) · [Lists](/en/learn/lists/)
+
+<NextLesson />

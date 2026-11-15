@@ -1,5 +1,5 @@
 ---
-title: "17. Allocators and arenas"
+title: "20. Allocators and arenas"
 description: "Where memory comes from in Meem: the default allocator, the arena that gives everything back at once, and finding what was not freed with --debug-mem."
 keywords: ["allocator", "allocators", "arena", "leak", "debug-mem", "ساحة", "اعد", "خاتمه", "حرر"]
 ---
@@ -31,7 +31,7 @@ To know where your program's memory is allocated from, and to give it back yours
 
 <Example file="lessons/16_تسرب.م" title="A string built in a loop and never freed" />
 
-**Safety limits today (0.10.0):** indexing and arithmetic are always protected, and a list or dictionary used through the same name after `حرر` is error [E0428](/en/docs/errors/catalog/#E0428) in every mode. Use after free through another name, or after `اعد` on its arena, is caught by the detector, which is on by default in a direct run ([E0429](/en/docs/errors/catalog/#E0429)); in a file built without `--debug` it is undefined behaviour. Here is a list from an arena used after `اعد`, in a direct run with no options:
+**Safety limits:** indexing and arithmetic are always protected, and a list or dictionary used through the same name after `حرر` is error [E0428](/en/docs/errors/catalog/#E0428) in every mode. Use after free through another name, or after `اعد` on its arena, is caught by the detector, which is on by default in a direct run ([E0429](/en/docs/errors/catalog/#E0429)); in a file built without `--debug` it is undefined behaviour. Here is a list from an arena used after `اعد`, in a direct run with no options:
 
 <Example file="guide/ذاكرة_ساحة_بعد_اعد.م" title="An arena after اعد" />
 
@@ -45,7 +45,7 @@ Fix the program above so that `--debug-mem` prints no report, and add up the len
 
 ## Common mistakes
 
-- Forgetting to free in a long loop: no error, but memory grows until exit. `--debug-mem` reveals it by line, and `--strict` warns about it with warning E0270 for a temporary string in a loop.
+- Forgetting to free in a long loop: no error, but memory grows until exit. `--debug-mem` reveals it by line, and `--warn-unproven` warns about it before running with warning [E0471](/en/docs/errors/catalog/#E0471) «لا دليل على تحرير» (no proof of freeing), outside the default mode since 0.17.0. Inside a function, a local allocation that is neither freed nor passed out is compile error [E0472](/en/docs/errors/catalog/#E0472).
 - Freeing the same thing twice through two names: a «double free» caught by the detector ([E0350](/en/docs/errors/catalog/#E0350) for a list or dictionary, [E0431](/en/docs/errors/catalog/#E0431) for a string, and [E0421](/en/docs/errors/catalog/#E0421) for a slot). In a file built without the detector, it crashes the program.
 - Using a list or dictionary after `حرر`, or after `اعد` on its arena: a runtime error with the detector, and undefined behaviour in a file built without it. Do not touch what you have freed.
 

@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" class="astro-g5ptsecz"><head><meta charset="utf-8"/><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval' 'sha256-VWo5Wp4aqSj6nSgMpeAp9cKieaoIfwFUAunAVugI5gA=' 'sha256-f/zAUE74ucc3JYp4r4QQvkJofoQdkOIhHYK+jeZ6eko=' 'sha256-GkZBRnvSuhtx/cvzvukVkX2JJZW+DdPlVr7BX8Tefqo=' 'sha256-nVO98WGdJA5yup1/MAdukGqUlS6Psuf7JJFF5ikWqbQ=' 'sha256-WhDf1fB60V2tKofflwddH/Mkkz16hv1jRQVKEx4wQik=' 'sha256-VgrgcKBvIM3XpiLJ6fEv1Vy6YHBwlKLkYtFdfBMouTo='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'"><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Try 0.17.3 with us | Meem</title><link rel="canonical" href="https://meemlang.org/en/beta/"/><link rel="alternate" hreflang="ar" href="https://meemlang.org/beta/"/><link rel="alternate" hreflang="en" href="https://meemlang.org/en/beta/"/><link rel="alternate" hreflang="x-default" href="https://meemlang.org/beta/"/><link rel="sitemap" href="/sitemap-index.xml"/><script src="/lang-redirect.js"></script><link rel="preload" href="/fonts/noto-sans-arabic.woff2" as="font" type="font/woff2" crossorigin/><link rel="preload" href="/fonts/noto-sans.woff2" as="font" type="font/woff2" crossorigin/><link rel="preload" href="/fonts/cairo.woff2" as="font" type="font/woff2" crossorigin/><script type="module" src="/search-warm.js"></script><link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.3.8"/><meta name="generator" content="Starlight v0.42.6"/><meta property="og:title" content="Try 0.17.3 with us"/><meta property="og:type" content="article"/><meta property="og:url" content="https://meemlang.org/en/beta/"/><meta property="og:locale" content="en"/><meta property="og:description" content="Meem 0.17.3 is a beta release before 1.0: what changed since 0.10.0, what we ask you to test, how to report a bug with one template, what is already known, and when 1.0 comes."/><meta property="og:site_name" content="Meem"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="Meem 0.17.3 is a beta release before 1.0: what changed since 0.10.0, what we ask you to test, how to report a bug with one template, what is already known, and when 1.0 comes."/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/_astro/common.SqcvULTH.css"><script type="module" src="/_astro/page.cNngjUgL.js"></script></head><body class="astro-g5ptsecz"><a class="sl-skip-link astro-qb7clj6f" href="#_top">Skip to content</a><div class="page sl-flex astro-yntsjkba"><header class="header astro-yntsjkba"><div class="header astro-by6fddyj"><div class="title-wrapper sl-flex astro-by6fddyj"><a href="/en/" class="site-title sl-flex astro-6rvad3va"><img class="astro-6rvad3va" alt="شعار ميم" src="/_astro/language-logo.B_zM1KRS.svg" width="512" height="512"><span class="astro-6rvad3va" translate="no">Meem</span></a></div><div class="sl-flex print:hidden astro-by6fddyj"><site-search class="astro-by6fddyj astro-b5kgnn7o" data-translations="{&quot;placeholder&quot;:&quot;Search&quot;,&quot;search_label&quot;:&quot;Search the site&quot;}"><button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" class="astro-b5kgnn7o"><svg aria-hidden="true" class="astro-b5kgnn7o astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-b5kgnn7o" aria-hidden="true">Search</span><kbd class="sl-hidden md:sl-flex astro-b5kgnn7o" style="display: none;"><kbd class="astro-b5kgnn7o">Ctrl</kbd><kbd class="astro-b5kgnn7o">K</kbd></kbd></button><dialog style="padding:0" aria-label="Search" class="astro-b5kgnn7o"><div class="dialog-frame sl-flex astro-b5kgnn7o"><button data-close-modal class="sl-flex md:sl-hidden astro-b5kgnn7o">Cancel</button><div class="search-container astro-b5kgnn7o"><div id="starlight__search" class="astro-b5kgnn7o"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.g9hoxVJg.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-by6fddyj"><div class="sl-flex social-icons astro-by6fddyj"><nav class="top-nav astro-o2gh7vpa" aria-label="Site sections"><a href="/en/learn/" class="astro-o2gh7vpa">Learn Meem</a><a href="/en/docs/" class="astro-o2gh7vpa">Reference</a><a href="/en/try/" class="astro-o2gh7vpa">Examples</a><a href="/en/playground/" class="astro-o2gh7vpa">Playground</a><a href="/en/download/" class="astro-o2gh7vpa">Download</a><a href="/en/support/" class="astro-o2gh7vpa">Support</a></nav></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-2z5xp7gb"><span class="sr-only astro-2z5xp7gb">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-2z5xp7gb astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-2z5xp7gb"><option value="dark" class="astro-2z5xp7gb">Dark</option><option value="light" class="astro-2z5xp7gb">Light</option><option value="auto" selected class="astro-2z5xp7gb">Auto</option></select><svg aria-hidden="true" class="icon caret astro-2z5xp7gb astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script><a class="lang-switch astro-juchyx6x" href="/beta/" hreflang="ar" lang="ar" data-lang-choice="ar">العربية</a><script type="module">document.querySelectorAll(`[data-lang-choice]`).forEach(e=>e.addEventListener(`click`,()=>{try{localStorage.setItem(`meem-lang`,e.dataset.langChoice??``)}catch{}}));</script></div></div></header><div class="main-frame astro-yntsjkba"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-lrzkfocr"><div class="main-pane astro-lrzkfocr"><main data-pagefind-body class="astro-g5ptsecz" lang="en" dir="ltr"><div class="content-panel astro-a7po4psb"><div class="sl-container astro-a7po4psb"><h1 id="_top" class="astro-bebwqqxs">Try 0.17.3 with us</h1><span data-pagefind-weight="0.2" data-pagefind-index-attrs="data-terms" data-terms="خطا الخطا اخطاء الاخطاء"></span></div></div><div class="content-panel astro-a7po4psb"><div class="sl-container astro-a7po4psb"><div class="sl-markdown-content">
+<p>Meem <strong>0.17.3</strong> is <strong>the beta before 1.0</strong>, together with the Meem editor 0.5.0 (which has Meem 0.17.3 built in). The aim is for many people to write real programs in Meem on their own machines, so that what automated testing misses comes to light before the language is frozen in 1.0. Between 0.10.0 and 0.17.3 the language changed a lot, and some of the changes <strong>break</strong> 0.10 programs. Download it from the <a href="/en/download/">download</a> page.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="what-changed-since-0100">What changed since 0.10.0</h2><a class="sl-anchor-link" href="#what-changed-since-0100"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “What changed since 0.10.0”</span></a></div>
+<ul>
+<li><strong>0.11:</strong> a string cannot be <code dir="auto">لاشيء</code> (nothing); absence is an optional type <code dir="auto">ن؟</code>, checked before use; and an error has context («نشأ في», originated in, a cause and a message). <a href="/en/docs/migration/to-0-11/">Migration</a></li>
+<li><strong>0.12 (breaking):</strong> sized numbers: <code dir="auto">عدد</code> and <code dir="auto">كسر</code> were removed, you write <code dir="auto">عدد64</code> and <code dir="auto">كسر64</code>, and conversion is explicit (<code dir="auto">حلل(ن, عدد64)</code>). <a href="/en/docs/migration/to-0-12/">Migration</a></li>
+<li><strong>0.13:</strong> the compiler frees temporaries by itself, and <code dir="auto">--debug-mem=fail</code>. <a href="/en/docs/migration/to-0-13/">Migration</a></li>
+<li><strong>0.14:</strong> tuples and destructuring, enum values and widths, line-by-line reading, binary files and byte strings, and <strong>the confirmed leak <code dir="auto">E0472</code> is a compile error</strong>. <a href="/en/docs/migration/to-0-14/">Migration</a></li>
+<li><strong>0.15 and 0.16:</strong> enums with a payload, and generic functions, structs and enums. <a href="/en/docs/migration/to-0-15/">Migration</a></li>
+<li><strong>0.17 (breaking):</strong> traits and constraints (<code dir="auto">سمة</code> and <code dir="auto">يحقق</code> are reserved words), the <code dir="auto">مجموعات</code> (collections) library, and <code dir="auto">--strict-memory</code>; and the warning policy: thirteen warnings became compile errors, and what the compiler cannot prove is behind <code dir="auto">--warn-unproven</code>. <a href="/en/docs/migration/to-0-17/">Migration</a></li>
+<li><strong>0.17.1 to 0.17.3:</strong> handbook corrections, free functions in <code dir="auto">مجموعات</code>, and <code dir="auto">==</code> on an enum with a payload that does not implement <code dir="auto">قابل_للمساواة</code> is now a compile error (<code dir="auto">E0536</code>) instead of a silent wrong result.</li>
+</ul>
+<p>Every change is in <a href="/en/docs/changelog/">the changelog</a>, and the new lessons: <a href="/en/learn/tuples/">tuples</a>, <a href="/en/learn/generics/">generics and traits</a>, and <a href="/en/learn/collections/">the collections library</a>.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="what-we-ask-you-to-test">What we ask you to test</h2><a class="sl-anchor-link" href="#what-we-ask-you-to-test"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “What we ask you to test”</span></a></div>
+<p>In order, most important first:</p>
+<ol>
+<li><strong>Installing and running on your machine:</strong> unpack the archive, then <code dir="auto">meem --version</code>, the self-test (<code dir="auto">meem --self-test</code>), and <code dir="auto">meem build</code>, on any Linux x86_64 with glibc 2.35 or newer. The package was tested on Debian 12 and Ubuntu 22.04 only, so every other distribution (Fedora, Arch, openSUSE, Mint…) is a new trial.</li>
+<li><strong>Real programs:</strong> a small tool you need (processing a text file, a calculation, a terminal game), not the handbook’s examples. What matters: can it be written in Meem as you expect, and where did you have to work around something.</li>
+<li><strong>Error messages:</strong> when the compiler rejects your program, does the message say what the error is and where, and does the hint fix it? An unclear message deserves its own report.</li>
+<li><strong>The newest parts of the language:</strong> sized numbers and the optional type, <a href="/en/learn/tuples/">tuples</a>, <a href="/en/docs/language/enums/">enums with a payload</a>, <a href="/en/docs/language/generics/">generics and traits</a>, and <a href="/en/docs/memory/">memory</a> (<code dir="auto">E0472</code>, <code dir="auto">--warn-unproven</code>, <code dir="auto">--strict-memory</code> and the detector): can you write what you want with them, and does the message point you to the line? And does the output of <code dir="auto">meem برنامج.م</code> differ from <code dir="auto">--release</code>?</li>
+<li><strong>The standard modules:</strong> <code dir="auto">ملفات</code> (with the reader, the writer and binary files), <code dir="auto">نظام</code>, <code dir="auto">مسارات</code>, <code dir="auto">رياضيات</code>, <code dir="auto">عشوائي</code> and <code dir="auto">مجموعات</code>, on Arabic and large files and paths.</li>
+<li><strong><code dir="auto">meem build</code>:</strong> does the built file run on another machine that has no Meem?</li>
+<li><strong>The tools:</strong> <code dir="auto">--check --json</code> and <code dir="auto">--fix</code>, for anyone writing a tool or an editor plugin (<a href="/en/docs/tools/check-json/">the tools contract</a>).</li>
+</ol>
+<p>Not needed: precise performance, and behaviour inside <code dir="auto">خطر</code> (which is undefined anyway).</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="how-to-report-a-bug">How to report a bug</h2><a class="sl-anchor-link" href="#how-to-report-a-bug"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “How to report a bug”</span></a></div>
+<p>Reports go in the <a href="https://github.com/mim-programing-lang/meem-feedback">meem-feedback</a> repository on GitHub (you need a GitHub account), one report per bug. It has a «بلاغ خلل» (bug report) form with the same fields as the template below, and a «اقتراح» (suggestion) form; the forms are in Arabic. Before you write: search the open reports, and «what is already known» at the bottom of this page.</p>
+<p class="issues-link"><a href="https://github.com/mim-programing-lang/meem-feedback/issues/new/choose">Open a report or a suggestion</a> · <a href="https://github.com/mim-programing-lang/meem-feedback/issues">Open reports</a></p>
+<div class="sl-heading-wrapper level-h3"><h3 id="the-report-template">The report template</h3><a class="sl-anchor-link" href="#the-report-template"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “The report template”</span></a></div>
+<p>Copy it as it is into the body of the report, and fill in every section (write «not applicable» rather than deleting a section):</p>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.83k8r.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="markdown"><code><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--0fw:bold;--1:#24292E;--1fw:bold">**Title:**</span><span style="--0:#E1E4E8;--1:#24292E"> [</span><span style="--0:#DBEDFF;--0td:underline;--1:#032F62;--1td:underline">category</span><span style="--0:#E1E4E8;--1:#24292E">] a short description (example: [</span><span style="--0:#DBEDFF;--0td:underline;--1:#032F62;--1td:underline">سقوط</span><span style="--0:#E1E4E8;--1:#24292E">] meem build crashes on a list of dictionaries)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#79B8FF;--0fw:bold;--1:#005CC5;--1fw:bold">### Version and system</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFAB70;--1:#AE4B07">-</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">`meem --version`</span><span style="--0:#E1E4E8;--1:#24292E">:</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFAB70;--1:#AE4B07">-</span><span style="--0:#E1E4E8;--1:#24292E"> System (</span><span style="--0:#79B8FF;--1:#005CC5">`grep PRETTY_NAME /etc/os-release`</span><span style="--0:#E1E4E8;--1:#24292E">):</span></div></div><div class="ec-line"><div class="code"><span style="--0:#FFAB70;--1:#AE4B07">-</span><span style="--0:#E1E4E8;--1:#24292E"> glibc (</span><span style="--0:#79B8FF;--1:#005CC5">`ldd --version | head -1`</span><span style="--0:#E1E4E8;--1:#24292E">):</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#79B8FF;--0fw:bold;--1:#005CC5;--1fw:bold">### The program</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">The smallest program that shows the bug (and the files it reads, if any):</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">```ميم</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">اطبع("...")</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">```</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#79B8FF;--0fw:bold;--1:#005CC5;--1fw:bold">### The command</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">```sh</span></div></div><div class="ec-line"><div class="code"><span style="--0:#B392F0;--1:#6F42C1">meem</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#9ECBFF;--1:#032F62">برنامج.م</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">```</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#79B8FF;--0fw:bold;--1:#005CC5;--1fw:bold">### What happened</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">The whole of stderr as it is, and the exit code (</span><span style="--0:#79B8FF;--1:#005CC5">`echo $?`</span><span style="--0:#E1E4E8;--1:#24292E">):</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">```</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">```</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#79B8FF;--0fw:bold;--1:#005CC5;--1fw:bold">### What you expected</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">One line.</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#79B8FF;--0fw:bold;--1:#005CC5;--1fw:bold">### For compile errors (code 2)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">The output of </span><span style="--0:#79B8FF;--1:#005CC5">`meem --check --json برنامج.م`</span><span style="--0:#E1E4E8;--1:#24292E">:</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">```json</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">```</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="انسخ" data-copied="نُسخ" data-code="**Title:** [category] a short description (example: [سقوط] meem build crashes on a list of dictionaries)### Version and system- &#x60;meem --version&#x60;:- System (&#x60;grep PRETTY_NAME /etc/os-release&#x60;):- glibc (&#x60;ldd --version | head -1&#x60;):### The programThe smallest program that shows the bug (and the files it reads, if any):&#x60;&#x60;&#x60;ميماطبع(&quot;...&quot;)&#x60;&#x60;&#x60;### The command&#x60;&#x60;&#x60;shmeem برنامج.م&#x60;&#x60;&#x60;### What happenedThe whole of stderr as it is, and the exit code (&#x60;echo $?&#x60;):&#x60;&#x60;&#x60;&#x60;&#x60;&#x60;### What you expectedOne line.### For compile errors (code 2)The output of &#x60;meem --check --json برنامج.م&#x60;:&#x60;&#x60;&#x60;json&#x60;&#x60;&#x60;"><div></div></button></div></figure></div>
+<table>
+<thead>
+<tr>
+<th>What you attach</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code dir="auto">meem --version</code></td>
+<td>It holds the commit (such as <code dir="auto">0.17.3+abcdef0</code>), which identifies the exact package</td>
+</tr>
+<tr>
+<td>The system and glibc</td>
+<td>The package was tested on Debian 12 and Ubuntu 22.04 only</td>
+</tr>
+<tr>
+<td>The program as text (the <code dir="auto">.م</code> file, not a screenshot)</td>
+<td>To reproduce the bug; a smaller program is fixed faster</td>
+</tr>
+<tr>
+<td>stderr and the exit code</td>
+<td>The most important part is the message’s ID (<code dir="auto">E0123</code> in <code dir="auto">[خطأ دلالي E0123]</code>), explained in the <a href="/en/docs/errors/catalog/">error catalog</a></td>
+</tr>
+<tr>
+<td><code dir="auto">--check --json</code></td>
+<td>The full diagnosis with its position and ID</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Report categories</strong>, by what you see (the category tag goes in the title, in Arabic):</p>
+<table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>Category (in the title)</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>«خطأ داخلي في المجمّع» (internal compiler error) or a Python traceback</td>
+<td>[داخلي] (internal)</td>
+<td>Top</td>
+</tr>
+<tr>
+<td>The program crashes with a signal (SIGSEGV, code 139) outside <code dir="auto">خطر</code></td>
+<td>[سقوط] (crash)</td>
+<td>Top</td>
+</tr>
+<tr>
+<td>Output that contradicts the handbook, or a correct program rejected</td>
+<td>[ناتج] (output)</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code dir="auto">meem build</code> gives output different from a direct run</td>
+<td>[بناء] (build)</td>
+<td>High</td>
+</tr>
+<tr>
+<td>A message that cannot be understood, or a hint that leads to another error</td>
+<td>[رسالة] (message)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Something hard to write in Meem</td>
+<td>[لغة] (language)</td>
+<td>Collected for the 1.0 decision</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Privacy:</strong> the compiler sends nothing anywhere. But a report on GitHub is <strong>public</strong>, so remove from the program and the output whatever you do not want published: paths with your name in them, secrets in environment variables, and real data.</p>
+<div class="sl-heading-wrapper level-h2"><h2 id="what-is-already-known-no-report-needed">What is already known (no report needed)</h2><a class="sl-anchor-link" href="#what-is-already-known-no-report-needed"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “What is already known (no report needed)”</span></a></div>
+<table>
+<thead>
+<tr>
+<th>Known</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linux x86_64 only, and glibc 2.35 or newer</td>
+<td>No macOS, Windows, ARM or musl distributions, and not in 1.0 either</td>
+</tr>
+<tr>
+<td>The licence</td>
+<td>The <a href="/en/license/">Meem License</a> (version 1.0), and its text is inside the package: in the compiler’s folder since 0.9.1 (<code dir="auto">LICENSE</code> and <code dir="auto">LICENSE.en</code>), and in both editor packages since 0.4.0 (<code dir="auto">/usr/share/doc/meem-editor/</code>) and the «About» window</td>
+</tr>
+<tr>
+<td>The AppImage does not register the file type with the system</td>
+<td>No icon for <code dir="auto">.م</code> files and no association with the editor, except with the deb package</td>
+</tr>
+<tr>
+<td>Strings are sorted by code point</td>
+<td>No Arabic dictionary order</td>
+</tr>
+<tr>
+<td>No untagged <code dir="auto">اتحاد</code> (union), no pointer arithmetic, and no dynamic polymorphism</td>
+<td>After 1.0 (generics and enums with a payload exist since 0.15–0.16)</td>
+</tr>
+<tr>
+<td>No JSON, networking or running commands in the library</td>
+<td>Not before 1.0, and <code dir="auto">خارجي</code> to C is available</td>
+</tr>
+<tr>
+<td>A named string in a long loop stays until exit if it is not freed</td>
+<td>A temporary without a name is freed by itself since 0.13.0; a named one is mentioned by <code dir="auto">--warn-unproven</code> (<code dir="auto">E0471</code>), and <code dir="auto">خاتمه حرر(ن)</code> gives it back (<a href="/en/learn/memory/">memory in long loops</a>)</td>
+</tr>
+<tr>
+<td>A built file without the detector</td>
+<td>Use after free through another name is undefined behaviour in it (old output or garbage), and a double free through another name crashes it. A direct run and <code dir="auto">meem build --debug</code> catch both</td>
+</tr>
+<tr>
+<td>Growing with <code dir="auto">ن += ذيل</code> leaves the old buffer behind</td>
+<td>A documented, bounded leak: about the base-2 logarithm of the length in buffers, totalling about twice the final length</td>
+</tr>
+<tr>
+<td><code dir="auto">حرر</code> does not follow what is inside a container</td>
+<td>A list of lists, or a list of strings from <code dir="auto">تقسيم</code>: use an arena for nested structures</td>
+</tr>
+<tr>
+<td>The detector is slower</td>
+<td>A direct run is 0% to 32% slower than <code dir="auto">--release</code> on the benchmark programs, and memory freed in its mode is not returned to the system</td>
+</tr>
+<tr>
+<td>A call chain deeper than 2000 to 3000 consecutive functions</td>
+<td>Compile error <code dir="auto">E0385</code> «أعقد مما يدعمه المجمّع» (more complex than the compiler supports), not a crash; a documented limit that stays</td>
+</tr>
+<tr>
+<td>A huge file is slow to compile</td>
+<td>50 thousand lines (5000 functions): <code dir="auto">--check</code> in 8 s, and running or building in 66 s with 1.4 GB of memory</td>
+</tr>
+<tr>
+<td>No CPU or memory limit in the compiler</td>
+<td>A program runs with the user’s full permissions (<a href="/en/docs/language/security/">what a program can do on your machine</a>); the options <code dir="auto">--no-system</code>, <code dir="auto">--no-ffi</code> and <code dir="auto">--no-unsafe</code> restrict it</td>
+</tr>
+<tr>
+<td>Fixed in 0.11 to 0.17.3</td>
+<td>Line-by-line reading and binary files (0.14); double-clicking a <code dir="auto">.م</code> file in GIO-based file managers (GNOME) is recognised as <code dir="auto">text/x-meem</code> since Meem editor 0.5.0; and <code dir="auto">==</code> on an enum with a payload without <code dir="auto">يحقق قابل_للمساواة</code> used to return <code dir="auto">خطاء</code> silently and is now <code dir="auto">E0536</code> (0.17.3)</td>
+</tr>
+<tr>
+<td>Fixed in 0.10.0</td>
+<td>The crash from using a list or dictionary after <code dir="auto">حرر</code> (now <code dir="auto">E0428</code>), and the hidden copies from views</td>
+</tr>
+<tr>
+<td>Fixed after 0.8.0</td>
+<td>A string too big for memory used to crash the program (now «نفدت الذاكرة», out of memory, <code dir="auto">E0427</code>), and a very deep call chain used to be an «internal error»</td>
+</tr>
+</tbody>
+</table>
+<div class="sl-heading-wrapper level-h2"><h2 id="when-10-comes">When 1.0 comes</h2><a class="sl-anchor-link" href="#when-10-comes"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “When 1.0 comes”</span></a></div>
+<p>1.0 comes when all of these hold:</p>
+<ol>
+<li><strong>At least four weeks</strong> after the next beta release.</li>
+<li><strong>At least five testers</strong> besides the project’s owner.</li>
+<li><strong>At least three distributions</strong> on which the package was tried.</li>
+<li><strong>No open report of top or high priority</strong> (<code dir="auto">[داخلي]</code>, <code dir="auto">[سقوط]</code>, <code dir="auto">[ناتج]</code> and <code dir="auto">[بناء]</code>).</li>
+</ol></div><footer class="sl-flex astro-ddtxxk7k"><div class="meta sl-flex astro-ddtxxk7k"></div><div class="pagination-links print:hidden astro-b5raizh3" dir="ltr"></div></footer><nav class="site-footer astro-jo6i4kqk" aria-label="Site links"><a href="/en/about/" class="astro-jo6i4kqk">About</a><a href="/en/download/" class="astro-jo6i4kqk">Download</a><a href="/en/beta/" class="astro-jo6i4kqk">Try 0.17.3 with us</a><a href="/en/support/" class="astro-jo6i4kqk">Support Meem</a><span class="astro-jo6i4kqk">All rights reserved, except as granted by the <a href="/en/license/" class="astro-jo6i4kqk">Meem License</a>.</span><span class="astro-jo6i4kqk">Meem — beta</span></nav></div></div></main></div></div></div></div></body></html>

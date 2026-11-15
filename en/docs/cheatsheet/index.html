@@ -1,0 +1,380 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-sidebar class="astro-g5ptsecz"><head><meta charset="utf-8"/><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval' 'sha256-VWo5Wp4aqSj6nSgMpeAp9cKieaoIfwFUAunAVugI5gA=' 'sha256-f/zAUE74ucc3JYp4r4QQvkJofoQdkOIhHYK+jeZ6eko=' 'sha256-GkZBRnvSuhtx/cvzvukVkX2JJZW+DdPlVr7BX8Tefqo=' 'sha256-nVO98WGdJA5yup1/MAdukGqUlS6Psuf7JJFF5ikWqbQ=' 'sha256-WhDf1fB60V2tKofflwddH/Mkkz16hv1jRQVKEx4wQik=' 'sha256-ucPfdYc9FPIvbmnn9ECv3eLKYLt8/heMPFQ+hNTn6jY=' 'sha256-wX2yOADeV+NMngflD5uYi3vl50SHC4sfM1EmylVjlX4=' 'sha256-7eCV4jtsr4t4knb3c4FCRPeu7GGZeOUGE3XvWix0XOQ=' 'sha256-VgrgcKBvIM3XpiLJ6fEv1Vy6YHBwlKLkYtFdfBMouTo='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'"><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Cheat sheet | Meem</title><link rel="canonical" href="https://meemlang.org/en/docs/cheatsheet/"/><link rel="alternate" hreflang="ar" href="https://meemlang.org/docs/cheatsheet/"/><link rel="alternate" hreflang="en" href="https://meemlang.org/en/docs/cheatsheet/"/><link rel="alternate" hreflang="x-default" href="https://meemlang.org/docs/cheatsheet/"/><link rel="sitemap" href="/sitemap-index.xml"/><script src="/lang-redirect.js"></script><link rel="preload" href="/fonts/noto-sans-arabic.woff2" as="font" type="font/woff2" crossorigin/><link rel="preload" href="/fonts/noto-sans.woff2" as="font" type="font/woff2" crossorigin/><link rel="preload" href="/fonts/cairo.woff2" as="font" type="font/woff2" crossorigin/><script type="module" src="/search-warm.js"></script><link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.3.8"/><meta name="generator" content="Starlight v0.42.6"/><meta property="og:title" content="Cheat sheet"/><meta property="og:type" content="article"/><meta property="og:url" content="https://meemlang.org/en/docs/cheatsheet/"/><meta property="og:locale" content="en"/><meta property="og:description" content="Meem 0.17.1 on one printable page: types, control flow, functions, structs, enums, errors, memory, modules and commands."/><meta property="og:site_name" content="Meem"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="Meem 0.17.1 on one printable page: types, control flow, functions, structs, enums, errors, memory, modules and commands."/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/_astro/common.SqcvULTH.css"><script type="module" src="/_astro/page.cNngjUgL.js"></script><style>.meem-example{margin-block:1.5rem}.meem-example .expressive-code .frame pre,.meem-example .expressive-code .frame{border-end-end-radius:0;border-end-start-radius:0}.meem-output{border:1px solid var(--meem-border);background:var(--meem-surface);border-block-start:0;border-radius:0 0 .5rem .5rem;margin:0;overflow:hidden}.meem-output figcaption{font-size:var(--sl-text-xs);color:var(--sl-color-gray-2);border-block-end:1px solid var(--meem-border);flex-wrap:wrap;justify-content:space-between;gap:.25rem 1rem;padding:.4rem 1rem;display:flex}.meem-output-meta{font-family:var(--sl-font-mono)}.meem-output pre{font-family:var(--sl-font-mono);background:0 0;border:0;margin:0;padding:.75rem 1rem;font-size:.95rem;line-height:1.9;overflow-x:auto}.meem-output pre .line{text-align:right;white-space:pre;unicode-bidi:plaintext;display:block}.meem-output .meem-stderr{border-block-start:1px dashed var(--meem-border);border-inline-start:3px solid var(--meem-red)}.meem-output .meem-stdin{border-block-end:1px dashed var(--meem-border);color:var(--sl-color-gray-2)}.meem-label,.meem-empty,.meem-exit{font-size:var(--sl-text-xs);color:var(--sl-color-gray-2);margin:0;padding:.4rem 1rem 0;display:block}.meem-empty,.meem-exit{padding-block-end:.4rem}.meem-exit{border-block-start:1px solid var(--meem-border)}.hb-try{border-block-start:1px solid var(--meem-border);font-size:var(--sl-text-sm);margin:0;padding:.4rem 1rem;font-weight:600}
+</style></head><body class="astro-g5ptsecz"><a class="sl-skip-link astro-qb7clj6f" href="#_top">Skip to content</a><div class="page sl-flex astro-yntsjkba"><header class="header astro-yntsjkba"><div class="header astro-by6fddyj"><div class="title-wrapper sl-flex astro-by6fddyj"><a href="/en/" class="site-title sl-flex astro-6rvad3va"><img class="astro-6rvad3va" alt="شعار ميم" src="/_astro/language-logo.B_zM1KRS.svg" width="512" height="512"><span class="astro-6rvad3va" translate="no">Meem</span></a></div><div class="sl-flex print:hidden astro-by6fddyj"><site-search class="astro-by6fddyj astro-b5kgnn7o" data-translations="{&quot;placeholder&quot;:&quot;Search&quot;,&quot;search_label&quot;:&quot;Search the site&quot;}"><button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" class="astro-b5kgnn7o"><svg aria-hidden="true" class="astro-b5kgnn7o astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-b5kgnn7o" aria-hidden="true">Search</span><kbd class="sl-hidden md:sl-flex astro-b5kgnn7o" style="display: none;"><kbd class="astro-b5kgnn7o">Ctrl</kbd><kbd class="astro-b5kgnn7o">K</kbd></kbd></button><dialog style="padding:0" aria-label="Search" class="astro-b5kgnn7o"><div class="dialog-frame sl-flex astro-b5kgnn7o"><button data-close-modal class="sl-flex md:sl-hidden astro-b5kgnn7o">Cancel</button><div class="search-container astro-b5kgnn7o"><div id="starlight__search" class="astro-b5kgnn7o"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.g9hoxVJg.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-by6fddyj"><div class="sl-flex social-icons astro-by6fddyj"><nav class="top-nav astro-o2gh7vpa" aria-label="Site sections"><a href="/en/learn/" class="astro-o2gh7vpa">Learn Meem</a><a href="/en/docs/" aria-current="page" class="astro-o2gh7vpa">Reference</a><a href="/en/try/" class="astro-o2gh7vpa">Examples</a><a href="/en/playground/" class="astro-o2gh7vpa">Playground</a><a href="/en/download/" class="astro-o2gh7vpa">Download</a><a href="/en/support/" class="astro-o2gh7vpa">Support</a></nav></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-2z5xp7gb"><span class="sr-only astro-2z5xp7gb">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-2z5xp7gb astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-2z5xp7gb"><option value="dark" class="astro-2z5xp7gb">Dark</option><option value="light" class="astro-2z5xp7gb">Light</option><option value="auto" selected class="astro-2z5xp7gb">Auto</option></select><svg aria-hidden="true" class="icon caret astro-2z5xp7gb astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&a(`auto`)});var o=class extends HTMLElement{constructor(){super(),a(n()),this.querySelector(`select`)?.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&a(t(e.currentTarget.value))})}};customElements.define(`starlight-theme-select`,o);</script><a class="lang-switch astro-juchyx6x" href="/docs/cheatsheet/" hreflang="ar" lang="ar" data-lang-choice="ar">العربية</a><script type="module">document.querySelectorAll(`[data-lang-choice]`).forEach(e=>e.addEventListener(`click`,()=>{try{localStorage.setItem(`meem-lang`,e.dataset.langChoice??``)}catch{}}));</script></div></div></header><nav class="sidebar print:hidden astro-yntsjkba" aria-label="Pages"><button popovertarget="starlight__sidebar" class="sl-menu-button sl-flex md:sl-hidden print:hidden astro-r2osgdlg"><svg aria-hidden="true" class="open-menu astro-r2osgdlg astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-r2osgdlg astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg><span class="sr-only astro-r2osgdlg">Menu</span></button><script type="module">var e=class extends HTMLElement{constructor(){super();let e=matchMedia(`(min-width: 50em)`),t=()=>{this.popover=e.matches?null:`auto`};t(),e.addEventListener(`change`,()=>t()),this.addEventListener(`toggle`,({newState:e})=>this.trapFocus(e===`open`))}trapFocus(e){document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}};customElements.define(`sl-sidebar-pane`,e);</script><sl-sidebar-pane popover id="starlight__sidebar" class="sidebar-pane astro-yntsjkba"><div class="sidebar-content sl-flex astro-yntsjkba"><nav class="section-nav astro-wv7whodv" aria-label="Site sections"><a href="/en/learn/" class="astro-wv7whodv">Learn Meem</a><a href="/en/docs/" aria-current="page" class="astro-wv7whodv">Reference</a><a href="/en/try/" class="astro-wv7whodv">Examples</a><a href="/en/playground/" class="astro-wv7whodv">Playground</a><a href="/en/download/" class="astro-wv7whodv">Download</a><a href="/en/support/" class="astro-wv7whodv">Support</a></nav><sl-sidebar-state-persist data-hash="0g9roc2" class="astro-ipdry5cl"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/" class="large astro-rmhv4bp6"><span class="astro-rmhv4bp6">Overview</span></a></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">Understand Meem</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/understand/capabilities/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">What Meem can and cannot do</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/understand/memory/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Memory in Meem</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/understand/errors/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Dealing with errors</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/understand/unsafe/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">What is «خطر»?</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/understand/compare/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Meem compared with C and Zig</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">Coming from another language</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/from/c/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Coming from C</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/from/python/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Coming from Python</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/from/zig/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Coming from Zig</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">Quick references</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/reference/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Reference index</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/cheatsheet/" aria-current="page" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Cheat sheet</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/glossary/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">المصطلحات</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/stdlib/allocation/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Allocation and performance of builtins</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><a href="/en/docs/handbook/" class="large astro-rmhv4bp6"><span class="astro-rmhv4bp6">الكتاب المرجعي</span></a></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">The language</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/language/lexicon/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">المفردات</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/types/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الأنواع</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/expressions/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">التعابير</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/statements/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">العبارات</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/functions/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الدوال</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/structs/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الهياكل</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/modules/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدات</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/low-level/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الطبقة المنخفضة: خطر والشرائح والمؤشرات</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/ffi/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">استدعاء C (FFI)</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/security/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">ما يستطيعه برنامج ميم على جهازك</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/enums/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">التعداد</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/errors/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">معالجة الأخطاء</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/language/generics/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">المعمّم: الدوال والهياكل والتعدادات</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">Manual memory</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/memory/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Manual memory</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/memory/reference/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الذاكرة: المخصصات وخاتمه</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/memory/refcount/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">العدّ المرجعي (تاريخي: 0.6 وما قبله)</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">Standard library</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/stdlib/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">المكتبة القياسية</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/stdlib/builtins/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">المدمجات</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/stdlib/math/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدة رياضيات</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/stdlib/system/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدة نظام</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/stdlib/files/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدة ملفات</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/stdlib/paths/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدة مسارات</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/stdlib/random/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدة عشوائي</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/stdlib/collections/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الوحدة مجموعات</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">Errors</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/errors/common/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الأخطاء الشائعة: السبب والإصلاح</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/errors/catalog/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Catalog of error and warning messages</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">Tools</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="7"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/tools/options/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">خيارات سطر الأوامر</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/tools/check-json/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">خرج الفحص meem --check --json</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/build/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Building: meem build</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">Migration</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="8"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/changelog/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">Changelog (0.11 to 0.17.3)</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/to-0-17/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.16 إلى 0.17</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/to-0-16/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.15 إلى 0.16</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/to-0-15/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.14 إلى 0.15</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/to-0-14/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.13 إلى 0.14</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/to-0-13/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.12 إلى 0.13</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/to-0-12/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.11 إلى 0.12</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/to-0-11/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.10 إلى 0.11</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/to-0-10/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.9 إلى 0.10</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/to-0-8/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.7 إلى 0.8</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل من 0.6 إلى 0.7</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/migration/errors/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الترحيل إلى معالجة الأخطاء (0.7.0)</span></a></li></ul></details></li><li class="astro-rmhv4bp6"><details open class="astro-rmhv4bp6"><summary class="astro-rmhv4bp6"><span class="group-label astro-rmhv4bp6"><span class="large astro-rmhv4bp6">Outside the handbook (0.6)</span></span><svg aria-hidden="true" class="caret astro-rmhv4bp6 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="9"></sl-sidebar-restore><ul class="astro-rmhv4bp6"><li class="astro-rmhv4bp6"><a href="/en/docs/performance/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">الأداء</span></a></li><li class="astro-rmhv4bp6"><a href="/en/docs/whats-new/" class="astro-rmhv4bp6"><span class="astro-rmhv4bp6">سجل التغييرات القديم (0.5 إلى 0.6)</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-p4azlveh"><div class="social-icons astro-p4azlveh"><nav class="top-nav astro-o2gh7vpa" aria-label="Site sections"><a href="/en/learn/" class="astro-o2gh7vpa">Learn Meem</a><a href="/en/docs/" aria-current="page" class="astro-o2gh7vpa">Reference</a><a href="/en/try/" class="astro-o2gh7vpa">Examples</a><a href="/en/playground/" class="astro-o2gh7vpa">Playground</a><a href="/en/download/" class="astro-o2gh7vpa">Download</a><a href="/en/support/" class="astro-o2gh7vpa">Support</a></nav></div><starlight-theme-select><label style="--sl-select-width: 6.25em" class="astro-2z5xp7gb"><span class="sr-only astro-2z5xp7gb">Select theme</span><svg aria-hidden="true" class="icon label-icon astro-2z5xp7gb astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><select autocomplete="off" class="astro-2z5xp7gb"><option value="dark" class="astro-2z5xp7gb">Dark</option><option value="light" class="astro-2z5xp7gb">Light</option><option value="auto" selected class="astro-2z5xp7gb">Auto</option></select><svg aria-hidden="true" class="icon caret astro-2z5xp7gb astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></label></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><a class="lang-switch astro-juchyx6x" href="/docs/cheatsheet/" hreflang="ar" lang="ar" data-lang-choice="ar">العربية</a></div></div></div></sl-sidebar-pane></nav><div class="main-frame astro-yntsjkba"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()});</script><div class="lg:sl-flex astro-lrzkfocr"><div class="main-pane astro-lrzkfocr"><main data-pagefind-body class="astro-g5ptsecz" lang="en" dir="ltr"><div class="content-panel astro-a7po4psb"><div class="sl-container astro-a7po4psb"><h1 id="_top" class="astro-bebwqqxs">Cheat sheet</h1><span data-pagefind-weight="0.2" data-pagefind-index-attrs="data-terms" data-terms="قائمة القائمة قوائم القوائم دالة الدالة دوال الدوال داله الداله هيكل الهيكل هياكل الهياكل نص النص نصوص النصوص شرط الشرط شروط الشروط خطا الخطا اخطاء الاخطاء رمز الرمز رموز الرموز ثابت الثابت ثوابت الثوابت مصفوفة المصفوفة مصفوفات المصفوفات"></span></div></div><div class="content-panel astro-a7po4psb"><div class="sl-container astro-a7po4psb"><div class="sl-markdown-content"><div class="cheatsheet"><p>A summary of the syntax without explanations; the explanations are in <a href="/en/learn/">Learn Meem</a> and the <a href="/en/docs/reference/">reference index</a>. Print it from your browser: it prints without the menus. The code is Meem’s own, so it is in Arabic.</p><div class="sl-heading-wrapper level-h2"><h2 id="the-basics">The basics</h2><a class="sl-anchor-link" href="#the-basics"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “The basics”</span></a></div><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Print</td>
+<td><code dir="auto">اطبع("س = ", س)</code> (no separator between the values)</td>
+</tr>
+<tr>
+<td>Comment</td>
+<td><code dir="auto"># to the end of the line</code></td>
+</tr>
+<tr>
+<td>Variable and its type</td>
+<td><code dir="auto">س = 5</code> · <code dir="auto">س عدد64 = 5</code> (the type is fixed by the first value)</td>
+</tr>
+<tr>
+<td>Constant</td>
+<td><code dir="auto">ثابت حد = 100</code></td>
+</tr>
+<tr>
+<td>Types</td>
+<td><code dir="auto">عدد64</code> (64-bit integer; also <code dir="auto">عدد8</code> <code dir="auto">عدد16</code> <code dir="auto">عدد32</code>) · <code dir="auto">طبيعي8</code> .. <code dir="auto">طبيعي64</code> and <code dir="auto">بايت</code> (unsigned) · <code dir="auto">كسر64</code> (64-bit float; also <code dir="auto">كسر32</code>) · <code dir="auto">نص</code> (string) · <code dir="auto">رمز</code> (character) · <code dir="auto">منطقي</code> (boolean: <code dir="auto">صواب</code>/<code dir="auto">خطاء</code>)</td>
+</tr>
+<tr>
+<td>Optional</td>
+<td><code dir="auto">ن؟</code>: a value or <code dir="auto">لاشيء</code> (nothing) · <code dir="auto">اذا س != لاشيء:</code> · <code dir="auto">س والا بديل</code></td>
+</tr>
+<tr>
+<td>Tuple</td>
+<td><code dir="auto">داله قسم(ا عدد64, ب عدد64) (خارج عدد64, باقي عدد64):</code> · <code dir="auto">خ, ب = قسم(17, 5)</code> · <code dir="auto">ن.خارج</code></td>
+</tr>
+<tr>
+<td>Conversion</td>
+<td><code dir="auto">نص(5)</code> · <code dir="auto">حلل("5", عدد64) والا 0</code> (parse) · <code dir="auto">كسر64(7)</code> · checked narrowing: <code dir="auto">عدد8(ن)</code></td>
+</tr>
+<tr>
+<td>Division</td>
+<td><code dir="auto">7 / 2</code> = 3 (integer) · <code dir="auto">كسر64(ن) / 2</code> (an integer and a float do not mix without a conversion) · <code dir="auto">7 % 2</code> = 1</td>
+</tr>
+<tr>
+<td>Input</td>
+<td><code dir="auto">س = اقرأ("رسالة: ") والا ""</code> (<code dir="auto">لاشيء</code> at the end of input)</td>
+</tr>
+</tbody>
+</table><div class="sl-heading-wrapper level-h2"><h2 id="control-flow">Control flow</h2><a class="sl-anchor-link" href="#control-flow"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Control flow”</span></a></div><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Condition</td>
+<td><code dir="auto">اذا ...:</code> (if) · <code dir="auto">غير ذلك اذا ...:</code> (else if) · <code dir="auto">غير ذلك:</code> (else)</td>
+</tr>
+<tr>
+<td>Logic</td>
+<td><code dir="auto">و</code> (and) · <code dir="auto">او</code> (or) · <code dir="auto">!</code> (not)</td>
+</tr>
+<tr>
+<td>Counting loop</td>
+<td><code dir="auto">لكل ع في مدى(1, 11):</code> (does not include 11)</td>
+</tr>
+<tr>
+<td>Over a list, dictionary or string</td>
+<td><code dir="auto">لكل ع في ق:</code></td>
+</tr>
+<tr>
+<td>While</td>
+<td><code dir="auto">طالما شرط:</code></td>
+</tr>
+<tr>
+<td>Break / continue</td>
+<td><code dir="auto">توقف</code> · <code dir="auto">تجاوز</code></td>
+</tr>
+<tr>
+<td>Match</td>
+<td><code dir="auto">حالات س:</code> then <code dir="auto">حاله قيمة:</code> and <code dir="auto">حاله _:</code></td>
+</tr>
+</tbody>
+</table><div class="sl-heading-wrapper level-h2"><h2 id="collections">Collections</h2><a class="sl-anchor-link" href="#collections"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Collections”</span></a></div><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>List</td>
+<td><code dir="auto">ق = [1, 2, 3]</code> · <code dir="auto">ق قائمة[نص] = []</code></td>
+</tr>
+<tr>
+<td>Add / length / search</td>
+<td><code dir="auto">اضف(ق, 4)</code> · <code dir="auto">طول(ق)</code> · <code dir="auto">بحث(ق, 2) والا -1</code> (<code dir="auto">لاشيء</code> if not found)</td>
+</tr>
+<tr>
+<td>Sort</td>
+<td><code dir="auto">رتب(ق)</code> · <code dir="auto">رتب_ب(ق, دالة_قبل)</code></td>
+</tr>
+<tr>
+<td>Dictionary</td>
+<td><code dir="auto">د = {"ا": 1}</code> · <code dir="auto">د["ب"] = 2</code> · <code dir="auto">يوجد(د, "ا")</code> · <code dir="auto">احذف(د, "ا")</code> (returns what it removed)</td>
+</tr>
+<tr>
+<td>Fixed array</td>
+<td><code dir="auto">م مصفوفة[عدد64, 4] = [0, 0, 0, 0]</code></td>
+</tr>
+<tr>
+<td>Strings</td>
+<td><code dir="auto">تقسيم(ن, " ")</code> · <code dir="auto">قص_الفراغات(ن)</code> · <code dir="auto">جزء(ن, 0, 3)</code> · <code dir="auto">يحوي(ن, "س")</code> · <code dir="auto">دمج_نصوص(ا, ب)</code></td>
+</tr>
+</tbody>
+</table><div class="sl-heading-wrapper level-h2"><h2 id="functions-structs-and-enums">Functions, structs and enums</h2><a class="sl-anchor-link" href="#functions-structs-and-enums"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Functions, structs and enums”</span></a></div><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Function</td>
+<td><code dir="auto">داله اسم(س عدد64, ص نص) عدد64:</code> then <code dir="auto">ارجع ...</code></td>
+</tr>
+<tr>
+<td>No return value</td>
+<td><code dir="auto">داله اسم() فراغ:</code></td>
+</tr>
+<tr>
+<td>Struct</td>
+<td><code dir="auto">هيكل نقطة:</code> then one field per line: <code dir="auto">س عدد64</code></td>
+</tr>
+<tr>
+<td>Create and access</td>
+<td><code dir="auto">ن = نقطة(1, 2)</code> · <code dir="auto">ن.س</code> · <code dir="auto">ق[0].س += 1</code></td>
+</tr>
+<tr>
+<td>Enum</td>
+<td><code dir="auto">تعداد لون:</code> then one member per line · <code dir="auto">لون.احمر</code> · <code dir="auto">عدد64(لون.احمر)</code> = 0</td>
+</tr>
+<tr>
+<td>Enum with a payload</td>
+<td><code dir="auto">دائرة(نق كسر64)</code> as a member · <code dir="auto">شكل.دائرة(1.0)</code> · <code dir="auto">حاله شكل.دائرة(نق):</code></td>
+</tr>
+<tr>
+<td>Generic</td>
+<td><code dir="auto">داله اكبر[ن](ا ن, ب ن) ن:</code> · <code dir="auto">هيكل زوج[ا, ب]:</code> · explicitly: <code dir="auto">زوج[نص, عدد64](...)</code></td>
+</tr>
+<tr>
+<td>Trait and constraint</td>
+<td><code dir="auto">هيكل نقطة يحقق قابل_للمقارنة:</code> · <code dir="auto">داله اصغر[ن يحقق قابل_للمقارنة](ا ن, ب ن) ن:</code></td>
+</tr>
+</tbody>
+</table><div class="sl-heading-wrapper level-h2"><h2 id="errors">Errors</h2><a class="sl-anchor-link" href="#errors"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Errors”</span></a></div><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Your error names</td>
+<td><code dir="auto">اخطاء:</code> then one name per line</td>
+</tr>
+<tr>
+<td>A function that can fail</td>
+<td><code dir="auto">داله ف() !عدد64:</code> · <code dir="auto">ارجع خطأ.اسم</code></td>
+</tr>
+<tr>
+<td>Fallback value</td>
+<td><code dir="auto">ن = ف() والا 0</code></td>
+</tr>
+<tr>
+<td>Handling with a block</td>
+<td><code dir="auto">ن = ف() والا خ:</code> then <code dir="auto">حالات خ:</code>, and the last line is the value</td>
+</tr>
+<tr>
+<td>Passing the failure on</td>
+<td><code dir="auto">ن = جرّب ف()</code></td>
+</tr>
+<tr>
+<td>Clean-up on failure only</td>
+<td><code dir="auto">خاتمه_عند_خطأ ...</code></td>
+</tr>
+<tr>
+<td>Runtime errors</td>
+<td>Index outside a list, division by zero, overflowing the type’s width: code 3, cannot be handled</td>
+</tr>
+</tbody>
+</table><div class="sl-heading-wrapper level-h2"><h2 id="memory">Memory</h2><a class="sl-anchor-link" href="#memory"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Memory”</span></a></div><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Free</td>
+<td><code dir="auto">حرر(س)</code></td>
+</tr>
+<tr>
+<td>On leaving the block</td>
+<td><code dir="auto">خاتمه حرر(س)</code> (in reverse order, on every exit)</td>
+</tr>
+<tr>
+<td>Arena</td>
+<td><code dir="auto">س_ = ساحة(الافتراضي)</code> · <code dir="auto">خاتمه اعد(س_)</code> · <code dir="auto">تقسيم(ن, " ", س_)</code></td>
+</tr>
+<tr>
+<td>Pointer</td>
+<td><code dir="auto">م = جديد(نقطة(1, 2))</code> · <code dir="auto">محتوى(م).س</code> · <code dir="auto">حرر(م)</code></td>
+</tr>
+<tr>
+<td>Find what was not freed</td>
+<td><code dir="auto">meem برنامج.م --debug-mem</code></td>
+</tr>
+<tr>
+<td>A forgotten local allocation in a function</td>
+<td>compile error <code dir="auto">E0472</code>: <code dir="auto">خاتمه حرر(ن)</code> or <code dir="auto">ارجع ن</code></td>
+</tr>
+</tbody>
+</table><div class="sl-heading-wrapper level-h2"><h2 id="modules-and-c">Modules and C</h2><a class="sl-anchor-link" href="#modules-and-c"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Modules and C”</span></a></div><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard module</td>
+<td><code dir="auto">استورد رياضيات</code> then <code dir="auto">رياضيات.جذر(2.0)</code></td>
+</tr>
+<tr>
+<td>Collections library</td>
+<td><code dir="auto">استورد مجموعات</code> · <code dir="auto">كومة_من([3, 1])</code> (heap) · <code dir="auto">طابور_من(...)</code> (queue) · <code dir="auto">مجموعة_من(...)</code> (set)</td>
+</tr>
+<tr>
+<td>A file next to yours</td>
+<td><code dir="auto">استورد مساعد</code> (loads <code dir="auto">مساعد.م</code>)</td>
+</tr>
+<tr>
+<td>A function from C</td>
+<td><code dir="auto">خارجي داله طول_c(ن نص) طبيعي64 باسم "strlen"</code></td>
+</tr>
+<tr>
+<td>Raw memory</td>
+<td><code dir="auto">خطر:</code> then <code dir="auto">احجز_خام(عدد32, 4)</code></td>
+</tr>
+</tbody>
+</table><div class="sl-heading-wrapper level-h2"><h2 id="commands">Commands</h2><a class="sl-anchor-link" href="#commands"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Commands”</span></a></div><table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run</td>
+<td><code dir="auto">meem برنامج.م</code> · with arguments: <code dir="auto">meem برنامج.م -- ا ب</code></td>
+</tr>
+<tr>
+<td>Build a standalone file</td>
+<td><code dir="auto">meem build برنامج.م -o برنامج</code> · dynamically: <code dir="auto">--dynamic</code></td>
+</tr>
+<tr>
+<td>Check without running</td>
+<td><code dir="auto">meem --check برنامج.م</code> · for tools: <code dir="auto">--check --json</code></td>
+</tr>
+<tr>
+<td>Strict</td>
+<td><code dir="auto">--strict</code> (warnings become errors) · <code dir="auto">--strict-memory</code> (whatever is not proven freed is an error)</td>
+</tr>
+<tr>
+<td>What the compiler cannot prove</td>
+<td><code dir="auto">--warn-unproven</code> (out of the default mode since 0.17)</td>
+</tr>
+<tr>
+<td>Memory detector</td>
+<td>on by default in <code dir="auto">meem برنامج.م</code> · without it: <code dir="auto">--release</code> · in a built file: <code dir="auto">build --debug</code> · with the leak report: <code dir="auto">--debug-mem</code></td>
+</tr>
+<tr>
+<td>Forbid the unsafe</td>
+<td><code dir="auto">--no-unsafe</code> · <code dir="auto">--no-ffi</code> · <code dir="auto">--no-system</code></td>
+</tr>
+<tr>
+<td>Version and self-test</td>
+<td><code dir="auto">meem --version</code> · <code dir="auto">meem --self-test</code></td>
+</tr>
+</tbody>
+</table><div class="sl-heading-wrapper level-h2"><h2 id="all-of-the-above-in-one-program">All of the above in one program</h2><a class="sl-anchor-link" href="#all-of-the-above-in-one-program"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “All of the above in one program”</span></a></div></div>
+<section class="meem-example not-content" data-example="guide/ورقة_غش.م" data-runner="recorded"><div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.83k8r.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame has-title not-content"><figcaption class="header"><span class="title">ورقة_غش.م</span></figcaption><pre data-language="meem"><code><div class="ec-line"><div class="code"><span style="--0:#99A0A6;--1:#616972"># برنامج واحد يمرّ على أكثر ما في ورقة الغش</span></div></div><div class="ec-line"><div class="code"><span style="--0:#F97583;--1:#BF3441">استورد</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#B392F0;--1:#6F42C1">رياضيات</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#F97583;--1:#BF3441">اخطاء</span><span style="--0:#E1E4E8;--1:#24292E">:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">    </span></span><span style="--0:#E1E4E8;--1:#24292E">فارغة</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#F97583;--1:#BF3441">تعداد</span><span style="--0:#E1E4E8;--1:#24292E"> مستوى:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">    </span></span><span style="--0:#E1E4E8;--1:#24292E">مبتدئ</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">    </span></span><span style="--0:#E1E4E8;--1:#24292E">متقدم</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#F97583;--1:#BF3441">هيكل</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#B392F0;--1:#6F42C1">طالب</span><span style="--0:#E1E4E8;--1:#24292E">:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">    </span></span><span style="--0:#E1E4E8;--1:#24292E">اسم </span><span style="--0:#79B8FF;--1:#005CC5">نص</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">    </span></span><span style="--0:#E1E4E8;--1:#24292E">درجات </span><span style="--0:#79B8FF;--1:#005CC5">قائمة</span><span style="--0:#E1E4E8;--1:#24292E">[</span><span style="--0:#79B8FF;--1:#005CC5">عدد64</span><span style="--0:#E1E4E8;--1:#24292E">]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">    </span></span><span style="--0:#E1E4E8;--1:#24292E">مستواه مستوى</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#F97583;--1:#BF3441">داله</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#B392F0;--1:#6F42C1">معدل</span><span style="--0:#E1E4E8;--1:#24292E">(ط طالب) </span><span style="--0:#F97583;--1:#BF3441">!</span><span style="--0:#79B8FF;--1:#005CC5">كسر64</span><span style="--0:#E1E4E8;--1:#24292E">:</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#F97583;--1:#BF3441">اذا</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">طول</span><span style="--0:#E1E4E8;--1:#24292E">(ط.درجات) </span><span style="--0:#F97583;--1:#BF3441">==</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">0</span><span style="--0:#E1E4E8;--1:#24292E">:</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#F97583;--1:#BF3441">ارجع</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#F97583;--1:#BF3441">خطأ</span><span style="--0:#E1E4E8;--1:#24292E">.فارغة</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">    </span></span><span style="--0:#E1E4E8;--1:#24292E">مج </span><span style="--0:#F97583;--1:#BF3441">=</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">0</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#F97583;--1:#BF3441">لكل</span><span style="--0:#E1E4E8;--1:#24292E"> د </span><span style="--0:#F97583;--1:#BF3441">في</span><span style="--0:#E1E4E8;--1:#24292E"> ط.درجات:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">        </span></span><span style="--0:#E1E4E8;--1:#24292E">مج </span><span style="--0:#F97583;--1:#BF3441">+=</span><span style="--0:#E1E4E8;--1:#24292E"> د</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#F97583;--1:#BF3441">ارجع</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">كسر64</span><span style="--0:#E1E4E8;--1:#24292E">(مج) </span><span style="--0:#F97583;--1:#BF3441">/</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">كسر64</span><span style="--0:#E1E4E8;--1:#24292E">(</span><span style="--0:#79B8FF;--1:#005CC5">طول</span><span style="--0:#E1E4E8;--1:#24292E">(ط.درجات))</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">طلاب </span><span style="--0:#F97583;--1:#BF3441">=</span><span style="--0:#E1E4E8;--1:#24292E"> [</span><span style="--0:#B392F0;--1:#6F42C1">طالب</span><span style="--0:#E1E4E8;--1:#24292E">(</span><span style="--0:#9ECBFF;--1:#032F62">"ليلى"</span><span style="--0:#E1E4E8;--1:#24292E">, [</span><span style="--0:#79B8FF;--1:#005CC5">90</span><span style="--0:#E1E4E8;--1:#24292E">, </span><span style="--0:#79B8FF;--1:#005CC5">85</span><span style="--0:#E1E4E8;--1:#24292E">, </span><span style="--0:#79B8FF;--1:#005CC5">100</span><span style="--0:#E1E4E8;--1:#24292E">], مستوى.متقدم), </span><span style="--0:#B392F0;--1:#6F42C1">طالب</span><span style="--0:#E1E4E8;--1:#24292E">(</span><span style="--0:#9ECBFF;--1:#032F62">"عمر"</span><span style="--0:#E1E4E8;--1:#24292E">, [], مستوى.مبتدئ)]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#F97583;--1:#BF3441">خاتمه</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">حرر</span><span style="--0:#E1E4E8;--1:#24292E">(طلاب)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E1E4E8;--1:#24292E">عدد_كل </span><span style="--0:#79B8FF;--1:#005CC5">قاموس</span><span style="--0:#E1E4E8;--1:#24292E">[مستوى, </span><span style="--0:#79B8FF;--1:#005CC5">عدد64</span><span style="--0:#E1E4E8;--1:#24292E">] </span><span style="--0:#F97583;--1:#BF3441">=</span><span style="--0:#E1E4E8;--1:#24292E"> {}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#F97583;--1:#BF3441">خاتمه</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">حرر</span><span style="--0:#E1E4E8;--1:#24292E">(عدد_كل)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#F97583;--1:#BF3441">لكل</span><span style="--0:#E1E4E8;--1:#24292E"> ط </span><span style="--0:#F97583;--1:#BF3441">في</span><span style="--0:#E1E4E8;--1:#24292E"> طلاب:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">    </span></span><span style="--0:#E1E4E8;--1:#24292E">م </span><span style="--0:#F97583;--1:#BF3441">=</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#B392F0;--1:#6F42C1">معدل</span><span style="--0:#E1E4E8;--1:#24292E">(ط) </span><span style="--0:#F97583;--1:#BF3441">والا</span><span style="--0:#E1E4E8;--1:#24292E"> خ:</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#79B8FF;--1:#005CC5">اطبع</span><span style="--0:#E1E4E8;--1:#24292E">(ط.اسم, </span><span style="--0:#9ECBFF;--1:#032F62">": لا درجات ("</span><span style="--0:#E1E4E8;--1:#24292E">, خ, </span><span style="--0:#9ECBFF;--1:#032F62">")"</span><span style="--0:#E1E4E8;--1:#24292E">)</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#F97583;--1:#BF3441">تجاوز</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#79B8FF;--1:#005CC5">اطبع</span><span style="--0:#E1E4E8;--1:#24292E">(ط.اسم, </span><span style="--0:#9ECBFF;--1:#032F62">": "</span><span style="--0:#E1E4E8;--1:#24292E">, رياضيات.</span><span style="--0:#B392F0;--1:#6F42C1">نسق</span><span style="--0:#E1E4E8;--1:#24292E">(م, </span><span style="--0:#79B8FF;--1:#005CC5">1</span><span style="--0:#E1E4E8;--1:#24292E">))</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#F97583;--1:#BF3441">حالات</span><span style="--0:#E1E4E8;--1:#24292E"> ط.مستواه:</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#F97583;--1:#BF3441">حاله</span><span style="--0:#E1E4E8;--1:#24292E"> مستوى.مبتدئ:</span></div></div><div class="ec-line"><div class="code"><span class="indent">            </span><span style="--0:#79B8FF;--1:#005CC5">اطبع</span><span style="--0:#E1E4E8;--1:#24292E">(</span><span style="--0:#9ECBFF;--1:#032F62">"  يبدأ"</span><span style="--0:#E1E4E8;--1:#24292E">)</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#F97583;--1:#BF3441">حاله</span><span style="--0:#E1E4E8;--1:#24292E"> مستوى.متقدم:</span></div></div><div class="ec-line"><div class="code"><span class="indent">            </span><span style="--0:#79B8FF;--1:#005CC5">اطبع</span><span style="--0:#E1E4E8;--1:#24292E">(</span><span style="--0:#9ECBFF;--1:#032F62">"  متقدم"</span><span style="--0:#E1E4E8;--1:#24292E">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#F97583;--1:#BF3441">لكل</span><span style="--0:#E1E4E8;--1:#24292E"> ط </span><span style="--0:#F97583;--1:#BF3441">في</span><span style="--0:#E1E4E8;--1:#24292E"> طلاب:</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#F97583;--1:#BF3441">اذا</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">يوجد</span><span style="--0:#E1E4E8;--1:#24292E">(عدد_كل, ط.مستواه):</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">        </span></span><span style="--0:#E1E4E8;--1:#24292E">عدد_كل[ط.مستواه] </span><span style="--0:#F97583;--1:#BF3441">+=</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">1</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#F97583;--1:#BF3441">غير ذلك</span><span style="--0:#E1E4E8;--1:#24292E">:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E1E4E8;--1:#24292E">        </span></span><span style="--0:#E1E4E8;--1:#24292E">عدد_كل[ط.مستواه] </span><span style="--0:#F97583;--1:#BF3441">=</span><span style="--0:#E1E4E8;--1:#24292E"> </span><span style="--0:#79B8FF;--1:#005CC5">1</span></div></div><div class="ec-line"><div class="code"><span style="--0:#79B8FF;--1:#005CC5">اطبع</span><span style="--0:#E1E4E8;--1:#24292E">(</span><span style="--0:#9ECBFF;--1:#032F62">"المستويات: "</span><span style="--0:#E1E4E8;--1:#24292E">, </span><span style="--0:#79B8FF;--1:#005CC5">طول</span><span style="--0:#E1E4E8;--1:#24292E">(عدد_كل))</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="انسخ" data-copied="نُسخ" data-code="# برنامج واحد يمرّ على أكثر ما في ورقة الغشاستورد رياضياتاخطاء:    فارغةتعداد مستوى:    مبتدئ    متقدمهيكل طالب:    اسم نص    درجات قائمة[عدد64]    مستواه مستوىداله معدل(ط طالب) !كسر64:    اذا طول(ط.درجات) == 0:        ارجع خطأ.فارغة    مج = 0    لكل د في ط.درجات:        مج += د    ارجع كسر64(مج) / كسر64(طول(ط.درجات))طلاب = [طالب(&#x22;ليلى&#x22;, [90, 85, 100], مستوى.متقدم), طالب(&#x22;عمر&#x22;, [], مستوى.مبتدئ)]خاتمه حرر(طلاب)عدد_كل قاموس[مستوى, عدد64] = {}خاتمه حرر(عدد_كل)لكل ط في طلاب:    م = معدل(ط) والا خ:        اطبع(ط.اسم, &#x22;: لا درجات (&#x22;, خ, &#x22;)&#x22;)        تجاوز    اطبع(ط.اسم, &#x22;: &#x22;, رياضيات.نسق(م, 1))    حالات ط.مستواه:        حاله مستوى.مبتدئ:            اطبع(&#x22;  يبدأ&#x22;)        حاله مستوى.متقدم:            اطبع(&#x22;  متقدم&#x22;)لكل ط في طلاب:    اذا يوجد(عدد_كل, ط.مستواه):        عدد_كل[ط.مستواه] += 1    غير ذلك:        عدد_كل[ط.مستواه] = 1اطبع(&#x22;المستويات: &#x22;, طول(عدد_كل))"><div></div></button></div></figure></div><figure class="meem-output"><figcaption><span>Output recorded from the compiler</span><span class="meem-output-meta"><bdi dir="ltr">meem ورقة_غش.م</bdi> · <bdi dir="ltr">meem 0.17.3+434e13f</bdi></span></figcaption><output><pre dir="rtl" class="meem-stdout"><span class="line">ليلى: 91.7</span><span class="line">  متقدم</span><span class="line">عمر: لا درجات (فارغة)</span><span class="line">المستويات: 2</span></pre></output></figure></section></div><footer class="sl-flex astro-ddtxxk7k"><div class="meta sl-flex astro-ddtxxk7k"></div><div class="pagination-links print:hidden astro-b5raizh3" dir="ltr"><a href="/en/docs/reference/" rel="prev" class="astro-b5raizh3"><svg aria-hidden="true" class="astro-b5raizh3 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-b5raizh3">Previous<br class="astro-b5raizh3"><span class="link-title astro-b5raizh3">Reference index</span></span></a><a href="/en/docs/glossary/" rel="next" class="astro-b5raizh3"><svg aria-hidden="true" class="astro-b5raizh3 astro-hkc32dio" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-b5raizh3">Next<br class="astro-b5raizh3"><span class="link-title astro-b5raizh3">المصطلحات</span></span></a></div></footer><nav class="site-footer astro-jo6i4kqk" aria-label="Site links"><a href="/en/about/" class="astro-jo6i4kqk">About</a><a href="/en/download/" class="astro-jo6i4kqk">Download</a><a href="/en/beta/" class="astro-jo6i4kqk">Try 0.17.3 with us</a><a href="/en/support/" class="astro-jo6i4kqk">Support Meem</a><span class="astro-jo6i4kqk">All rights reserved, except as granted by the <a href="/en/license/" class="astro-jo6i4kqk">Meem License</a>.</span><span class="astro-jo6i4kqk">Meem — beta</span></nav></div></div></main></div></div></div></div></body></html>
